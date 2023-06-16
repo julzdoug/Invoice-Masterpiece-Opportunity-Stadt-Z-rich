@@ -1,274 +1,411 @@
 <template>
-  <div class="container shadow min-vh-100 py-2">
-    <div class="row">
-      <div class="col">
-        <h2 class="font-weight-light">Basic Example</h2>
-        <select v-model="selectedTable" class="form-select" aria-label="Default select example">
-          <option disabled value="">Select a table</option>
-          <option value="customer">Customer</option>
-          <option value="company">Company</option>
-        </select>
-        <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
-          aria-label="Default select example">
-          <option disabled value="">Select an entry</option>
-          <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
-            {{ entry.name }}
-          </option>
-        </select>
-      </div>
-      <div v-if="selectedTable === 'company'">
-        <form @submit.prevent="submitCompanyForm">
-
+  <select v-model="selectedTable" class="form-select" aria-label="Default select example">
+    <option disabled value="">Select a table</option>
+    <option value="customer">Customer</option>
+    <option value="company">Company</option>
+  </select>
+  <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
+    aria-label="Default select example">
+    <option disabled value="">Select an entry</option>
+    <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
+      {{ entry.name }}
+    </option>
+  </select>
+  <div v-if="selectedTable === 'company'">
+    <form class="container mt-5" novalidate @submit.prevent="submitCompanyForm">
+      <div class="row">
+        <div class="form-group col-md-6 mb-3">
+          <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
-            <img :src="isEditing ? companyData.logo : '/malertapsen.jpg'" alt="Company Logo" class="img-fluid logo">
-            <input v-if="isEditing" @change="handleLogoChange($event)" type="file">
+            <div class="input-with-image">
+              <template v-if="isEditing">
+                <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
+                <div class="image-preview" v-if="companyData.logo">
+                  <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
+                </div>
+              </template>
+              <template v-else>
+                <div class="image-preview">
+                  <img :src="companyData.logo || '/malertapsen.jpg'" alt="Company Logo" class="preview-image">
+                </div>
+              </template>
+            </div>
           </div>
-          <h2 class="text-center mb-4 col-4">MalerTapsen</h2>
-          <div class="row align-items-start">
-            <div class="col-3 text-start fs-4"><strong>Profession:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.profession" />
-              </template>
-              <template v-else>
-                {{ companyData.profession }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Name:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.name" />
-              </template>
-              <template v-else>
-                {{ companyData.name }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Surname:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.surname" />
-              </template>
-              <template v-else>
-                {{ companyData.surname }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Street:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.street" />
-              </template>
-              <template v-else>
-                {{ companyData.street }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Street Number:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.street_number" />
-              </template>
-              <template v-else>
-                {{ companyData.street_number }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Postal Code:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.postal_code" />
-              </template>
-              <template v-else>
-                {{ companyData.postal_code }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Place:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.place" />
-              </template>
-              <template v-else>
-                {{ companyData.place }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>UID Number:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.uid_number" />
-              </template>
-              <template v-else>
-                {{ companyData.uid_number }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Account:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.account" />
-              </template>
-              <template v-else>
-                {{ companyData.account }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>IBAN Number:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.iban_number" />
-              </template>
-              <template v-else>
-                {{ companyData.iban_number }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Phone Number:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.phone_number" />
-              </template>
-              <template v-else>
-                {{ companyData.phone_number }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Webpage:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.webpage" />
-              </template>
-              <template v-else>
-                {{ companyData.webpage }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Email:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="companyData.email" />
-              </template>
-              <template v-else>
-                {{ companyData.email }}
-              </template>
-            </p>
-          </div>
-           <div class="col-2">
-            <a class="btn btn-primary" @click="deleteCompany">löschen</a>
-          </div>
-          <div class="col-2">
-            <a class="btn btn-primary" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company' }}</a>
-          </div>
-          <div class="col-2" v-if="isEditing">
-            <a class="btn btn-primary" @click="saveChanges">Save Changes</a>
-          </div>
-        </form>
-          <div class="col-2">
-            <a class="btn btn-primary" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company' }}Neu erstellen</a>
-          </div>
-                        <div>
-          <button class="btn btn-primary mt-3" @click="createNewCompany">Speichern</button>
         </div>
       </div>
-      <div v-else-if="selectedTable === 'customer'">
-        <form @submit.prevent="submitCustomerForm">
-          <h2 class="text-center mb-4 col-4">Customer Information</h2>
-          <div class="row align-items-start">
-            <div class="col-3 text-start fs-4"><strong>Name:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.name" />
-              </template>
-              <template v-else>
-                {{ customerData.name }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Surname:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.surname" />
-              </template>
-              <template v-else>
-                {{ customerData.surname }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Street:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.street" />
-              </template>
-              <template v-else>
-                {{ customerData.street }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Street Number:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.streetnumber" />
-              </template>
-              <template v-else>
-                {{ customerData.streetnumber }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Postal Code:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.postcode" />
-              </template>
-              <template v-else>
-                {{ customerData.postcode }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Place:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.place" />
-              </template>
-              <template v-else>
-                {{ customerData.place }}
-              </template>
-            </p>
-            <div class="w-100 d-none d-md-block"></div>
-            <div class="col-3 text-start fs-4"><strong>Email:</strong></div>
-            <p class="col-2 fs-4">
-              <template v-if="isEditing">
-                <input v-model="customerData.email" />
-              </template>
-              <template v-else>
-                {{ customerData.email }}
-              </template>
-            </p>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Unternehmen:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control text-start" placeholder="Unternehmen" required
+                v-model="companyData.profession">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.profession }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Unternehmen.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Firma:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control text-start" placeholder="Firma" required
+                v-model="companyData.company_name">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.company_name }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Firma.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Vorname:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Vorname" required v-model="companyData.name">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.name }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Vorname.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Name:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Name" required v-model="companyData.surname">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.surname }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Name.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Strasse:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Strasse" required v-model="companyData.street">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.street }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Strasse.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Nummer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
+                v-model="companyData.street_number">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.street_number }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Nummer.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Postleitzahl:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
+                v-model="companyData.postal_code">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.postal_code }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Postleitzahl.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Ort:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Ort" required v-model="companyData.place">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.place }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Ort.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Email:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.email }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Email.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Webpage:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="^(https?:\/\/)?([\w\d]+\.)?[\w-]+(\.[\w-]+)+([/?#]\S*)?$"
+                placeholder="Webpage" v-model="companyData.webpage">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.webpage }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Webpage.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Telefon Nummer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Telefon Nummer"
+                v-model="companyData.phone_number">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.phone_number }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Telefon Nummer.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">UiD Nummer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="UiD Nummer" required
+                v-model="companyData.uid_number">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.uid_number }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter UiD Nummer.
+          </div>
+        </div>
 
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">IBAN:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.iban }}</div>
+            </template>
           </div>
-                    <div class="col-2">
-            <a class="btn btn-primary" @click="deleteCustomer">Löschen</a>
+          <div class="invalid-feedback">
+            Enter IBAN.
           </div>
-          <div class="col-2">
-            <a class="btn btn-primary" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer' }}</a>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Webpage:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="^(https?:\/\/)?([\w\d]+\.)?[\w-]+(\.[\w-]+)+([/?#]\S*)?$"
+                placeholder="Webpage" v-model="companyData.webpage">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.webpage }}</div>
+            </template>
           </div>
-          <div class="col-2" v-if="isEditing">
-            <a class="btn btn-primary" @click="saveChanges">Save Changes</a>
+          <div class="invalid-feedback">
+            Enter Webpage.
           </div>
-
-        </form>
-                  <div class="col-2">
-            <a class="btn btn-primary" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer' }}Neu erstellen</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Mehrwertsteuer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.MwSt">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.MwSt }}</div>
+            </template>
           </div>
-          <div>
-          <button class="btn btn-primary mt-3" @click="createNewCustomer">Speichern</button>
+          <class class="invalid-feedback">
+            Enter Mehrwertsteuer.
+          </class>
         </div>
       </div>
 
-      
-    </div>
+      <button class="col btn btn-secondary btn-md" @click="deleteCompany">löschen</button>
+      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company' }}Ändern
+        Ertsellen</button>
+      <button class="col btn btn-secondary btn-md" @click="createNewCompany">Speichern</button>
+      <button class="col btn btn-secondary btn-md" @click="saveChanges">Save Changes</button>
+    </form>
   </div>
+  <div v-else-if="selectedTable === 'customer'">
+    <form @submit.prevent="submitCustomerForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Vorname:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Vorname" required v-model="customerData.name">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.name }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Vorname.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Name:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Name" required v-model="customerData.surname">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.surname }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Name.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Strasse:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Strasse" required v-model="customerData.street">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.street }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Strasse.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Nummer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
+                v-model="customerData.streetnumber">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.streetnumber }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Nummer.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Postleitzahl:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
+                v-model="customerData.postcode">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.postcode }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Postleitzahl.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Ort:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Ort" required v-model="customerData.place">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.place }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Ort.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Email:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="email" class="form-control" placeholder="Email" required v-model="customerData.email">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ customerData.email }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Email.
+          </div>
+        </div>
+      </div>
+
+      <button class="col btn btn-secondary btn-md" @click="deleteCustomer">löschen</button>
+  
+      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
+      }}Ändern</button>
+    <button class="col btn btn-secondary btn-md" @click="saveChanges">Save Changes</button>
+    </form>
+</div>
+      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
+      }}Neu Ertsellen</button>
+
+ <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
+      }}Neu Ertsellen</button>
+
+      <button class="col btn btn-secondary btn-md" @click="createNewCompany">Neu Speichern company</button>
+
+      <button class="col btn btn-secondary btn-md" @click="createNewCustomer">Neu Speichern custo</button>
+
+
+  
 </template>
 
 <script>
@@ -361,79 +498,79 @@ export default {
     const customer = ref([]);
     /*     const company = ref([]); */
 
-function toggleEditMode() {
-  if (selectedTable.value === 'customer') {
-    if (customerData.value || isEmptyForm()) {
-      isEditing.value = !isEditing.value;
-    }
-  } else if (selectedTable.value === 'company') {
-    if (companyData.value || isEmptyForm()) {
-      isEditing.value = !isEditing.value;
-    }
-  }
-}
-
-
-
-function isEmptyForm() {
-  const {
-    name,
-    surname,
-    street,
-    streetnumber,
-    postcode,
-    place,
-    email,
-  } = customerData.value;
-  return (
-    name === '' &&
-    surname === '' &&
-    street === '' &&
-    streetnumber === '' &&
-    postcode === '' &&
-    place === '' &&
-    email === ''
-  );
-}
-
-
-async function saveChanges() {
-  try {
-    if (selectedTable.value === 'customer' && customerId.value) {
-      // Update existing customer
-      const { data, error } = await supabase
-        .from('customer')
-        .update(getFormData(selectedTable.value, customerData.value, companyData.value))
-        .eq('id', customerId.value);
-
-      if (error) {
-        throw new Error(error.message);
+    function toggleEditMode() {
+      if (selectedTable.value === 'customer') {
+        if (customerData.value || isEmptyForm()) {
+          isEditing.value = !isEditing.value;
+        }
+      } else if (selectedTable.value === 'company') {
+        if (companyData.value || isEmptyForm()) {
+          isEditing.value = !isEditing.value;
+        }
       }
-
-      // Handle success or show appropriate message to the user
-      console.log('Customer data updated successfully!');
-    } else if (selectedTable.value === 'company' && companyId.value) {
-      // Update existing company
-      const { data, error } = await supabase
-        .from('company')
-        .update(getFormData(selectedTable.value, customerData.value, companyData.value))
-        .eq('id', companyId.value);
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      // Handle success or show appropriate message to the user
-      console.log('Company data updated successfully!');
-    } else {
-      // Handle the case when the selected table or entry ID is not available
-      throw new Error('Invalid table or entry ID');
     }
-  } catch (error) {
-    console.error('Error saving changes:', error.message);
-    // Show an error message to the user or handle the error appropriately
-  }
-}
+
+
+
+    function isEmptyForm() {
+      const {
+        name,
+        surname,
+        street,
+        streetnumber,
+        postcode,
+        place,
+        email,
+      } = customerData.value;
+      return (
+        name === '' &&
+        surname === '' &&
+        street === '' &&
+        streetnumber === '' &&
+        postcode === '' &&
+        place === '' &&
+        email === ''
+      );
+    }
+
+
+    async function saveChanges() {
+      try {
+        if (selectedTable.value === 'customer' && customerId.value) {
+          // Update existing customer
+          const { data, error } = await supabase
+            .from('customer')
+            .update(getFormData(selectedTable.value, customerData.value, companyData.value))
+            .eq('id', customerId.value);
+
+          if (error) {
+            throw new Error(error.message);
+          }
+
+          // Handle success or show appropriate message to the user
+          console.log('Customer data updated successfully!');
+        } else if (selectedTable.value === 'company' && companyId.value) {
+          // Update existing company
+          const { data, error } = await supabase
+            .from('company')
+            .update(getFormData(selectedTable.value, customerData.value, companyData.value))
+            .eq('id', companyId.value);
+
+          if (error) {
+            throw new Error(error.message);
+          }
+
+          // Handle success or show appropriate message to the user
+          console.log('Company data updated successfully!');
+        } else {
+          // Handle the case when the selected table or entry ID is not available
+          throw new Error('Invalid table or entry ID');
+        }
+      } catch (error) {
+        console.error('Error saving changes:', error.message);
+        // Show an error message to the user or handle the error appropriately
+      }
+    }
 
 
 
@@ -489,22 +626,22 @@ async function saveChanges() {
           .from('company')
           .insert([
             {
-      logo: '',
-      company_name: '',
-      profession: '',
-      name: '',
-      surname: '',
-      street: '',
-      street_number: '',
-      postal_code: '',
-      place: '',
-      uid_number: '',
-      account: '',
-      iban_number: '',
-      phone_number: '',
-      webpage: '',
-      email: '',
-      MwSt: '',
+              logo: '',
+              company_name: '',
+              profession: '',
+              name: '',
+              surname: '',
+              street: '',
+              street_number: '',
+              postal_code: '',
+              place: '',
+              uid_number: '',
+              account: '',
+              iban_number: '',
+              phone_number: '',
+              webpage: '',
+              email: '',
+              MwSt: '',
 
             },
           ]);
@@ -581,56 +718,56 @@ async function saveChanges() {
         console.error(`Failed to fetch ${selectedTable.value} data:`, error);
       }
     }
-  async function deleteCompany() {
-   const customerIdToDelete = companyId.value;
-    if (customerIdToDelete) {
-      try {
-        const { data, error } = await supabase
-          .from('company')
-          .delete()
-          .match({ id: customerIdToDelete });
+    async function deleteCompany() {
+      const customerIdToDelete = companyId.value;
+      if (customerIdToDelete) {
+        try {
+          const { data, error } = await supabase
+            .from('company')
+            .delete()
+            .match({ id: customerIdToDelete });
 
-        if (error) {
+          if (error) {
+            console.error('Failed to delete customer:', error);
+          } else {
+            // Remove the deleted customer from the form
+            selectedCustomer.value = null;
+            // Optionally, you can reload the customer list after deleting the customer
+            await loadCustomerList();
+          }
+        } catch (error) {
           console.error('Failed to delete customer:', error);
-        } else {
-          // Remove the deleted customer from the form
-          selectedCustomer.value = null;
-          // Optionally, you can reload the customer list after deleting the customer
-          await loadCustomerList();
         }
-      } catch (error) {
-        console.error('Failed to delete customer:', error);
+      } else {
+        console.error('No customer selected to delete');
       }
-    } else {
-      console.error('No customer selected to delete');
     }
-  }
-    
 
- async function deleteCustomer() {
-    const customerIdToDelete = customerId.value;
-    if (customerIdToDelete) {
-      try {
-const { data, error } = await supabase
-  .from('customer')
-  .delete()
-  .match({ id: customerIdToDelete });
 
-        if (error) {
+    async function deleteCustomer() {
+      const customerIdToDelete = customerId.value;
+      if (customerIdToDelete) {
+        try {
+          const { data, error } = await supabase
+            .from('customer')
+            .delete()
+            .match({ id: customerIdToDelete });
+
+          if (error) {
+            console.error('Failed to delete customer:', error);
+          } else {
+            // Remove the deleted customer from the form
+            selectedCustomer.value = null;
+            // Optionally, you can reload the customer list after deleting the customer
+            await loadCustomerList();
+          }
+        } catch (error) {
           console.error('Failed to delete customer:', error);
-        } else {
-          // Remove the deleted customer from the form
-          selectedCustomer.value = null;
-          // Optionally, you can reload the customer list after deleting the customer
-          await loadCustomerList();
         }
-      } catch (error) {
-        console.error('Failed to delete customer:', error);
+      } else {
+        console.error('No customer selected to delete');
       }
-    } else {
-      console.error('No customer selected to delete');
     }
-  }
 
     function clearFormData() {
       customerData.value = {
@@ -667,17 +804,17 @@ const { data, error } = await supabase
     }
 
 
-watch(selectedEntry, (newEntry) => {
-  if (newEntry) {
-    if (selectedTable.value === 'customer') {
-      customerData.value = { ...newEntry };
-      customerId.value = newEntry.id;
-    } else if (selectedTable.value === 'company') {
-      companyData.value = { ...newEntry };
-      companyId.value = newEntry.id;
-    }
-  }
-});
+    watch(selectedEntry, (newEntry) => {
+      if (newEntry) {
+        if (selectedTable.value === 'customer') {
+          customerData.value = { ...newEntry };
+          customerId.value = newEntry.id;
+        } else if (selectedTable.value === 'company') {
+          companyData.value = { ...newEntry };
+          companyId.value = newEntry.id;
+        }
+      }
+    });
 
 
 
@@ -714,27 +851,27 @@ watch(selectedEntry, (newEntry) => {
         .eq('id', customerId.value);
     }
 
-async function fetchData() {
-  const { data: customers, error: customerError } = await supabase
-    .from('customer')
-    .select('*')
-    .order('id', { ascending: true });
-  if (customerError) {
-    console.error('Error fetching customers:', customerError.message);
-    return;
-  }
-  entries.customer = customers;
+    async function fetchData() {
+      const { data: customers, error: customerError } = await supabase
+        .from('customer')
+        .select('*')
+        .order('id', { ascending: true });
+      if (customerError) {
+        console.error('Error fetching customers:', customerError.message);
+        return;
+      }
+      entries.customer = customers;
 
-  const { data: companies, error: companyError } = await supabase
-    .from('company')
-    .select('*')
-    .order('id', { ascending: true });
-  if (companyError) {
-    console.error('Error fetching companies:', companyError.message);
-    return;
-  }
-  entries.company = companies;
-}
+      const { data: companies, error: companyError } = await supabase
+        .from('company')
+        .select('*')
+        .order('id', { ascending: true });
+      if (companyError) {
+        console.error('Error fetching companies:', companyError.message);
+        return;
+      }
+      entries.company = companies;
+    }
 
 
     async function checkUserAndFetchData() {
@@ -766,7 +903,7 @@ async function fetchData() {
     }
 
     onMounted(async () => {
-onMounted(fetchData);
+      onMounted(fetchData);
 
       await loadCustomerList();
       await checkUserAndFetchData();
@@ -838,25 +975,7 @@ onMounted(fetchData);
         console.error('Failed to submit customer form:', error);
       }
     }
-
-
-/* 
     return {
-      selectedTable,
-      entries,
-      selectedEntry,
-      companyData,
-      customerId,
-      customerData,
-      isEditing,
-      selectedCustomer,
-      customer,
-      toggleEditMode,
-      isEmptyForm,
-      saveChanges,
-      getFormData,
-    } */
-        return {
       selectedTable,
       entries,
       selectedEntry,
@@ -881,13 +1000,24 @@ onMounted(fetchData);
       createNewCompany,
       deleteCompany,
       deleteCustomer,
-    }
-      ;
+    };
   },
-
 };
-
 </script>
 
 
 
+<style>
+.input-container {
+  position: relative;
+}
+
+.form-control-static {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  line-height: 2.0;
+  min-height: 38px;
+  /* Add a fixed height */
+}
+</style>

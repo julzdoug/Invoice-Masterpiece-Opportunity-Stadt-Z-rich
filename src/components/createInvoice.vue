@@ -187,6 +187,12 @@ export default {
       isEditing.value.push(true);
     }
 
+//Information to who
+
+
+
+
+
     onMounted(async () => {
       await fetchInvoiceData();
     });
