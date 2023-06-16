@@ -1,5 +1,5 @@
 <template>
-  <select v-model="selectedTable" class="form-select" aria-label="Default select example">
+<select v-model="selectedTable" class="form-select" aria-label="Default select example">
     <option disabled value="">Select a table</option>
     <option value="customer">Customer</option>
     <option value="company">Company</option>
@@ -10,7 +10,11 @@
     <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
       {{ entry.name }}
     </option>
-  </select>
+  </select> 
+
+
+
+
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
@@ -269,7 +273,7 @@
         </div>
       </div>
 
-      <button class="col btn btn-secondary btn-md" @click="deleteCompany">löschen</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCompany">löschen</button>
       <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company' }}Ändern
         Ertsellen</button>
       <button class="col btn btn-secondary btn-md" @click="createNewCompany">Speichern</button>
@@ -387,7 +391,7 @@
         </div>
       </div>
 
-      <button class="col btn btn-secondary btn-md" @click="deleteCustomer">löschen</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCustomer">löschen</button>
   
       <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
       }}Ändern</button>
@@ -409,6 +413,9 @@
 </template>
 
 <script>
+
+import { MyFunction } from './MyFunction';
+
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
@@ -498,40 +505,7 @@ export default {
     const customer = ref([]);
     /*     const company = ref([]); */
 
-    function toggleEditMode() {
-      if (selectedTable.value === 'customer') {
-        if (customerData.value || isEmptyForm()) {
-          isEditing.value = !isEditing.value;
-        }
-      } else if (selectedTable.value === 'company') {
-        if (companyData.value || isEmptyForm()) {
-          isEditing.value = !isEditing.value;
-        }
-      }
-    }
 
-
-
-    function isEmptyForm() {
-      const {
-        name,
-        surname,
-        street,
-        streetnumber,
-        postcode,
-        place,
-        email,
-      } = customerData.value;
-      return (
-        name === '' &&
-        surname === '' &&
-        street === '' &&
-        streetnumber === '' &&
-        postcode === '' &&
-        place === '' &&
-        email === ''
-      );
-    }
 
 
     async function saveChanges() {
@@ -769,19 +743,6 @@ export default {
       }
     }
 
-    function clearFormData() {
-      customerData.value = {
-        name: '',
-        surname: '',
-        street: '',
-        streetnumber: '',
-        postcode: '',
-        place: '',
-        email: '',
-
-      };
-      companyId.value = null;
-    }
 
     function handleCustomerData(data) {
       if (Array.isArray(data)) {
@@ -912,69 +873,7 @@ export default {
 
     watch(selectedTable, loadCustomerData);
 
-    async function submitCompanyForm() {
-      try {
-        const { data, error } = await supabase.from('company').insert([getCompanyData()]);
 
-        if (error) {
-          console.error('Failed to submit company form:', error);
-          return;
-        }
-
-        console.log('Company form submitted successfully!');
-        // Clear form fields
-        companyData.value = {
-          logo: '',
-          company_name: '',
-          profession: '',
-          name: '',
-          surname: '',
-          street: '',
-          street_number: '',
-          postal_code: '',
-          place: '',
-          uid_number: '',
-          account: '',
-          iban_number: '',
-          phone_number: '',
-          webpage: '',
-          email: '',
-          MwSt: '',
-        };
-        // Clear selected entry
-        selectedEntry.value = null;
-      } catch (error) {
-        console.error('Failed to submit company form:', error);
-      }
-    }
-
-    async function submitCustomerForm() {
-      try {
-        const { data, error } = await supabase.from('customer').insert([getCustomerData()]);
-
-        if (error) {
-          console.error('Failed to submit customer form:', error);
-          return;
-        }
-
-        console.log('Customer form submitted successfully!');
-        // Clear form fields
-        customerData.value = {
-          name: '',
-          surname: '',
-          street: '',
-          streetnumber: '',
-          postcode: '',
-          place: '',
-          email: '',
-
-        };
-        // Clear selected entry
-        selectedEntry.value = null;
-      } catch (error) {
-        console.error('Failed to submit customer form:', error);
-      }
-    }
     return {
       selectedTable,
       entries,
@@ -985,12 +884,12 @@ export default {
       isEditing,
       selectedCustomer,
       customer,
-      toggleEditMode,
-      isEmptyForm,
+  
+  
       saveChanges,
       getFormData,
-      submitCustomerForm,
-      submitCompanyForm,
+    
+ 
       updateCustomerData,
       saveCompanyChanges,
       handleLogoChange,
@@ -1003,6 +902,9 @@ export default {
     };
   },
 };
+
+
+
 </script>
 
 
