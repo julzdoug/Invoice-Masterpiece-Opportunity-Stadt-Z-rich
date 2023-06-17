@@ -1,5 +1,5 @@
 <template>
-<select v-model="selectedTable" class="form-select" aria-label="Default select example">
+  <select v-model="selectedTable" class="form-select" aria-label="Default select example">
     <option disabled value="">Select a table</option>
     <option value="customer">Customer</option>
     <option value="company">Company</option>
@@ -10,7 +10,7 @@
     <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
       {{ entry.name }}
     </option>
-  </select> 
+  </select>
 
 
 
@@ -223,7 +223,6 @@
             Enter UiD Nummer.
           </div>
         </div>
-
       </div>
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -241,23 +240,6 @@
           </div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="validation3">Webpage:</label>
-          <div class="input-container">
-            <template v-if="isEditing">
-              <input type="text" class="form-control" pattern="^(https?:\/\/)?([\w\d]+\.)?[\w-]+(\.[\w-]+)+([/?#]\S*)?$"
-                placeholder="Webpage" v-model="companyData.webpage">
-            </template>
-            <template v-else>
-              <div class="form-control-static">{{ companyData.webpage }}</div>
-            </template>
-          </div>
-          <div class="invalid-feedback">
-            Enter Webpage.
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -272,13 +254,48 @@
           </class>
         </div>
       </div>
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel' :'Edit Company' }}Neu</button>
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company'
-      }}Neu Ertsellen</button>
-<button class="col btn btn-secondary btn-md" v-if="selectedTable === 'company'" @click="createNewCompany">Speichern</button>
- <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company'
-      }}Neu Ertsellen</button>
-<button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
+            <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Bank:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" placeholder="Bank" v-model="companyData.bank">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.bank }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Enter Bank.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="validation3">Konto Nummer:</label>
+          <div class="input-container">
+            <template v-if="isEditing">
+              <input type="text" class="form-control" pattern="[0-9]*" placeholder="Konto Nummer"
+                v-model="companyData.account">
+            </template>
+            <template v-else>
+              <div class="form-control-static">{{ companyData.account }}</div>
+            </template>
+          </div>
+          <div class="invalid-feedback">
+            Konto Nummer.
+          </div>
+        </div>
+      </div>
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel'
+        : 'Edit Company' }}Neu</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCompany">löschen</button>
+
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'company'"
+        @click="createNewCustomer">Speichern</button>
+
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+        'Edit Company'
+      }}Ändern</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
     </form>
   </div>
   <div v-else-if="selectedTable === 'customer'">
@@ -391,25 +408,19 @@
           </div>
         </div>
       </div>
-  <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel' :'Edit Customer' }}Neu</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel'
+        : 'Edit Customer' }}Neu</button>
       <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCustomer">löschen</button>
 
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'customer'" @click="createNewCustomer">Speichern</button>
- 
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'customer'"
+        @click="createNewCustomer">Speichern</button>
+
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+        'Edit Customer'
       }}Ändern</button>
-    <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
     </form>
-</div>
-
- 
-
-  
-
-      
-
-
-  
+  </div>
 </template>
 
 <script>
@@ -453,10 +464,11 @@ function getFormData(selectedTable, customerData, companyData) {
       webpage: companyData.webpage,
       email: companyData.email,
       MwSt: companyData.MwSt,
+      bank: companyData.bank,
     };
   }
 }
-
+MyFunction();
 
 export default {
   setup() {
@@ -486,6 +498,7 @@ export default {
       webpage: '',
       email: '',
       MwSt: '',
+      bank: '',
     });
     const companyId = ref(null);
     const user = ref(null);
@@ -575,7 +588,7 @@ export default {
 
         const { data: companyData, error: companyError } = await supabase
           .from('company')
-          .select('id, logo, company_name, profession, name, surname, street, street_number, postal_code, place, uid_number, account, iban_number, phone_number, webpage, email')
+          .select('id, logo, company_name, profession, name, surname, street, street_number, postal_code, place, uid_number, account, iban_number, phone_number, webpage, email, bank')
           .order('name');
 
         if (customerError) {
@@ -600,23 +613,23 @@ export default {
           .from('company')
           .insert([
             {
-              logo: '',
-              company_name: '',
-              profession: '',
-              name: '',
-              surname: '',
-              street: '',
-              street_number: '',
-              postal_code: '',
-              place: '',
-              uid_number: '',
-              account: '',
-              iban_number: '',
-              phone_number: '',
-              webpage: '',
-              email: '',
-              MwSt: '',
-
+              logo: companyData.value.logo,
+              company_name: companyData.value.company_name,
+              profession: companyData.value.profession,
+              name: companyData.value.name,
+              surname: companyData.value.surname,
+              street: companyData.value.street,
+              street_number: companyData.value.street_number,
+              postal_code: companyData.value.postal_code,
+              place: companyData.value.place,
+              uid_number: companyData.value.uid_number,
+              account: companyData.value.account,
+              iban_number: companyData.value.iban_number,
+              phone_number: companyData.value.phone_number,
+              webpage: companyData.value.webpage,
+              email: companyData.value.email,
+              MwSt: companyData.value.MwSt,
+              bank: companyData.value.bank,
             },
           ]);
 
@@ -633,21 +646,19 @@ export default {
       }
     }
 
-
     async function createNewCustomer() {
       try {
         const { data, error } = await supabase
           .from('customer')
           .insert([
             {
-              name: '',
-              surname: '',
-              street: '',
-              streetnumber: '',
-              postcode: '',
-              place: '',
-              email: '',
-
+              name: customerData.value.name,
+              surname: customerData.value.surname,
+              street: customerData.value.street,
+              streetnumber: customerData.value.streetnumber,
+              postcode: customerData.value.postcode,
+              place: customerData.value.place,
+              email: customerData.value.email,
             },
           ]);
 
@@ -663,6 +674,7 @@ export default {
         console.error('Failed to create a new customer:', error);
       }
     }
+
 
     async function loadCustomerData() {
       if (!selectedTable.value || !selectedEntry.value) {
@@ -863,75 +875,50 @@ export default {
       }
     }
 
-function clearFormData() {
-  if (isEmptyForm()) {
-  customerData.value = {
-    name: '',
-    surname: '',
-    street: '',
-    streetnumber: '',
-    postcode: '',
-    place: '',
-    email: '',
-  };
-  companyData.value = {
-    logo: '',
-    company_name: '',
-    profession: '',
-    name: '',
-    surname: '',
-    street: '',
-    street_number: '',
-    postal_code: '',
-    place: '',
-    uid_number: '',
-    account: '',
-    iban_number: '',
-    phone_number: '',
-    webpage: '',
-    email: '',
-    MwSt: '',
-  };
-}
-}
-    function toggleEditMode() {
-      if (isEditing.value) {
-        // Toggling off edit mode, clear form data
-        if (customerData.value) {
-          customerData.value = {
-            name: '',
-            surname: '',
-            street: '',
-            streetnumber: '',
-            postcode: '',
-            place: '',
-            email: '',
-          };
-        }
-        if (companyData.value) {
-          companyData.value = {
-            logo: '',
-            company_name: '',
-            profession: '',
-            name: '',
-            surname: '',
-            street: '',
-            street_number: '',
-            postal_code: '',
-            place: '',
-        uid_number: '',
-        account: '',
-        iban_number: '',
-        phone_number: '',
-        webpage: '',
-        email: '',
-        MwSt: '',
-      };
+    function clearFormData() {
+      if (isEmptyForm()) {
+        customerData.value = {
+          name: '',
+          surname: '',
+          street: '',
+          streetnumber: '',
+          postcode: '',
+          place: '',
+          email: '',
+        };
+        companyData.value = {
+          logo: '',
+          company_name: '',
+          profession: '',
+          name: '',
+          surname: '',
+          street: '',
+          street_number: '',
+          postal_code: '',
+          place: '',
+          uid_number: '',
+          account: '',
+          iban_number: '',
+          phone_number: '',
+          webpage: '',
+          email: '',
+          MwSt: '',
+          bank: '',
+        };
+      }
     }
-  }
+    function toggleEditMode() {
+      if (selectedTable.value === 'customer') {
+        if (customerData.value || isEmptyForm()) {
+          isEditing.value = !isEditing.value;
+        }
+      } else if (selectedTable.value === 'company') {
+        if (companyData.value || isEmptyForm()) {
+          isEditing.value = !isEditing.value;
+        }
+      }
+    }
 
-  isEditing.value = !isEditing.value;
-}
 
 
 
@@ -942,7 +929,7 @@ function clearFormData() {
       await checkUserAndFetchData();
     });
 
-    
+
 
     watch(selectedTable, loadCustomerData);
 
@@ -958,11 +945,11 @@ function clearFormData() {
       selectedCustomer,
       customer,
       toggleEditMode,
-  
+
       saveChanges,
       getFormData,
       clearFormData,
- handleNewCustomer,
+      handleNewCustomer,
       updateCustomerData,
       saveCompanyChanges,
       handleLogoChange,
@@ -979,6 +966,8 @@ function clearFormData() {
 
 
 </script>
+
+
 
 
 

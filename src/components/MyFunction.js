@@ -12,7 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function MyFunction() {
 
- const isEditing = ref(false);  
+ 
     const router = useRouter();
 
 
@@ -100,6 +100,7 @@ export default function MyFunction() {
           webpage: '',
           email: '',
           MwSt: '',
+          bank: '',
         };
         // Clear selected entry
         selectedEntry.value = null;
@@ -125,4 +126,3 @@ export default function MyFunction() {
 
 
 export { MyFunction };
-
