@@ -272,12 +272,13 @@
           </class>
         </div>
       </div>
-
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCompany">löschen</button>
-      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company' }}Ändern
-        Ertsellen</button>
-      <button class="col btn btn-secondary btn-md" @click="createNewCompany">Speichern</button>
-      <button class="col btn btn-secondary btn-md" @click="saveChanges">Save Changes</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel' :'Edit Company' }}Neu</button>
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company'
+      }}Neu Ertsellen</button>
+<button class="col btn btn-secondary btn-md" v-if="selectedTable === 'company'" @click="createNewCompany">Speichern</button>
+ <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Company'
+      }}Neu Ertsellen</button>
+<button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
     </form>
   </div>
   <div v-else-if="selectedTable === 'customer'">
@@ -390,23 +391,22 @@
           </div>
         </div>
       </div>
-
+  <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel' :'Edit Customer' }}Neu</button>
       <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCustomer">löschen</button>
-  
-      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
+
+      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'customer'" @click="createNewCustomer">Speichern</button>
+ 
+      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
       }}Ändern</button>
-    <button class="col btn btn-secondary btn-md" @click="saveChanges">Save Changes</button>
+    <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
     </form>
 </div>
-      <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
-      }}Neu Ertsellen</button>
 
- <button class="col btn btn-secondary btn-md" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Edit Customer'
-      }}Neu Ertsellen</button>
+ 
 
-      <button class="col btn btn-secondary btn-md" @click="createNewCompany">Neu Speichern company</button>
+  
 
-      <button class="col btn btn-secondary btn-md" @click="createNewCustomer">Neu Speichern custo</button>
+      
 
 
   
@@ -863,6 +863,78 @@ export default {
       }
     }
 
+function clearFormData() {
+  if (isEmptyForm()) {
+  customerData.value = {
+    name: '',
+    surname: '',
+    street: '',
+    streetnumber: '',
+    postcode: '',
+    place: '',
+    email: '',
+  };
+  companyData.value = {
+    logo: '',
+    company_name: '',
+    profession: '',
+    name: '',
+    surname: '',
+    street: '',
+    street_number: '',
+    postal_code: '',
+    place: '',
+    uid_number: '',
+    account: '',
+    iban_number: '',
+    phone_number: '',
+    webpage: '',
+    email: '',
+    MwSt: '',
+  };
+}
+}
+    function toggleEditMode() {
+      if (isEditing.value) {
+        // Toggling off edit mode, clear form data
+        if (customerData.value) {
+          customerData.value = {
+            name: '',
+            surname: '',
+            street: '',
+            streetnumber: '',
+            postcode: '',
+            place: '',
+            email: '',
+          };
+        }
+        if (companyData.value) {
+          companyData.value = {
+            logo: '',
+            company_name: '',
+            profession: '',
+            name: '',
+            surname: '',
+            street: '',
+            street_number: '',
+            postal_code: '',
+            place: '',
+        uid_number: '',
+        account: '',
+        iban_number: '',
+        phone_number: '',
+        webpage: '',
+        email: '',
+        MwSt: '',
+      };
+    }
+  }
+
+  isEditing.value = !isEditing.value;
+}
+
+
+
     onMounted(async () => {
       onMounted(fetchData);
 
@@ -870,6 +942,7 @@ export default {
       await checkUserAndFetchData();
     });
 
+    
 
     watch(selectedTable, loadCustomerData);
 
@@ -884,12 +957,12 @@ export default {
       isEditing,
       selectedCustomer,
       customer,
-  
+      toggleEditMode,
   
       saveChanges,
       getFormData,
-    
- 
+      clearFormData,
+ handleNewCustomer,
       updateCustomerData,
       saveCompanyChanges,
       handleLogoChange,

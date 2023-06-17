@@ -11,20 +11,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
 export default function MyFunction() {
+
+ const isEditing = ref(false);  
     const router = useRouter();
 
 
-    function toggleEditMode() {
-      if (selectedTable.value === 'customer') {
-        if (customerData.value || isEmptyForm()) {
-          isEditing.value = !isEditing.value;
-        }
-      } else if (selectedTable.value === 'company') {
-        if (companyData.value || isEmptyForm()) {
-          isEditing.value = !isEditing.value;
-        }
-      }
-    }
+
+
 
 
 
@@ -115,9 +108,11 @@ export default function MyFunction() {
       }
     }
 
+
+
     return {
 
-      toggleEditMode,
+    
       isEmptyForm,
 
    
