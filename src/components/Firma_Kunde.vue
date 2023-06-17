@@ -290,7 +290,7 @@
       <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCompany">löschen</button>
 
       <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'company'"
-        @click="createNewCustomer">Speichern</button>
+        @click="createNewCompany">Speichern</button>
 
       <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Edit Company'
