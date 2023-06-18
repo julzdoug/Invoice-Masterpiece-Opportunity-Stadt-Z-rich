@@ -2,8 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Login from '../src/components/Login.vue';
 import HelloWorld from '../src/components/HelloWorld.vue';
-import Company from '../src/components/Company.vue';
-import Customer from '../src/components/Customer.vue';
+
 import createInvoice from '../src/components/createInvoice.vue';
 import Invoices from '../src/components/Invoices.vue';
 import Firma_Kunde from '../src/components/Firma_Kunde.vue';
@@ -23,18 +22,7 @@ const routes = [
         component: HelloWorld,
         meta: { requiresAuth: true },
       },
-      {
-        path: 'company',
-        name: 'Company',
-        component: Company,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'customer',
-        name: 'Customer',
-        component: Customer,
-        meta: { requiresAuth: true },
-      },
+ 
       {
         path: 'createInvoice',
         name: 'createInvoice',

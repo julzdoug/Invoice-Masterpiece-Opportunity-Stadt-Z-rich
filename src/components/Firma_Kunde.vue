@@ -15,7 +15,7 @@
 
 
   <div v-if="selectedTable === 'company'">
-    <form class="container mt-5" novalidate @submit.prevent="submitCompanyForm">
+    <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 mb-3">
                <div class="row">
@@ -321,8 +321,8 @@
 
   </div>
   <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+    <button class="btn btn- btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn- btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Ändern'
       }}</button>
   </div>
@@ -994,4 +994,16 @@ export default {
   min-height: 38px;
   /* Add a fixed height */
 }
+
+.smaller-form {
+  display:flexbox; /* Adjust the value as needed */
+  margin-bottom: 10%;/* Enable vertical scrolling if necessary */
+}
+
+img {
+  height: 50%;
+  width: 50%;
+}
+
+
 </style>
