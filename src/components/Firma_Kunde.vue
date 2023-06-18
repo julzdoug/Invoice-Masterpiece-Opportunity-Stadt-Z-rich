@@ -17,15 +17,19 @@
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
-      <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn-secondary btn-md" v-if="selectedTable && !selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-secondary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+        <div class="form-group col-md-6 mb-3">
+               <div class="row">
+  <div class="col-2 d-flex justify-content-start">
+      </div>
+  <div class="col-8 d-flex ms-3 justify-content-center">
+    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Ändern'
       }}</button>
   </div>
-  </div>  
-      <div class="row">
-        <div class="form-group col-md-6 mb-3">
+  <div class="col-2 d-flex justify-content-end">
+  </div>
+</div>
           <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
             <div class="input-with-image">
@@ -296,6 +300,9 @@
   <div class="col-2 d-flex justify-content-start">
     <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany">löschen</button> 
   </div>
+  <div class="col-8 d-flex justify-content-center">
+
+  </div>
   <div class="col-2 d-flex justify-content-end">
     <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany">Erstellen</button>
     <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
@@ -307,16 +314,24 @@
     </form>
   </div>
   <div v-else-if="selectedTable === 'customer'">
-    <form @submit.prevent="submitCustomerForm">
-      <div class="row">
-       <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn-secondary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-secondary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+    <form class="container mt-5" @submit.prevent="submitCustomerForm">
+
+                               <div class="row">
+  <div class="col-2 d-flex justify-content-start">
+
+  </div>
+  <div class="col-8 d-flex justify-content-center">
+    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Ändern'
       }}</button>
   </div>
+  <div class="col-2 d-flex justify-content-end">
+
   </div>
-      <div class="row">
+</div>
+
+ <div class="row">
         <div class="col-md-6 mb-3">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
@@ -428,7 +443,9 @@
   <div class="col-2 d-flex justify-content-start">
     <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer">löschen</button>
   </div>
- 
+  <div class="col-8 d-flex justify-content-center">
+
+  </div>
   <div class="col-2 d-flex justify-content-end">
     <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer">Erstellen</button>
     <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
