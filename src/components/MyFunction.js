@@ -6,20 +6,9 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
-
-
-
 export default function MyFunction() {
 
- 
-    const router = useRouter();
-
-
-
-
-
-
+     const router = useRouter();
 
     function isEmptyForm() {
       const {
@@ -41,8 +30,6 @@ export default function MyFunction() {
         email === ''
       );
     }
-
-
 
     async function submitCustomerForm() {
       try {
@@ -109,20 +96,10 @@ export default function MyFunction() {
       }
     }
 
-
-
-    return {
-
-    
-      isEmptyForm,
-
-   
+    return {  
+      isEmptyForm,   
       submitCustomerForm,
       submitCompanyForm,
-
     };
   }
-  
-
-
 export { MyFunction };

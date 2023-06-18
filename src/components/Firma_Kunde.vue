@@ -4,14 +4,28 @@
     <option value="customer">Customer</option>
     <option value="company">Company</option>
   </select>
-  <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
+<!-- 
+ <template v-if="selectedTable && entries[selectedTable]">
+  <label for="selection" class="form-label">Datalist example</label>
+  <input class="form-control" list="datalistOptions" id="selections" placeholder="Type to search..." v-model="selectedEntry">
+  <datalist id="datalistOptions">
+    <option disabled value="">Select an entry</option>
+    <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry.name">
+      {{ entry.name }}
+    </option>
+  </datalist>
+</template>  -->
+
+
+
+
+<select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
     aria-label="Default select example">
     <option disabled value="">Select an entry</option>
     <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
       {{ entry.name }}
     </option>
-  </select>
-
+  </select> 
 
 
 
@@ -254,7 +268,7 @@
           </class>
         </div>
       </div>
-            <div class="row">
+      <div class="row">
         <div class="col-md-6 mb-3">
           <label for="validation3">Bank:</label>
           <div class="input-container">
@@ -424,16 +438,13 @@
 </template>
 
 <script>
-
 import { MyFunction } from './MyFunction';
-
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 function getFormData(selectedTable, customerData, companyData) {
   if (selectedTable === 'customer') {
     return {
@@ -469,13 +480,10 @@ function getFormData(selectedTable, customerData, companyData) {
   }
 }
 MyFunction();
-
 export default {
   setup() {
     const router = useRouter();
     const selectedTable = ref('');
-
-
     const entries = {
       customer: [],
       company: [],
@@ -516,10 +524,6 @@ export default {
     const isEditing = ref(false);
     const selectedCustomer = ref(null);
     const customer = ref([]);
-    /*     const company = ref([]); */
-
-
-
 
     async function saveChanges() {
       try {
@@ -559,9 +563,6 @@ export default {
       }
     }
 
-
-
-
     async function handleNewCustomer() {
       if (isEmptyForm()) {
         customerData.value = {
@@ -572,7 +573,6 @@ export default {
           postcode: '',
           place: '',
           email: '',
-
         };
         customerId.value = null;
         isEditing.value = true;
@@ -675,7 +675,6 @@ export default {
       }
     }
 
-
     async function loadCustomerData() {
       if (!selectedTable.value || !selectedEntry.value) {
         clearFormData();
@@ -729,7 +728,6 @@ export default {
       }
     }
 
-
     async function deleteCustomer() {
       const customerIdToDelete = customerId.value;
       if (customerIdToDelete) {
@@ -755,7 +753,6 @@ export default {
       }
     }
 
-
     function handleCustomerData(data) {
       if (Array.isArray(data)) {
         customerData.value = data[0];
@@ -776,7 +773,6 @@ export default {
       }
     }
 
-
     watch(selectedEntry, (newEntry) => {
       if (newEntry) {
         if (selectedTable.value === 'customer') {
@@ -788,8 +784,6 @@ export default {
         }
       }
     });
-
-
 
     function handleLogoChange(event) {
       companyData.value.logo = event.target.files[0];
@@ -919,9 +913,6 @@ export default {
       }
     }
 
-
-
-
     onMounted(async () => {
       onMounted(fetchData);
 
@@ -929,10 +920,10 @@ export default {
       await checkUserAndFetchData();
     });
 
-
-
     watch(selectedTable, loadCustomerData);
 
+
+    
 
     return {
       selectedTable,
@@ -945,7 +936,6 @@ export default {
       selectedCustomer,
       customer,
       toggleEditMode,
-
       saveChanges,
       getFormData,
       clearFormData,
@@ -962,14 +952,7 @@ export default {
     };
   },
 };
-
-
-
 </script>
-
-
-
-
 
 <style>
 .input-container {
