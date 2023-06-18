@@ -4,33 +4,26 @@
     <option value="customer">Customer</option>
     <option value="company">Company</option>
   </select>
-<!-- 
- <template v-if="selectedTable && entries[selectedTable]">
-  <label for="selection" class="form-label">Datalist example</label>
-  <input class="form-control" list="datalistOptions" id="selections" placeholder="Type to search..." v-model="selectedEntry">
-  <datalist id="datalistOptions">
-    <option disabled value="">Select an entry</option>
-    <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry.name">
-      {{ entry.name }}
-    </option>
-  </datalist>
-</template>  -->
-
-
-
-
 <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
     aria-label="Default select example">
     <option disabled value="">Select an entry</option>
     <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
       {{ entry.name }}
     </option>
-  </select> 
+  </select>  
 
 
 
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5" novalidate @submit.prevent="submitCompanyForm">
+      <div class="row">
+      <div class="col-8 d-flex justify-content-center">
+    <button class="btn btn-secondary btn-md" v-if="selectedTable && !selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-secondary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+        'Ändern'
+      }}</button>
+  </div>
+  </div>  
       <div class="row">
         <div class="form-group col-md-6 mb-3">
           <label for="logoInput">Company Logo</label>
@@ -299,21 +292,30 @@
           </div>
         </div>
       </div>
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel'
-        : 'Edit Company' }}Neu</button>
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCompany">löschen</button>
+     <div class="row">
+  <div class="col-2 d-flex justify-content-start">
+    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany">löschen</button> 
+  </div>
+  <div class="col-2 d-flex justify-content-end">
+    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany">Erstellen</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
+  </div>
+</div>
 
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'company'"
-        @click="createNewCompany">Speichern</button>
 
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
-        'Edit Company'
-      }}Ändern</button>
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
+
     </form>
   </div>
   <div v-else-if="selectedTable === 'customer'">
     <form @submit.prevent="submitCustomerForm">
+      <div class="row">
+       <div class="col-8 d-flex justify-content-center">
+    <button class="btn btn-secondary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-secondary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+        'Ändern'
+      }}</button>
+  </div>
+  </div>
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="validation3">Vorname:</label>
@@ -422,17 +424,16 @@
           </div>
         </div>
       </div>
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable" @click="toggleEditMode">{{ isEditing ? 'Cancel'
-        : 'Edit Customer' }}Neu</button>
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="deleteCustomer">löschen</button>
-
-      <button class="col btn btn-secondary btn-md" v-if="selectedTable === 'customer'"
-        @click="createNewCustomer">Speichern</button>
-
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
-        'Edit Customer'
-      }}Ändern</button>
-      <button class="col btn btn-secondary btn-md" v-if="selectedEntry" @click="saveChanges">Save Changes</button>
+      <div class="row">
+  <div class="col-2 d-flex justify-content-start">
+    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer">löschen</button>
+  </div>
+ 
+  <div class="col-2 d-flex justify-content-end">
+    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer">Erstellen</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
+  </div>
+</div>
     </form>
   </div>
 </template>
@@ -537,7 +538,7 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-
+          location.reload();
           // Handle success or show appropriate message to the user
           console.log('Customer data updated successfully!');
         } else if (selectedTable.value === 'company' && companyId.value) {
@@ -550,7 +551,7 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-
+          location.reload();
           // Handle success or show appropriate message to the user
           console.log('Company data updated successfully!');
         } else {
@@ -639,6 +640,7 @@ export default {
           companyId.value = data[0].id;
           selectedCompany.value = data[0].id; // Select the newly created customer
           isEditing.value = true;
+          location.reload();
           await loadCustomerList(); // Reload the customer list after creating a new customer
         }
       } catch (error) {
@@ -668,6 +670,7 @@ export default {
           customerId.value = data[0].id;
           selectedCustomer.value = data[0].id; // Select the newly created customer
           isEditing.value = true;
+               location.reload();
           await loadCustomerList(); // Reload the customer list after creating a new customer
         }
       } catch (error) {
@@ -703,7 +706,10 @@ export default {
         console.error(`Failed to fetch ${selectedTable.value} data:`, error);
       }
     }
-    async function deleteCompany() {
+
+
+
+      async function deleteCompany() {
       const customerIdToDelete = companyId.value;
       if (customerIdToDelete) {
         try {
@@ -717,7 +723,7 @@ export default {
           } else {
             // Remove the deleted customer from the form
             selectedCustomer.value = null;
-            // Optionally, you can reload the customer list after deleting the customer
+           location.reload(); // Optionally, you can reload the customer list after deleting the customer
             await loadCustomerList();
           }
         } catch (error) {
@@ -727,6 +733,10 @@ export default {
         console.error('No customer selected to delete');
       }
     }
+
+
+
+
 
     async function deleteCustomer() {
       const customerIdToDelete = customerId.value;
@@ -742,7 +752,7 @@ export default {
           } else {
             // Remove the deleted customer from the form
             selectedCustomer.value = null;
-            // Optionally, you can reload the customer list after deleting the customer
+             location.reload();// Optionally, you can reload the customer list after deleting the customer
             await loadCustomerList();
           }
         } catch (error) {
