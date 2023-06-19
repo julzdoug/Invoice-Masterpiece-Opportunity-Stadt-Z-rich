@@ -240,10 +240,10 @@
           <label for="validation3">IBAN:</label>
           <div class="input-container">
             <template v-if="isEditing">
-              <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban">
+              <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
             </template>
             <template v-else>
-              <div class="form-control-static">{{ companyData.iban }}</div>
+              <div class="form-control-static">{{ companyData.iban_number }}</div>
             </template>
           </div>
           <div class="invalid-feedback">

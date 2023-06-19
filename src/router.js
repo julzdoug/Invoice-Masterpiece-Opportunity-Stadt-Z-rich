@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Login from '../src/components/Login.vue';
 import HelloWorld from '../src/components/HelloWorld.vue';
-
+import editInvoice from '../src/components/editInvoice.vue';
 import createInvoice from '../src/components/createInvoice.vue';
 import Invoices from '../src/components/Invoices.vue';
 import Firma_Kunde from '../src/components/Firma_Kunde.vue';
@@ -27,6 +27,12 @@ const routes = [
         path: 'createInvoice',
         name: 'createInvoice',
         component: createInvoice,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'editInvoice',
+        name: 'editInvoice',
+        component: editInvoice,
         meta: { requiresAuth: true },
       },
       {
