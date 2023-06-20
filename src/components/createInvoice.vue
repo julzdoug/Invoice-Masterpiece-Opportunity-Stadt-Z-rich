@@ -36,6 +36,7 @@
       <thead>
         <tr>
           <th class="text-dark bg-light"></th>
+          <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
           <th class="text-dark bg-light">Pos.</th>
           <th class="text-dark bg-light">InvoiceNumber</th>
@@ -51,10 +52,12 @@
             <input type="checkbox" v-model="row.checked" />
           </td>
           <td class="text-center">
-            <button class="btn btn-warning m-1" v-if="!isEditing[index]" @click="editRow(index)">
+            <button class="btn btn-warning m-1" @click="editRow(index)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-warning m-1" @click="deleteRow(index)">
+             </td>
+             <td class="text-center">
+            <button class="btn btn-warning m-1"  @click="deleteRow(index)">
               <i class="bi bi-trash3"></i>
             </button>
           </td>
@@ -92,6 +95,7 @@
     <button class="btn btn-primary mt-3" @click="saveChanges">Save Changes</button>
   </div>
 </template>
+
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
