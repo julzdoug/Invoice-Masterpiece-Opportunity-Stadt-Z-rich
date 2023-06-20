@@ -1,51 +1,46 @@
-
-
 <template>
   <div class="row">
     <hr class="mt-3">
     <div class="col-sm-3 mt-3">
       <div>
-<select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
+<select v-if="selectedTable && entries[selectedTable]" v-model="selectedCustomer" class="form-select mt-3" aria-label="Default select example" @change="fetchInvoiceData">
   <option disabled value="">Select a customer</option>
-  <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
-    {{ entry.name }}
+  <option v-for="customer in entries[selectedTable]" :key="customer.id" :value="customer">
+    {{ customer.name }}
   </option>
 </select>
 
-<select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-  <option disabled value="">Select an invoice number</option>
-  <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
-    {{ selectedEntry.invoice_number }}
+<select class="form-select mt-3" aria-label="Default select example" v-model="selectedInvoiceNumber">
+  <option disabled value="">Select Invoice Number</option>
+  <option v-for="invoice in selectedInvoicesByCustomer" :value="invoice.invoice_number" :key="invoice.id">
+    {{ invoice.invoice_number }}
   </option>
 </select>
+
+
+
+
+
+
       </div>
       <div class="text-secondary">
-        <div class="my-1">
-          Kunden Nummer:<br>
-          {{ selectedEntry && selectedEntry.id }}
-        </div>
-        <div class="my-1">
-          {{ selectedEntry && selectedEntry.name }}, {{ selectedEntry && selectedEntry.surname }}
-        </div>
-        <div class="my-1">
-          {{ selectedEntry && selectedEntry.street }}, {{ selectedEntry && selectedEntry.streetnumber }}
-        </div>
-        <div class="my-1">
-          {{ selectedEntry && selectedEntry.postcode }}, {{ selectedEntry && selectedEntry.place }}
-        </div>
-        <div class="my-1">
-          {{ selectedEntry && selectedEntry.email }}
-        </div>
-        <div class="my-1">
-          Invoice Number:<br>
-          {{ selectedInvoiceNumber }}
-        </div>
+        <div class="my-1">Kunden Nummer:<br>{{ selectedCustomer && selectedCustomer.id }}</div>
+        <div class="my-1">{{ selectedCustomer && selectedCustomer.name }}, {{ selectedCustomer && selectedCustomer.surname
+        }}</div>
+        <div class="my-1">{{ selectedCustomer && selectedCustomer.street }}, {{ selectedCustomer &&
+          selectedCustomer.streetnumber }}</div>
+        <div class="my-1">{{ selectedCustomer && selectedCustomer.postcode }}, {{ selectedCustomer &&
+          selectedCustomer.place }}</div>
+        <div class="my-1">{{ selectedCustomer && selectedCustomer.email }}</div>
+        <div class="my-1">{{ selectedCustomer && invoice_number }}</div>
       </div>
     </div>
+
     <table class="table table-borderless border-0 border-b-2">
       <thead>
         <tr>
           <th class="text-dark bg-light"></th>
+          <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
           <th class="text-dark bg-light">Pos.</th>
           <th class="text-dark bg-light">InvoiceNumber</th>
@@ -56,14 +51,16 @@
         </tr>
       </thead>
       <tbody class="text-95 text-secondary-d3">
-        <tr v-for="(row, index) in invoiceRows" :key="row.id">
+        <tr v-for="(row, index) in filteredRows" :key="row.id">
           <td>
             <input type="checkbox" v-model="row.checked" />
           </td>
           <td class="text-center">
-            <button class="btn btn-warning m-1" v-if="!isEditing[index]" @click="editRow(index)">
+            <button class="btn btn-warning m-1" @click="editRow(index)">
               <i class="bi bi-pencil"></i>
             </button>
+          </td>
+          <td class="text-center">
             <button class="btn btn-warning m-1" @click="deleteRow(index)">
               <i class="bi bi-trash3"></i>
             </button>
@@ -102,10 +99,8 @@
     <button class="btn btn-primary mt-3" @click="saveChanges">Save Changes</button>
   </div>
 </template>
-
 <script>
-import { ref, reactive, onMounted, toRefs } from 'vue';
-
+import { ref, reactive, onMounted, computed, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -118,16 +113,23 @@ export default {
     customerData: Object,
   },
   setup(props) {
-    const entries = ref(null);
+  const entries = ref(null);
     const selectedTable = ref(null);
-    const selectedEntry = ref({});
-    const invoiceData = ref([]);
+    const selectedEntry = ref(null);
     const invoiceRows = ref([]);
-    const invoiceList = ref([]);
- const { invoice_number } = toRefs(props);
-    const selectedInvoiceNumber = ref(invoice_number.value);
-
     const isEditing = ref([]);
+    const invoiceList = ref([]);
+    const selectedInvoices = ref([]);
+    const selectedInvoiceNumber = ref(null);
+    const selectedCustomer = ref(null);
+
+
+watch(selectedCustomer, async (newCustomer) => {
+  if (newCustomer && newCustomer.id) {
+    await fetchInvoiceData(); // Fetch the invoices for the selected customer
+  }
+});
+
 
     const editRow = (index) => {
       isEditing.value[index] = true;
@@ -168,8 +170,8 @@ export default {
               price_per_unit: row.price_per_unit,
               quantity: row.quantity,
               total: row.price_per_unit * row.quantity,
-              customer_id: selectedEntry.id, // Add the selected customer's ID
-              invoice_number: selectedEntry.invoice_number, // Add the invoice number
+              customer_id: selectedCustomer.value.id, // Add the selected customer's ID
+              invoice_number: props.invoice_number, // Use the invoice number from the prop
             };
 
             const { data, error } = await supabase.from('invoice').insert([newRow]);
@@ -191,166 +193,162 @@ export default {
       }
     }
 
-    async function addNewRow() {
-      if (!selectedEntry.value || !selectedEntry.value.invoice_number) {
-        console.error('No invoice number selected for the customer.');
-        return;
-      }
+    function addNewRow() {
+      invoiceRows.value.push({
+        description: '',
+        quantity: 0,
+        price_per_unit: 0,
+      });
+      isEditing.value.push(true);
+    }
 
+    async function fetchCustomerData() {
       try {
-        const { data, error } = await supabase
-          .from('invoice')
-          .select('*')
-          .eq('invoice_number', selectedEntry.invoice_number)
-          .single();
+        const { data, error } = await supabase.from('customer').select('*');
 
         if (error) {
-          console.error('Failed to fetch invoice details:', error);
+          console.error('Failed to fetch customer data:', error);
           return;
         }
 
-        if (data) {
-          invoiceRows.value.push({
-            description: data.description,
-            quantity: data.quantity,
-            price_per_unit: data.price_per_unit,
-            invoice_number: selectedEntry.invoice_number,
-          });
-          isEditing.value.push(true);
+        if (data && data.length > 0) {
+          entries.value = data.reduce((acc, cur) => {
+            if (!acc[cur.table]) {
+              acc[cur.table] = [];
+            }
+            acc[cur.table].push(cur);
+            return acc;
+          }, {});
+
+          selectedCustomer.value = data[0];
+          selectedTable.value = Object.keys(entries.value)[0];
+          selectedEntry.value = entries.value[selectedTable.value][0];
+
+          // Check if the selected customer exists in the customer table
+          const { data: customers, error: customerError } = await supabase
+            .from('customer')
+            .select('id')
+            .eq('id', selectedCustomer.value.id);
+
+          if (customerError) {
+            console.error('Error fetching customers:', customerError);
+            return;
+          }
+
+          if (customers.length === 0) {
+            console.error('Selected customer does not exist');
+            return;
+          }
+
+          await checkUserAndFetchData(); // Call checkUserAndFetchData to populate customerData
         } else {
-          console.error('No invoice data found for the selected invoice number.');
+          console.error('No customer data found.');
         }
       } catch (error) {
-        console.error('Failed to fetch invoice details:', error);
+        console.error('Failed to fetch customer data:', error);
       }
     }
 
-async function fetchCustomerData() {
-  try {
-    const { data, error } = await supabase.from('customer').select('*');
-    if (error) {
-      console.error('Failed to fetch customer data:', error);
-      return;
-    }
+    async function checkUserAndFetchData() {
+      if (props.customerData) {
+        try {
+          // Check if the selected customer exists in the customer table
+          const { data: customers, error: customerError } = await supabase
+            .from('customer')
+            .select('id')
+            .eq('id', props.customerData.id);
 
-    if (data && data.length > 0) {
-      entries.value = data.reduce((acc, cur) => {
-        if (!acc[cur.table]) {
-          acc[cur.table] = [];
+          if (customerError) {
+            console.error('Error fetching customers:', customerError);
+            return;
+          }
+
+          if (customers.length === 0) {
+            console.error('Selected customer does not exist');
+            return;
+          }
+
+          selectedCustomer.value = props.customerData; // Reuse the fetched customerData object from the prop
+        } catch (error) {
+          console.log('Failed to fetch customer data:', error.message);
         }
-        acc[cur.table].push(cur);
-        return acc;
-      }, {});
-
-      selectedTable.value = Object.keys(entries.value)[0];
-      const selectedCustomer = entries.value[selectedTable.value][0];
-
-      // Fetch the invoice data for the selected customer
-      await checkUserAndFetchData(); // Remove the argument here
-
-      // Assign the invoice number from the first invoice to selectedEntry
-      selectedEntry.value = { ...selectedCustomer, invoice_number: selectedCustomer.invoice_number };
-    } else {
-      console.error('No customer data found.');
+      }
     }
-  } catch (error) {
-    console.error('Failed to fetch customer data:', error);
-  }
-}
-
-
-async function checkUserAndFetchData() {
-  if (!selectedEntry.value || !selectedEntry.value.id) {
-    console.error('No customer selected.');
-    return;
-  }
-
-  try {
-    const { data: customerData, error: customerError } = await supabase
-      .from('customer')
-      .select('id, name, surname, street, postcode, place, email, streetnumber')
-      .eq('id', selectedEntry.value.id)
-      .single();
-
-    if (customerError) {
-      console.error('Failed to fetch customer data:', customerError);
-      return;
-    }
-
-    const { data: invoices, error: invoiceError } = await supabase
-      .from('invoice')
-      .select('id, invoice_number, description, quantity, price_per_unit')
-      .eq('customer_id', selectedEntry.value.id);
-
-    if (invoiceError) {
-      console.error('Failed to fetch invoice data:', invoiceError);
-      return;
-    }
-
-    invoiceList.value = invoices.map((invoice) => invoice.invoice_number);
-    invoiceRows.value = invoices.map((invoice) => ({
-      description: invoice.description,
-      quantity: invoice.quantity,
-      price_per_unit: invoice.price_per_unit,
-      invoice_number: invoice.invoice_number,
-    }));
-
-    // Update the customerData reactive object
-    customerData.value = customerData;
-
-    await fetchInvoiceData();
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-  }
-}
 
 async function fetchInvoiceData() {
-  if (selectedEntry.value && selectedEntry.value.id) {
+  if (selectedCustomer.value && selectedCustomer.value.id) {
     try {
+      // Check if the selected customer exists in the customer table
+      const { data: customers, error: customerError } = await supabase
+        .from('customer')
+        .select('id')
+        .eq('id', selectedCustomer.value.id);
+
+      if (customerError) {
+        console.error('Error fetching customers:', customerError);
+        return;
+      }
+
+      if (customers.length === 0) {
+        console.error('Selected customer does not exist');
+        return;
+      }
+
+      // Fetch the invoices for the selected customer
       const { data: invoices, error: invoiceError } = await supabase
         .from('invoice')
-        .select('invoice_number')
-        .eq('customer_id', selectedEntry.value.id);
+        .select('id, invoice_number')
+        .eq('customer_id', selectedCustomer.value.id);
 
       if (invoiceError) {
         console.error('Error fetching invoices:', invoiceError);
         return;
       }
 
-      invoiceList.value = invoices.map((invoice) => invoice.invoice_number);
+      selectedInvoices.value = invoices;
+      selectedInvoiceNumber.value = null; // Reset the selected invoice number
+
+      if (invoices.length > 0) {
+        selectedInvoiceNumber.value = invoices[0].invoice_number; // Set the default selected invoice number
+      }
     } catch (error) {
       console.error('Failed to fetch invoice data:', error);
     }
   }
 }
 
+
+
     onMounted(async () => {
       await fetchCustomerData();
- await fetchInvoiceData();
+      await fetchInvoiceData();
     });
 
-    const customerData = reactive({
-      value: null,
+    const selectedInvoicesByCustomer = computed(() => {
+      if (selectedCustomer.value && selectedCustomer.value.id) {
+        return selectedInvoices.value.filter(
+          (invoice) => invoice.customer_id === selectedCustomer.value.id
+        );
+      }
+      return [];
     });
 
-return {
-  entries,
-  selectedTable,
-  selectedEntry,
-  invoiceRows,
-  invoiceList,
-  selectedInvoiceNumber, // Add this line to include selectedInvoiceNumber
-  isEditing,
-  invoiceData,
-  invoice_number,
-  editRow,
-  deleteRow,
-  saveChanges,
-  addNewRow,
-  customerData,
-  checkUserAndFetchData,
-};
-
+    return {
+      selectedInvoiceNumber,
+      invoiceList,
+      entries,
+      selectedTable,
+      selectedEntry,
+      invoiceRows,
+      isEditing,
+      editRow,
+      deleteRow,
+      saveChanges,
+      addNewRow,
+      selectedCustomer,
+      selectedInvoices,
+      selectedInvoicesByCustomer,
+    };
   },
 };
-</script> 
+</script>
