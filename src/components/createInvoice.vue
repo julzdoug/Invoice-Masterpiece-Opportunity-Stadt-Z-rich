@@ -32,7 +32,7 @@
 
     </div>
 
-    <table class="table table-borderless border-0 border-b-2">
+    <table class="table table-borderless border-0 border-b-2" aria-label="">
       <thead>
         <tr>
           <th class="text-dark bg-light"></th>
@@ -144,7 +144,7 @@ export default {
           if (row.id) {
             const { description, price_per_unit, quantity } = row;
             const total = quantity * price_per_unit;
-
+            
             await supabase
               .from('invoice')
               .update({ description, price_per_unit, quantity, total })
@@ -152,12 +152,13 @@ export default {
 
             isEditing.value[index] = false;
           } else {
+           
             const newRow = {
               description: row.description,
               price_per_unit: row.price_per_unit,
               quantity: row.quantity,
               total: row.price_per_unit * row.quantity,
-              customer_id: selectedEntry.id, // Add the selected customer's ID
+              customer_id: selectedEntry.value.id, // Add the selected customer's ID
               invoice_number: invoiceNumber.value, // Add the invoice number
             };
 
