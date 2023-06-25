@@ -36,6 +36,7 @@ export const checkAuth = () => {
 
 // Function to clear authentication token and reset the authentication state
 export const logout = () => {
+  
   localStorage.removeItem('user');
   isAuthenticated.value = false;
 };

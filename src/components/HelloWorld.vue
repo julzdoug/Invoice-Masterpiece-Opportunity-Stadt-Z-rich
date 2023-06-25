@@ -25,9 +25,10 @@ export default {
 
   },
   setup() {
-    const user = ref(null);
+   const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
     const activeComponent = ref(""); // Default active component is empty
 
+  checkAuth();
     return {
       user,
       activeComponent,

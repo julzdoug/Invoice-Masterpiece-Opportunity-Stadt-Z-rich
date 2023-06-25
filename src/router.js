@@ -17,32 +17,32 @@ const routes = [
     component: MainLayout,
     children: [
       {
-        path: '',
+        path: '/HelloWorld',
         name: 'HelloWorld',
         component: HelloWorld,
         meta: { requiresAuth: true },
       },
  
       {
-        path: 'createInvoice',
+        path: '/createInvoice',
         name: 'createInvoice',
         component: createInvoice,
         meta: { requiresAuth: true },
       },
       {
-        path: 'editInvoice',
+        path: '/editInvoice',
         name: 'editInvoice',
         component: editInvoice,
         meta: { requiresAuth: true },
       },
       {
-        path: 'Invoices',
+        path: '/Invoices',
         name: 'Invoices',
         component: Invoices,
         meta: { requiresAuth: true },
       },
      {
-        path: 'Firma_Kunde',
+        path: '/Firma_Kunde',
         name: 'Firma_Kunde',
         component: Firma_Kunde,
         meta: { requiresAuth: true },
@@ -64,7 +64,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'Login' });
+    next({ name: 'HelloWorld' });
   } else {
     next();
   }

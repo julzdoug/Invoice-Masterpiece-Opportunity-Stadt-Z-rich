@@ -86,7 +86,7 @@ export default {
 </template>
 
 <script>
-import { provide, ref, reactive, onMounted } from 'vue';
+import { provide, ref, onMounted } from 'vue';
 import Header from "./Header.vue";
 import SideMenu from "./SideMenu.vue";
 import Login from "./Login.vue";
@@ -111,49 +111,20 @@ export default {
 
     provide('user', user);
 
-    const customerData = reactive({
-      name: '',
-      surname: '',
-      street: '',
-      streetnumber: '',
-      postcode: '',
-      place: '',
-      invoice_number: '',
-    });
 
-    // Fetch the customer data from Supabase
-// Fetch the customer data from Supabase
-async function fetchCustomerData() {
-  try {
-    const { data, error } = await supabase
-      .from('customer')
-      .select('*')
-     /*  .limit(1)  */// Add the "limit(1)" to retrieve only one row
-
-    if (error) {
-      console.error('Failed to fetch customer data:', error);
-      return;
-    }
-
-    Object.assign(customerData, data);
-
-     console.log('Customer Data:', customerData);
-
-  } catch (error) {
-    console.error('Failed to fetch customer data:', error);
-  }
-}
 
 
     // Event handler for successful login
     const handleLoginSuccess = (loggedInUser) => {
       user.value = loggedInUser;
     };
+        onMounted(() => {
+      isAuthenticated.value = !!localStorage.getItem('user');
+    });
 
     return {
       user,
-      customerData,
-      selectedTable,
+
       handleLoginSuccess,
     };
   },
