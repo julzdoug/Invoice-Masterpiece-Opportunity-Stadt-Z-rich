@@ -74,7 +74,7 @@ export default {
   <div class="hello-world">
     <Header v-if="user" />
     <main class="d-flex">
-      <SideMenu v-if="user" @menu-click="handleMenuClick" />
+    <!--   <SideMenu v-if="user" @menu-click="handleMenuClick" /> -->
       <section class="main-content flex-grow-1 d-flex align-items-center justify-content-center">
         <div class="container">
           <router-view v-if="user" :customerData="customerData" :selectedTable="selectedTable" />

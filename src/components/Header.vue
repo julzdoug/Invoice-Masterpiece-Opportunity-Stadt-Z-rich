@@ -16,9 +16,12 @@
         <li class="nav-item">
           <a class="nav-link ms-5" @click="handleMenuClick('Invoices')">Rechnungen</a>
         </li>
+        <li class="nav-item">
+          <a class="logout nav-item ms-5" @click="signOut">Logout</a>
+        </li>
       </ul>
       <span class="navbar-text">
-        Rechnungsertell App by Jules Schwarz
+        Zachnung
       </span>
     </div>
   </div>
@@ -33,9 +36,7 @@ import { supabase } from '../supabase';
 const route = useRoute();
 const router = useRouter();
 
-onMounted(() => {
-  console.log('SideMenu mounted');
-});
+
 
 function signOut() {
   supabase.auth.signOut();
@@ -48,6 +49,9 @@ function handleMenuClick(componentName) {
   }
   router.push({ name: componentName });
 }
+
+
+
 </script>
 
 <style scoped>
@@ -55,5 +59,16 @@ nav {
   background-color: aqua;
   color: white;
   height: 20vh;
+}
+.logout {
+    display: block;
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+    font-size: var(--bs-nav-link-font-size);
+    font-weight: var(--bs-nav-link-font-weight);
+    color: var(--bs-nav-link-color);
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
 </style>
