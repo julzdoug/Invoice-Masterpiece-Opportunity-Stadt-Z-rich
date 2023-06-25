@@ -4,6 +4,14 @@
     <hr class="mt-3">
     <div class="col-sm-3 mt-3">
       <div>
+<select v-model="selectedCompany" class="form-select mt-3" aria-label="Select a company">
+  <option disabled value="">Select a company</option>
+  <option v-for="company in companies" :key="company.id" :value="company">
+    {{ company.name }}
+  </option>
+</select>
+
+
 <select v-model="selectedCustomer" class="form-select mt-3" aria-label="Select a customer">
   <option disabled value="">Select a customer</option>
   <option v-for="customer in customers" :key="customer.id" :value="customer">
@@ -49,6 +57,7 @@
           <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
           <th class="text-dark bg-light">Pos.</th>
+          <th class="text-dark bg-light">Company</th>
           <th class="text-dark bg-light">InvoiceNumber</th>
           <th class="text-dark bg-light">Description</th>
           <th class="text-dark bg-light">Qty</th>
@@ -70,6 +79,10 @@
             <button class="btn btn-warning m-1" @click="deleteRow(index)">
               <i class="bi bi-trash3"></i>
             </button>
+                      </td>
+          <td>{{ row.position }}</td>
+          <td>{{ row.company_id }}</td>
+          <td>
           </td>
           <td>{{ row.position }}</td>
           <td>{{ row.invoice_number }}</td>
@@ -120,10 +133,30 @@ export default {
     const customers = ref([]);
     const selectedCustomer = ref(null);
     const selectedInvoiceNumber = ref('');
+const selectedCompany = ref(null);
+const companies = ref([]);
 
     const invoiceRows = ref([]);
     const isEditing = ref([]);
     const invoiceNumber = ref('');
+
+const fetchCompanies = async () => {
+  try {
+    const { data, error } = await supabase.from('company').select('*');
+    if (error) {
+      console.error('Failed to fetch companies:', error);
+      return;
+    }
+    if (data && data.length > 0) {
+      companies.value = data;
+    } else {
+      console.error('No companies found.');
+    }
+  } catch (error) {
+    console.error('Failed to fetch companies:', error);
+  }
+};
+
 
     const fetchCustomers = async () => {
       try {
@@ -193,9 +226,9 @@ const filteredInvoiceRows = computed(() => {
     return [];
   }
   if (selectedInvoiceNumber.value === '') {
-    return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
+    return invoiceRows.value.filter((row) => row.company_id === selectedCompany.value.profesion && customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
   }
-  return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
+  return invoiceRows.value.filter((row) => row.company_id === selectedCompany.value.profesion && customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
 });
 
 
@@ -224,6 +257,14 @@ const deleteRow = async (index) => {
 
 const saveChanges = async () => {
   try {
+    const companyData = selectedCompany.value;
+    if (!companyData) {
+      console.error('No company selected.');
+      return;
+    }
+
+    const { logo, company_name,proffesion,name,surname,street,street_number,postal_code,place,uid_number,account,iban_number,phone_number,webpage,email,MwSt,bank } = companyData;
+
     for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
       const invoice = filteredInvoiceRows.value[i];
       if (!invoice) continue;
@@ -274,6 +315,7 @@ const addNewRow = () => {
     description: '',
     quantity: 0,
     price_per_unit: 0,
+    company_id: selectedCompany.value.profesion,
     customer_id: selectedCustomer.value.id,
     invoice_number: selectedInvoiceNumber.value || generateInvoiceNumber.value,
   };
@@ -289,7 +331,7 @@ const addNewRow = () => {
 
     const fetchSelectedData = async () => {
       try {
-        if (selectedCustomer.value && selectedInvoiceNumber.value) {
+        if (selectedCompany.value && selectedCustomer.value && selectedInvoiceNumber.value) {
           // Query for the selected customer
           const { data: customerData, error: customerError } = await supabase
             .from('customer')
@@ -301,6 +343,17 @@ const addNewRow = () => {
             console.error('Failed to fetch customer data:', customerError);
             return;
           }
+          const { data: company, error: companyError } = await supabase
+            .from('company')
+            .select('*')
+            .eq ('id', selectedCompany.value.id)
+            .single();
+
+          if (companyError) {
+            console.error('Failed to fetch customer data:', compaynError);
+            return;
+          }
+       
 
           // Query for the selected invoice number
           const { data: invoiceData, error: invoiceError } = await supabase
@@ -308,6 +361,7 @@ const addNewRow = () => {
             .select('*')
             .eq('invoice_number', selectedInvoiceNumber.value)
             .eq('customer_id', customerData.id)
+            .eq('company_id',companyData.id)
             .single();
 
           if (invoiceError) {
@@ -322,6 +376,7 @@ const addNewRow = () => {
             .select('*')
             .eq('invoice_number', invoiceData.id)
             .eq('customer_id', customerData.id)
+            .eq('company_id', companyData.id)
             .single();
 
           if (selectedDataError) {
@@ -343,7 +398,7 @@ onMounted(async () => {
   await fetchCustomers();
   fetchSelectedData();
   fetchInvoiceData()
-
+  await fetchCompanies();
   
 });
 
@@ -353,6 +408,8 @@ onMounted(async () => {
 
     return {
       customers,
+       companies, 
+selectedCompany,
       selectedCustomer,
      selectedInvoiceNumber,
       invoiceRows,
