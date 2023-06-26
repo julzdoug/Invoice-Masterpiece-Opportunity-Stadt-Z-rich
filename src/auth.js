@@ -1,11 +1,18 @@
-// auth.js
 import { ref } from 'vue';
 import { supabase } from './supabase.js';
 
-// Create a reactive variable to track the authentication state
 export const isAuthenticated = ref(false);
 
-// Function to perform login
+export const checkAuth = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    isAuthenticated.value = true;
+    return user;
+  } else {
+    isAuthenticated.value = false;
+    return null;
+  }
+};
 export const login = async (email, password) => {
   try {
     const { error, data } = await supabase.auth.signIn({
@@ -23,16 +30,7 @@ export const login = async (email, password) => {
 };
 
 // Function to check for stored authentication token during app initialization
-export const checkAuth = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user) {
-    isAuthenticated.value = true;
-    return user;
-  } else {
-    isAuthenticated.value = false;
-    return null;
-  }
-};
+
 
 // Function to clear authentication token and reset the authentication state
 export const logout = () => {

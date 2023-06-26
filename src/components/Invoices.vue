@@ -1,11 +1,11 @@
-<template>
+<!-- <template>
   <div class="page-content container">
       <div class="page-header text-blue-d2">
           <h1 class="page-title text-secondary-d1">
-              <!--Invoice-->
+             {{ company.profession }}
               <small class="page-info">
                   <i class="fa fa-angle-double-right text-80"></i>
-                  <!--ID: #111-222-->
+              
               </small>
           </h1>
 
@@ -34,14 +34,14 @@
                           </div>
                       </div>
                   </div>
-                  <!-- .row -->
+         
 
                   <hr class="row brc-default-l1 mx-n1 mb-4" />
 
                   <div class="row">
                       <div class="col-sm-6 mt-3">
                           <div>
-                              <span class="text-sm text-grey-m2 align-middle">Kunde Name</span>
+                              <span class="text-sm text-grey-m2 align-middle"> {{ customer.name }}</span>
                               <span class="text-sm text-grey-m2 align-middle">KundeVorname</span>
                           </div>
                           <div class="text-grey-m2">
@@ -62,7 +62,7 @@
                               </div>
                           </div>
                       </div>
-                      <!-- /.col -->
+                 
 
                       <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end pe-5">
                           <hr class="d-sm-none" />
@@ -70,7 +70,7 @@
                               <div class="my-2 d-flex justify-content-between">
                                   <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                           class="text-600 text-90">Rechnung - Nr:</span></div>
-                                  <div class="col-9 text-end">rechnungsnummer</div>
+                                  <div class="col-9 text-end">{{ invoice_number }}</div>
                               </div>
 
                               <div class="my-2 d-flex justify-content-between">
@@ -92,11 +92,11 @@
                               </div>
                           </div>
                       </div>
-                      <!-- /.col -->
+             
                   </div>
 
                   <div class="mt-4">
-                      <div class="row text-600 text-dark bg-secondary-subtle py-25">
+                    <div class="row text-600 text-dark bg-secondary-subtle py-25">
                           <div class="d-none d-sm-block col-1">Pos</div>
                           <div class="col-9 col-sm-5">Bezeichnung/Beschreibung</div>
                           <div class="d-none d-sm-block col-4 col-sm-2">Menge</div>
@@ -106,7 +106,7 @@
 
                       <div class="text-95 text-secondary-d3">
                           <div class="row mb-2 mb-sm-0 py-25">
-                              <div class="d-none d-sm-block col-1">1</div>
+                              <div class="d-none d-sm-block col-1">{{ row.position }}</div>
                               <div class="col-9 col-sm-5">line1 bezeichnung</div>
                               <div class="d-none d-sm-block col-2">2</div>
                               <div class="d-none d-sm-block col-2 text-95">$10</div>
@@ -135,8 +135,47 @@
                               <div class="d-none d-sm-block col-2">1 Year</div>
                               <div class="d-none d-sm-block col-2 text-95">$500</div>
                               <div class="col-2 text-secondary-d2">$500</div>
-                          </div>
-                      </div>
+                          </div> 
+                               <table class="table table-borderless border-0 border-b-2" v-if="selectedInvoiceNumber !== '' || generateInvoiceNumber !== ''">
+
+      <thead>
+        <tr>
+          <th class="text-dark bg-light"></th>
+
+          <th class="text-dark bg-light">Pos.</th>
+
+          <th class="text-dark bg-light">InvoiceNumber</th>
+          <th class="text-dark bg-light">Description</th>
+          <th class="text-dark bg-light">Qty</th>
+          <th class="text-dark bg-light">Unit Price</th>
+          <th class="width=140 text-dark bg-light">Amount</th>
+        </tr>
+      </thead>
+      <tbody class="text-95 text-secondary-d3">
+        <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
+
+          <td>{{ row.position }}</td>
+          <td>{{ row.invoice_number }}</td>
+          <td>
+
+              {{ row.description }}
+
+          </td>
+          <td>
+
+              {{ row.quantity }}
+
+          </td>
+          <td class="text-95">
+
+              {{ row.price_per_unit }}
+
+          </td>
+          <td class="text-secondary-d2">{{ total }}</td>
+        </tr>
+      </tbody>
+    </table>
+                  
 
                       <div class="row border-b-2 brc-default-l2"></div>
 
@@ -254,11 +293,144 @@
           </div>
       </div>
   </div>
+</template> -->
+
+
+<template>
+  <div>
+    <h1>Invoice Details</h1>
+
+    <div v-if="invoiceData">
+      <h2>Invoice Information</h2>
+      <p>Invoice Number: {{ invoiceData.invoice_number }}</p>
+      <p>Invoice Amount: {{ invoiceData.amount }}</p>
+    </div>
+
+    <div v-if="companyData">
+      <h2>Company Information</h2>
+      <p>Company Name: {{ companyData.name }}</p>
+      <p>Company Address: {{ companyData.address }}</p>
+    </div>
+
+    <div v-if="customerData">
+      <h2>Customer Information</h2>
+      <p>Customer Name: {{ customerData.name }}</p>
+      <p>Customer Email: {{ customerData.email }}</p>
+    </div>
+
+    <div v-if="!invoiceData && !companyData && !customerData">
+      <p>Loading...</p>
+    </div>
+  </div>
 </template>
 
-<script>
 
+
+ <script>
+import { ref, onMounted } from 'vue';
+import { createClient } from '@supabase/supabase-js';
+import { useRoute } from 'vue-router';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export default {
+  name: 'Invoices',
+  props: ['invoiceNumber'],
+
+  setup(props) {
+    const route = useRoute();
+
+    const invoiceData = ref(null);
+    const companyData = ref(null);
+    const customerData = ref(null);
+
+const fetchInvoiceData = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('invoice')
+      .select('*')
+      .eq('invoice_number', props.invoiceNumber)
+      .limit(1); // Remove the `.single()` method
+
+    if (error) {
+      console.error('Failed to fetch invoice data:', error);
+      return;
+    }
+
+    if (data && data.length > 0) { // Check if data is not empty and has at least one item
+      invoiceData.value = data[0];
+      fetchCompanyData(data[0]);
+      fetchCustomerData(data[0]);
+    }
+  } catch (error) {
+    console.error('Failed to fetch invoice data:', error);
+  }
+};
+
+
+
+    const fetchCompanyData = async () => {
+      try {
+        const { data: companyData, error: companyError } = await supabase
+          .from('company')
+          .select('*')
+          .eq('company.id', company_id)
+          .single();
+
+        if (companyError) {
+          console.error('Failed to fetch company data:', companyError);
+          return;
+        }
+
+        if (companyData) {
+          companyData.value = companyData;
+        }
+      } catch (error) {
+        console.error('Failed to fetch company data:', error);
+      }
+    };
+
+    const fetchCustomerData = async () => {
+      try {
+        const { data: customerData, error: customerError } = await supabase
+          .from('customer')
+          .select('*')
+          .eq('customer.id', customer_id)
+          .single();
+
+        if (customerError) {
+          console.error('Failed to fetch customer data:', customerError);
+          return;
+        }
+
+        if (customerData) {
+          customerData.value = customerData;
+        }
+      } catch (error) {
+        console.error('Failed to fetch customer data:', error);
+      }
+    };
+
+    onMounted(() => {
+      fetchInvoiceData();
+    });
+
+    return {
+      invoiceData,
+      companyData,
+      customerData,
+    };
+  },
+};
 </script>
+
+
+
+
+
+
 
 <style>
 body {

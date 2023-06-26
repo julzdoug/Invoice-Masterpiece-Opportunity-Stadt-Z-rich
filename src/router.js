@@ -36,11 +36,13 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: '/Invoices',
-        name: 'Invoices',
-        component: Invoices,
+    path: '/invoices/:invoiceNumber',
+    name: 'Invoices',
+    component: Invoices,
+    props: true,
         meta: { requiresAuth: true },
       },
+
      {
         path: '/Firma_Kunde',
         name: 'Firma_Kunde',
@@ -71,7 +73,6 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router; 
-
 
 
 

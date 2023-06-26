@@ -7,7 +7,7 @@
 <select v-model="selectedCompany" class="form-select mt-3" aria-label="Select a company">
   <option disabled value="">Select a company</option>
   <option v-for="company in companies" :key="company.id" :value="company">
-    {{ company.name }}
+    {{ company.profession }}
   </option>
 </select>
 
@@ -19,7 +19,7 @@
   </option>
 </select>
 
-<select v-model="selectedInvoiceNumber" class="form-select mt-3" v-if="selectedCustomer && !isGeneratingInvoiceNumber && !invoiceNumber" aria-label="Select Invoice Number" >
+<select v-model="selectedInvoiceNumber" class="form-select mt-3" v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Select Invoice Number" >
   <option disabled value="">Select Invoice Number</option>
   <option value="" selected>Show All</option>
   <option v-for="invoice in filteredInvoiceNumbers" :value="invoice" :key="invoice">
@@ -57,7 +57,7 @@
           <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
           <th class="text-dark bg-light">Pos.</th>
-          <th class="text-dark bg-light">Company</th>
+       
           <th class="text-dark bg-light">InvoiceNumber</th>
           <th class="text-dark bg-light">Description</th>
           <th class="text-dark bg-light">Qty</th>
@@ -79,10 +79,7 @@
             <button class="btn btn-warning m-1" @click="deleteRow(index)">
               <i class="bi bi-trash3"></i>
             </button>
-                      </td>
-          <td>{{ row.position }}</td>
-          <td>{{ row.company_id }}</td>
-          <td>
+
           </td>
           <td>{{ row.position }}</td>
           <td>{{ row.invoice_number }}</td>
@@ -120,6 +117,319 @@
 </template>
 
 <script>
+import { ref, computed, onMounted, watch } from 'vue';
+import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'vue-router';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export default {
+  setup() {
+    const router = useRouter();
+
+    const customers = ref([]);
+    const selectedCustomer = ref(null);
+    const selectedInvoiceNumber = ref('');
+const selectedCompany = ref(null);
+    const companies = ref([]);
+    const invoiceRows = ref([]);
+    const isEditing = ref([]);
+    const invoiceNumber = ref('');
+
+
+    const fetchCompanies = async () => {
+      try {
+        const { data, error } = await supabase.from('company').select('*');
+        if (error) {
+          console.error('Failed to fetch companies:', error);
+          return;
+        }
+        if (data && data.length > 0) {
+          companies.value = data;
+        } else {
+          console.error('No companies found.');
+        }
+      } catch (error) {
+        console.error('Failed to fetch companies:', error);
+      }
+    };
+
+    const fetchCustomers = async () => {
+      try {
+        const { data, error } = await supabase.from('customer').select('*');
+        if (error) {
+          console.error('Failed to fetch customers:', error);
+          return;
+        }
+        if (data && data.length > 0) {
+          customers.value = data;
+        } else {
+          console.error('No customers found.');
+        }
+      } catch (error) {
+        console.error('Failed to fetch customers:', error);
+      }
+    };
+
+    const fetchInvoiceData = async () => {
+      try {
+        const { data, error } = await supabase.from('invoice').select('*');
+        if (error) {
+          console.error('Failed to fetch invoice data:', error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          invoiceRows.value = data.map((invoice) => ({
+            ...invoice,
+            isEditing: false,
+          }));
+        } else {
+          console.error('No invoice data found.');
+        }
+      } catch (error) {
+        console.error('Failed to fetch invoice data:', error);
+      }
+    };
+
+    const filteredInvoiceNumber = computed(() => {
+      if (!selectedInvoiceNumber.value || selectedInvoiceNumber.value === '') {
+        return '';
+      }
+      return selectedInvoiceNumber.value;
+    });
+
+    const filteredInvoiceNumbers = computed(() => {
+      if (!selectedCustomer.value) {
+        return [];
+      }
+
+      const invoiceNumbers = new Set();
+      for (const row of invoiceRows.value) {
+        if (row.customer_id === selectedCustomer.value.id) {
+          invoiceNumbers.add(row.invoice_number);
+        }
+      }
+      return ['', ...Array.from(invoiceNumbers)];
+    });
+
+    const filteredInvoiceRows = computed(() => {
+      if (!selectedCustomer.value) {
+        return [];
+      }
+      if (selectedInvoiceNumber.value === '' && generateInvoiceNumber.value === '') {
+        return [];
+      }
+      if (selectedInvoiceNumber.value === '') {
+        return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
+      }
+      return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
+    });
+
+    const editRow = (index) => {
+      isEditing.value[index] = true;
+    };
+
+    const deleteRow = async (index) => {
+      const invoice = filteredInvoiceRows.value[index];
+      if (!invoice.id) {
+        invoiceRows.value.splice(index, 1);
+        return;
+      }
+      try {
+        await supabase.from('invoice').delete().match({ id: invoice.id });
+        // Update isEditing for the deleted row
+        invoiceRows.value.splice(index, 1);
+      } catch (error) {
+        console.error('Failed to delete row:', error);
+      }
+    };
+
+    const saveChanges = async () => {
+      try {
+        const companyData = selectedCompany.value;
+        if (!companyData) {
+          console.error('No company selected.');
+          return;
+        }
+
+        const { logo, company_name, proffesion, name, surname, street, street_number, postal_code, place, uid_number, account, iban_number, phone_number, webpage, email, MwSt, bank } = companyData;
+
+        for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
+          const invoice = filteredInvoiceRows.value[i];
+          if (!invoice) continue;
+
+          const { description, price_per_unit, quantity } = invoice;
+          const total = quantity * price_per_unit;
+
+          if (invoice.id) {
+            await supabase
+              .from('invoice')
+              .update({ description, price_per_unit, quantity, total })
+              .match({ id: invoice.id });
+
+            isEditing.value[invoice.id] = false;
+          } else {
+            const newRow = {
+              description,
+              price_per_unit,
+              quantity,
+              total,
+              company_id: selectedCompany.value.id,
+              customer_id: selectedCustomer.value.id,
+              invoice_number: invoice.invoice_number || invoiceNumber.value,
+            };
+
+            const { data, error } = await supabase.from('invoice').insert([newRow]);
+            if (error) {
+              console.error('Failed to insert new row:', error);
+              return;
+            }
+
+            if (data && data.length > 0) {
+              invoice.id = data[0].id;
+              isEditing.value[invoice.id] = false;
+            } else {
+              console.error('No invoice data returned after insert.');
+            }
+          }
+        }
+        navigateToInvoice();
+      } catch (error) {
+        console.error('Failed to update data:', error);
+      }
+    };
+
+    const addNewRow = () => {
+      const newRow = {
+        description: '',
+        quantity: 0,
+        price_per_unit: 0,
+        company_id: selectedCompany.value,
+        customer_id: selectedCustomer.value.id,
+        invoice_number: selectedInvoiceNumber.value || generateInvoiceNumber.value,
+      };
+
+      invoiceRows.value.push(newRow);
+    };
+
+    const generateInvoiceNumber = () => {
+      // Generate a new invoice number logic goes here
+      // You can use a random number generator or any other logic you prefer
+      invoiceNumber.value = 'INV-' + Math.floor(Math.random() * 100000);
+    };
+
+    const fetchSelectedData = async () => {
+      try {
+        if (selectedCompany.value && selectedCustomer.value && selectedInvoiceNumber.value) {
+          // Query for the selected customer
+          const { data: customerData, error: customerError } = await supabase
+            .from('customer')
+            .select('*')
+            .eq('id', selectedCustomer.value.id)
+            .single();
+
+          if (customerError) {
+            console.error('Failed to fetch customer data:', customerError);
+            return;
+          }
+          const { data: companyData, error: companyError } = await supabase
+            .from('company')
+            .select('*')
+            .eq('id', selectedCompany.value.id)
+            .single();
+
+          if (companyError) {
+            console.error('Failed to fetch customer data:', companyError);
+            return;
+          }
+
+          // Query for the selected invoice number
+          const { data: invoiceData, error: invoiceError } = await supabase
+            .from('invoice')
+            .select('*')
+            .eq('invoice_number', selectedInvoiceNumber.value)
+            .eq('customer_id', customerData.id)
+            .eq('company_id', companyData.id)
+            .single();
+
+          if (invoiceError) {
+            console.error('Failed to fetch invoice data:', invoiceError);
+            return;
+          }
+
+          // Query for the table or row where the selected invoice number and customer are used
+          // Replace `tableName` and `rowId` with the appropriate values for your scenario
+          const { data: selectedData, error: selectedDataError } = await supabase
+            .from('invoice')
+            .select('*')
+            .eq('invoice_number', invoiceData.id)
+            .eq('customer_id', customerData.id)
+            .eq('company_id', companyData.id)
+            .single();
+
+          if (selectedDataError) {
+            console.error('Failed to fetch selected data:', selectedDataError);
+            return;
+          }
+
+          // Process the fetched data as needed
+          console.log('Selected customer data:', customerData);
+          console.log('Selected invoice data:', invoiceData);
+          console.log('Selected data:', selectedData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch selected data:', error);
+      }
+    };
+
+const navigateToInvoice = () => {
+  
+  router.push({ name: 'Invoices', params: { invoiceNumber: selectedInvoiceNumber.value || invoiceNumber.value } });
+};
+
+
+
+    onMounted(async () => {
+      await fetchCustomers();
+      fetchSelectedData();
+      fetchInvoiceData();
+      await fetchCompanies();
+    });
+
+    watch(selectedInvoiceNumber, () => {
+      fetchInvoiceData();
+    });
+
+    return {
+      customers,
+      companies,
+      selectedCompany,
+      selectedCustomer,
+      selectedInvoiceNumber,
+      invoiceRows,
+      isEditing,
+      invoiceNumber,
+      filteredInvoiceNumber,
+      filteredInvoiceNumbers,
+      filteredInvoiceRows,
+      editRow,
+      deleteRow,
+      saveChanges,
+      addNewRow,
+  
+      generateInvoiceNumber,
+      fetchSelectedData,
+            navigateToInvoice,
+    };
+  },
+};
+</script>
+
+
+<!-- <script>
 import { ref, computed, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 
@@ -226,9 +536,9 @@ const filteredInvoiceRows = computed(() => {
     return [];
   }
   if (selectedInvoiceNumber.value === '') {
-    return invoiceRows.value.filter((row) => row.company_id === selectedCompany.value.profesion && customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
+    return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
   }
-  return invoiceRows.value.filter((row) => row.company_id === selectedCompany.value.profesion && customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
+  return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
 });
 
 
@@ -427,7 +737,7 @@ selectedCompany,
     };
   },
 };
-</script> 
+</script>  -->
 
 
 
