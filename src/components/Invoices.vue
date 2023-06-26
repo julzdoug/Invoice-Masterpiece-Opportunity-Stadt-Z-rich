@@ -2,7 +2,7 @@
   <div class="page-content container">
       <div class="page-header text-blue-d2">
           <h1 class="page-title text-secondary-d1">
-             {{ company.profession }}
+             {{ companyData ? companyData.company_name : 'Loading...' }}
               <small class="page-info">
                   <i class="fa fa-angle-double-right text-80"></i>
               
@@ -30,7 +30,7 @@
                       <div class="col-12">
                           <div class="text-center text-150">
                               <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-                              <span class="text-default-d3">company</span>
+                              <span class="text-default-d3">{{ companyData ? companyData.company_name : 'Loading...' }}-{{ companyData ? companyData.profession : 'Loading...' }}{{ companyData ? companyData.name : 'Loading...' }}{{ companyData ? companyData.surname : 'Loading...' }},{{ companyData ? companyData.street : 'Loading...' }}.{{ companyData ? companyData.street_number : 'Loading...' }}{{ companyData ? companyData.postal_code : 'Loading...' }}{{ companyData ? companyData.place : 'Loading...' }}</span>
                           </div>
                       </div>
                   </div>
@@ -41,7 +41,7 @@
                   <div class="row">
                       <div class="col-sm-6 mt-3">
                           <div>
-                              <span class="text-sm text-grey-m2 align-middle"> {{ customer.name }}</span>
+                              <span class="text-sm text-grey-m2 align-middle">{{ customerData ? customerData.name : 'Loading...' }}</span>
                               <span class="text-sm text-grey-m2 align-middle">KundeVorname</span>
                           </div>
                           <div class="text-grey-m2">
@@ -295,7 +295,6 @@
   </div>
 </template> -->
 
-
 <template>
   <div>
     <h1>Invoice Details</h1>
@@ -303,19 +302,19 @@
     <div v-if="invoiceData">
       <h2>Invoice Information</h2>
       <p>Invoice Number: {{ invoiceData.invoice_number }}</p>
-      <p>Invoice Amount: {{ invoiceData.amount }}</p>
+      <p>Invoice Amount: {{ invoiceData.description }}</p>
     </div>
 
     <div v-if="companyData">
       <h2>Company Information</h2>
-      <p>Company Name: {{ companyData.name }}</p>
-      <p>Company Address: {{ companyData.address }}</p>
+      <p>Company Name: {{ companyData ? companyData.name : 'Loading...' }}</p>
+      <p>Company Address: {{ companyData ? companyData.place : 'Loading...' }}</p>
     </div>
 
     <div v-if="customerData">
       <h2>Customer Information</h2>
-      <p>Customer Name: {{ customerData.name }}</p>
-      <p>Customer Email: {{ customerData.email }}</p>
+      <p>Customer Name: {{ customerData ? customerData.name : 'Loading...' }}</p>
+      <p>Customer Email: {{ customerData ? customerData.email : 'Loading...' }}</p>
     </div>
 
     <div v-if="!invoiceData && !companyData && !customerData">
@@ -326,7 +325,7 @@
 
 
 
- <script>
+<script>
 import { ref, onMounted } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import { useRoute } from 'vue-router';
@@ -346,46 +345,52 @@ export default {
     const companyData = ref(null);
     const customerData = ref(null);
 
-const fetchInvoiceData = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('invoice')
-      .select('*')
-      .eq('invoice_number', props.invoiceNumber)
-      .limit(1); // Remove the `.single()` method
-
-    if (error) {
-      console.error('Failed to fetch invoice data:', error);
-      return;
-    }
-
-    if (data && data.length > 0) { // Check if data is not empty and has at least one item
-      invoiceData.value = data[0];
-      fetchCompanyData(data[0]);
-      fetchCustomerData(data[0]);
-    }
-  } catch (error) {
-    console.error('Failed to fetch invoice data:', error);
-  }
-};
-
-
-
-    const fetchCompanyData = async () => {
+    const fetchInvoiceData = async () => {
       try {
-        const { data: companyData, error: companyError } = await supabase
-          .from('company')
+        const { data, error } = await supabase
+          .from('invoice')
           .select('*')
-          .eq('company.id', company_id)
-          .single();
+          .eq('invoice_number', props.invoiceNumber)
+          .limit(1);
 
-        if (companyError) {
-          console.error('Failed to fetch company data:', companyError);
+        if (error) {
+          console.error('Failed to fetch invoice data:', error);
           return;
         }
 
-        if (companyData) {
-          companyData.value = companyData;
+        if (data && data.length > 0) {
+          invoiceData.value = data[0];
+          await fetchCompanyData();
+          await fetchCustomerData();
+        } else {
+          console.error('No data found for invoice number:', props.invoiceNumber);
+        }
+      } catch (error) {
+        console.error('Failed to fetch invoice data:', error);
+      }
+    };
+
+    const fetchCompanyData = async () => {
+      const companyId = invoiceData.value?.company_id;
+
+      if (!companyId) {
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('company')
+          .select('*')
+          .eq('id', companyId)
+          .single();
+
+        if (error) {
+          console.error('Failed to fetch company data:', error);
+          return;
+        }
+
+        if (data) {
+          companyData.value = data;
         }
       } catch (error) {
         console.error('Failed to fetch company data:', error);
@@ -393,20 +398,26 @@ const fetchInvoiceData = async () => {
     };
 
     const fetchCustomerData = async () => {
+      const customerId = invoiceData.value?.customer_id;
+
+      if (!customerId) {
+        return;
+      }
+
       try {
-        const { data: customerData, error: customerError } = await supabase
+        const { data, error } = await supabase
           .from('customer')
           .select('*')
-          .eq('customer.id', customer_id)
+          .eq('id', customerId)
           .single();
 
-        if (customerError) {
-          console.error('Failed to fetch customer data:', customerError);
+        if (error) {
+          console.error('Failed to fetch customer data:', error);
           return;
         }
 
-        if (customerData) {
-          customerData.value = customerData;
+        if (data) {
+          customerData.value = data;
         }
       } catch (error) {
         console.error('Failed to fetch customer data:', error);
@@ -425,6 +436,8 @@ const fetchInvoiceData = async () => {
   },
 };
 </script>
+
+
 
 
 
