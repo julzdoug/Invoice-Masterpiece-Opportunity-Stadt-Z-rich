@@ -20,6 +20,7 @@
         </div>
       </div>
     </div>
+
     <div class="container px-0">
       <div class="row mt-4">
         <div class="col-12 col-lg-12">
@@ -93,29 +94,31 @@
               </div>
             </div>
           </div>
-          <div class="mt-4">
-          <table class="table table-borderless border-0 border-b-2" v-if="invoiceData !== null">
-            <thead>
-              <tr>
-                <th class="text-dark bg-light"></th>
-                <th class="text-dark bg-light">Pos.</th>
-                <th class="text-dark bg-light">Description</th>
-                <th class="text-dark bg-light">Qty</th>
-                <th class="text-dark bg-light">Unit Price</th>
-                <th class="text-dark bg-light">Amount</th>
-              </tr>
-            </thead>
-            <tbody class="text-95 text-secondary-d3">
-              <tr v-for="(row, index) in invoiceData.invoice_rows" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ row.position }}</td>
-                <td>{{ row.description }}</td>
-                <td>{{ row.quantity }}</td>
-                <td>{{ row.price_per_unit }}</td>
-                <td class="text-secondary-d2">{{ row.total }}</td>
-              </tr>
-            </tbody>
-          </table>
+           <div class="mt-4">
+<table class="table table-borderless border-0 border-b-2">
+  <thead>
+    <tr>
+      <th class="text-dark bg-light"></th>
+      <th class="text-dark bg-light">Pos.</th>
+      <th class="text-dark bg-light">Description</th>
+      <th class="text-dark bg-light">Qty</th>
+      <th class="text-dark bg-light">Unit Price</th>
+      <th class="text-dark bg-light">Amount</th>
+    </tr>
+  </thead>
+  <tbody class="text-95 text-secondary-d3">
+    <tr v-for="(row, index) in invoiceData.invoice_rows" :key="index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ row.position }}</td>
+      <td>{{ row.description }}</td>
+      <td>{{ row.quantity }}</td>
+      <td>{{ row.price_per_unit }}</td>
+      <td class="text-secondary-d2">{{ row.total }}</td>
+    </tr>
+  </tbody>
+</table>
+
+          </div>
 
 
 
@@ -127,7 +130,7 @@
                 Zwischensumme
               </div>
               <div class="col text-end">
-
+{{ invoiceTotal }}
               </div>
               <div class="col text-end">
                 Amount list
@@ -242,13 +245,12 @@
       </div>
     </div>
   </div>
-</div>
+
+
 </template> 
 
-
-
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import { useRoute } from 'vue-router';
 
@@ -263,7 +265,7 @@ export default {
   setup(props) {
     const route = useRoute();
 
-    const invoiceData = ref(null);
+    const invoiceData = ref({});
     const companyData = ref(null);
     const customerData = ref(null);
 
@@ -279,11 +281,13 @@ export default {
           console.error('Failed to fetch invoice data:', error);
           return;
         }
+        
 
         if (data && data.length > 0) {
           invoiceData.value = data[0];
           await fetchCompanyData();
           await fetchCustomerData();
+          await fetchInvoiceRowsByNumber(props.invoiceNumber);
         } else {
           console.error('No data found for invoice number:', props.invoiceNumber);
         }
@@ -346,6 +350,35 @@ export default {
       }
     };
 
+    const fetchInvoiceRowsByNumber = async (invoiceNumber) => {
+      try {
+        const { data, error } = await supabase
+          .from('invoice')
+          .select('*')
+          .eq('invoice_number', invoiceNumber);
+
+        if (error) {
+          console.error('Failed to fetch invoice rows:', error);
+          return;
+        }
+
+        if (data) {
+          invoiceData.value.invoice_rows = data;
+        }
+      } catch (error) {
+        console.error('Failed to fetch invoice rows:', error);
+      }
+    };
+// Compute the sum of 'row.total' values
+const invoiceTotal = computed(() => {
+  if (invoiceData.value.invoice_rows) {
+    return invoiceData.value.invoice_rows.reduce((total, row) => total + row.total, 0);
+  } else {
+    return 0;
+  }
+});
+
+
     onMounted(() => {
       fetchInvoiceData();
     });
@@ -354,16 +387,14 @@ export default {
       invoiceData,
       companyData,
       customerData,
+      fetchInvoiceData,
+      fetchCompanyData,
+      fetchCustomerData,
+      invoiceTotal,
     };
   },
 };
 </script>
-
-
-
-
-
-
 
 
 
