@@ -69,25 +69,25 @@
                           <div class="text-grey-m2 my-3">
                               <div class="my-2 d-flex justify-content-between">
                                   <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                          class="text-600 text-90">Rechnung - Nr:</span></div>
+                                          class="text-600 text-90 text-start">Rechnung - Nr:</span></div>
                                   <div class="col-9 text-end">rechnungsnummer</div>
                               </div>
 
                               <div class="my-2 d-flex justify-content-between">
                                   <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                          class="text-600 text-90">Datum:</span></div>
+                                          class="text-600 text-90 text-start">Datum:</span></div>
                                   <div class="col-9 text-end">Oct 12, 2019</div>
                               </div>
 
                               <div class="my-2 d-flex justify-content-between">
                                   <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                          class="text-600 text-90">UiD:</span></div>
+                                          class="text-600 text-90 text-start">UiD:</span></div>
                                   <div class="col-9 text-end">UiD nummer</div>
                               </div>
 
                               <div class="my-2 d-flex justify-content-between">
                                   <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                          class="text-600 text-90">MwSt:</span></div>
+                                          class="text-600 text-90 text-start">MwSt:</span></div>
                                   <div class="col-9 text-end">MwSt nummer MWST</div>
                               </div>
                           </div>

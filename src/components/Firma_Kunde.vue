@@ -321,8 +321,8 @@
 
   </div>
   <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn- btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn- btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Ändern'
       }}</button>
   </div>
