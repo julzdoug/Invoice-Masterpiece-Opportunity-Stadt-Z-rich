@@ -1,326 +1,405 @@
 <template>
-  <div class="row">
-    <hr class="mt-3">
-    <div class="col-sm-3 mt-3">
-      <div>
-        <select v-model="selectedCustomer" class="form-select mt-3" aria-label="Default select example">
-          <option disabled value="">Select a customer</option>
-          <option v-for="customer in customers" :key="customer.id" :value="customer">
-            {{ customer.name }}
-          </option>
-        </select>
+  <div class="page-content container">
+      <div class="page-header text-blue-d2">
+          <h1 class="page-title text-secondary-d1">
+              <!--Invoice-->
+              <small class="page-info">
+                  <i class="fa fa-angle-double-right text-80"></i>
+                  <!--ID: #111-222-->
+              </small>
+          </h1>
+
+          <div class="page-tools">
+              <div class="action-buttons">
+                  <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
+                      <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
+                      Print
+                  </a>
+                  <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
+                      <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
+                      Export
+                  </a>
+              </div>
+          </div>
       </div>
-<select class="form-select mt-3" v-model="selectedInvoiceNumber" v-if="selectedCustomer" aria-label="Default select example">
-  <option disabled value="">Select Invoice Number</option>
-  <option value="" selected>Show All</option>
-  <option v-for="invoice in filteredInvoiceRows" :value="invoice.invoice_number" :key="invoice.invoice_number">
-    {{ invoice.invoice_number }}
-  </option>
-</select>
+
+      <div class="container px-0">
+          <div class="row mt-4">
+              <div class="col-12 col-lg-12">
+                  <div class="row">
+                      <div class="col-12">
+                          <div class="text-center text-150">
+                              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
+                              <span class="text-default-d3">company</span>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- .row -->
+
+                  <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                  <div class="row">
+                      <div class="col-sm-6 mt-3">
+                          <div>
+                              <span class="text-sm text-grey-m2 align-middle">Kunde Name</span>
+                              <span class="text-sm text-grey-m2 align-middle">KundeVorname</span>
+                          </div>
+                          <div class="text-grey-m2">
+                              <div class="my-1">
+                                  Street, straasen nummer
+                              </div>
+                              <div class="my-1">
+                                  Plz, Ort
+                              </div>
+                              <div class="my-1 mt-5 pt-5"><i
+                                      class="fa fa-phone fa-flip-horizontal text-secondary fw-3"></i> <b
+                                      class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">Rechnungnummer</b></div>
+                              <div class="my-1 mt-5">
+                                  Sehr Geehrter Herr Name
+                              </div>
+                              <div class="my-1 mt-3">
+                                  Vielen Dank für den Auftrag, Ich erlaube mir, Ihnen folgende Rechnung zu unterbreiten.
+                              </div>
+                          </div>
+                      </div>
+                      <!-- /.col -->
+
+                      <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end pe-5">
+                          <hr class="d-sm-none" />
+                          <div class="text-grey-m2 my-3">
+                              <div class="my-2 d-flex justify-content-between">
+                                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                          class="text-600 text-90">Rechnung - Nr:</span></div>
+                                  <div class="col-9 text-end">rechnungsnummer</div>
+                              </div>
+
+                              <div class="my-2 d-flex justify-content-between">
+                                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                          class="text-600 text-90">Datum:</span></div>
+                                  <div class="col-9 text-end">Oct 12, 2019</div>
+                              </div>
+
+                              <div class="my-2 d-flex justify-content-between">
+                                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                          class="text-600 text-90">UiD:</span></div>
+                                  <div class="col-9 text-end">UiD nummer</div>
+                              </div>
+
+                              <div class="my-2 d-flex justify-content-between">
+                                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                          class="text-600 text-90">MwSt:</span></div>
+                                  <div class="col-9 text-end">MwSt nummer MWST</div>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- /.col -->
+                  </div>
+
+                  <div class="mt-4">
+                      <div class="row text-600 text-dark bg-secondary-subtle py-25">
+                          <div class="d-none d-sm-block col-1">Pos</div>
+                          <div class="col-9 col-sm-5">Bezeichnung/Beschreibung</div>
+                          <div class="d-none d-sm-block col-4 col-sm-2">Menge</div>
+                          <div class="d-none d-sm-block col-sm-2">Preis/stück</div>
+                          <div class="col-2">Positionspreis</div>
+                      </div>
+
+                      <div class="text-95 text-secondary-d3">
+                          <div class="row mb-2 mb-sm-0 py-25">
+                              <div class="d-none d-sm-block col-1">1</div>
+                              <div class="col-9 col-sm-5">line1 bezeichnung</div>
+                              <div class="d-none d-sm-block col-2">2</div>
+                              <div class="d-none d-sm-block col-2 text-95">$10</div>
+                              <div class="col-2 text-secondary-d2">$20</div>
+                          </div>
+
+                          <div class="row mb-2 mb-sm-0 py-25 bgc-default-l4">
+                              <div class="d-none d-sm-block col-1">2</div>
+                              <div class="col-9 col-sm-5">Web hosting</div>
+                              <div class="d-none d-sm-block col-2">1</div>
+                              <div class="d-none d-sm-block col-2 text-95">$15</div>
+                              <div class="col-2 text-secondary-d2">$15</div>
+                          </div>
+
+                          <div class="row mb-2 mb-sm-0 py-25">
+                              <div class="d-none d-sm-block col-1">3</div>
+                              <div class="col-9 col-sm-5">Software development</div>
+                              <div class="d-none d-sm-block col-2">--</div>
+                              <div class="d-none d-sm-block col-2 text-95">$1,000</div>
+                              <div class="col-2 text-secondary-d2">$1,000</div>
+                          </div>
+
+                          <div class="row mb-2 mb-sm-0 py-25 bgc-default-l4">
+                              <div class="d-none d-sm-block col-1">4</div>
+                              <div class="col-9 col-sm-5">Consulting</div>
+                              <div class="d-none d-sm-block col-2">1 Year</div>
+                              <div class="d-none d-sm-block col-2 text-95">$500</div>
+                              <div class="col-2 text-secondary-d2">$500</div>
+                          </div>
+                      </div>
+
+                      <div class="row border-b-2 brc-default-l2"></div>
+
+                      <div class="container text-start mt-5">
+                          <div class="row align-items-end">
+                              <div class="col">
+                                  Zwischensumme
+                              </div>
+                              <div class="col text-end">
+
+                              </div>
+                              <div class="col text-end">
+                                  Amount list
+                              </div>
+                          </div>
+                          <div class="row align-items-end">
+                              <div class="col">
+                                  Mehrwertsteuer
+                              </div>
+                              <div class="col text-end">
+                                  7,7%
+                              </div>
+                              <div class="col text-end">
+                                  with Tax
+                              </div>
+                          </div>
+                          <div class="row align-items-end">
+                              <div class="col">
+                                  <p class="fw-bold mb-0">Rechnugsbetrag</p>ink.Material
+                              </div>
+                              <div class="col text-end">
+                                  <p class="fw-bold">inkl.MwSt.</p>
+                              </div>
+                              <div class="col text-end">
+                                  <p class="fw-bold">Gesamtbetrag</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="container mt-5">
+                          <div class="row">
+
+                              <div class="col-3">Rechnungsbetrag zahlbar bis</div>
+                              <div class="col-3 text-start">
+                                  <p class="fw-bold mb-0">date + 30days</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="container mt-5">
+                          <div class="row">
+                              <div class="col-4">Freundliche Grüsse</div>
+                          </div>
+                          <div class="row mt-5">
+                              <div class="col-4">Name company worker name</div>
+                          </div>
 
 
-    </div>
-    <div class="row">
- <div class="col-sm-3 mt-3">
-    <div v-if="selectedCustomer">
-      <span class="text-sm text-secondary align-middle">{{ selectedCustomer.name }}</span>
-      <span class="text-sm text-secondary align-middle">{{ selectedCustomer.surname }}</span>
-    </div>
-    <div class="text-secondary" v-if="selectedCustomer">
-      <div>
-        {{ selectedCustomer.street }}, {{ selectedCustomer.streetnumber }}
-      </div>
-      <div>
-        {{ selectedCustomer.postcode }}, {{ selectedCustomer.place }}
-      </div>
-    </div>
-  </div>
-      <hr class="mt-3">
-      <div class="table-responsive mt-3">
-        <table class="table table-borderless border-0 border-b-2" aria-label="">
-          <thead>
-            <tr>
-              <th class="text-dark bg-light"></th>
-              <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
-              <th class="text-dark bg-light">Pos.</th>
-              <th class="text-dark bg-light">InvoiceNumber</th>
-              <th class="text-dark bg-light">Description</th>
-              <th class="text-dark bg-light">Qty</th>
-              <th class="text-dark bg-light">Unit Price</th>
-              <th class="width=140 text-dark bg-light">Amount</th>
-            </tr>
-          </thead>
-  <tbody class="text-95 text-secondary-d3">
-    <tr v-for="(invoice, index) in filteredInvoiceRows" :key="invoice.id">
-      <td>
-        <input type="checkbox" v-model="invoice.checked" />
-      </td>
-      <td class="text-center">
-        <button class="btn btn-warning m-1" v-if="!isEditing[index]" @click="editRow(index)">
-          <i class="bi bi-pencil"></i>
-        </button>
-        <button class="btn btn-warning m-1" @click="deleteRow(index)">
-          <i class="bi bi-trash3"></i>
-        </button>
-      </td>
-      <td>{{ invoice.customer_id }}</td>
-      <td>
-        <template v-if="!isEditing[index]">
-          {{ invoice.description }}
-        </template>
-        <template v-else>
-          <input v-model="invoice.description" />
-        </template>
-      </td>
-      <td>
-        <template v-if="!isEditing[index]">
-          {{ invoice.quantity }}
-        </template>
-        <template v-else>
-          <input v-model="invoice.quantity" />
-        </template>
-      </td>
-      <td class="text-95">
-        <template v-if="!isEditing[index]">
-          {{ invoice.price_per_unit }}
-        </template>
-        <template v-else>
-          <input v-model="invoice.price_per_unit" />
-        </template>
-      </td>
-      <td class="text-secondary-d2">{{ invoice.quantity * invoice.price_per_unit }}</td>
-    </tr>
-  </tbody>
+                          <br>
+                          <div class="row">
+                              <div class="col-sm-3 mt-3 ">
+                                  <div>
+                                      <span class="text-sm text-secondary align-middle">Company Name</span>
+                                      <span class="text-sm text-secondary align-middle">Company Vorname</span>
+                                  </div>
+                                  <div class="text-secondary">
+                                      <div class="my-1">
+                                          Street, straasen nummer
+                                      </div>
+                                      <div class="my-1">
+                                          Plz, Ort
+                                      </div>
+                                  </div>
 
-        </table>
-        <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
-        <button class="btn btn-primary mt-3" @click="saveChanges">Save Changes</button>
+                              </div>
+                              <div class="col-sm-3 mt-3">
+                                  <div>
+                                      <span class="text-sm text-grey-m2 align-middle">GLKB</span>
+                                      <span class="text-sm text-grey-m2 align-middle"></span>
+                                  </div>
+                                  <div>
+                                      <span class="text-sm text-dark align-middle">Company Account:</span>
+                                      <span class="text-sm text-dark align-middle">0939894:</span>
+                                  </div>
+                                  <div>
+                                      <span class="text-sm text-dark align-middle">IBAN:</span>
+                                      <span class="text-sm text-dark align-middle">0939894:</span>
+                                  </div>
+                                  <div>
+                                      <span class="text-sm text-dark align-middle">MwSt:</span>
+                                      <span class="text-sm text-dark align-middle">0939894:</span>
+                                  </div>
+
+                                  <div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-3 mt-3">
+                                  <div>
+                                      <span class="text-sm text-grey-m2 align-middle">Tel:</span>
+                                      <span class="text-sm text-grey-m2 align-middle">Phonenumber</span>
+                                  </div>
+                                  <div>
+                                      <span class="text-sm text-grey-m2 align-middle">Web:</span>
+                                      <span class="text-sm text-grey-m2 align-middle">WebPage</span>
+                                  </div>
+                                  <div>
+                                      <span class="text-sm text-grey-m2 align-middle">Mail:</span>
+                                      <span class="text-sm text-grey-m2 align-middle">Email</span>
+                                  </div>
+                                  <div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-    </div>
   </div>
 </template>
+
 <script>
-import { ref, onMounted, computed } from 'vue';
-import { createClient } from '@supabase/supabase-js';
 
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export default {
-  setup() {
-    const invoiceRows = ref([]);
-    const selectedCustomer = ref(null);
-    const isEditing = ref(invoiceRows.value.map(() => false));
-    const selectedInvoiceNumber = ref('');
-
-    const customers = ref([]);
-
-    const fetchCustomers = async () => {
-      try {
-        const { data, error } = await supabase.from('customer').select('*');
-        if (error) {
-          console.error('Failed to fetch customers:', error);
-          return;
-        }
-        if (data && data.length > 0) {
-          customers.value = data;
-        } else {
-          console.error('No customers found.');
-        }
-      } catch (error) {
-        console.error('Failed to fetch customers:', error);
-      }
-    };
-
-const fetchInvoiceData = async () => {
-  try {
-    const { data, error } = await supabase.from('invoice').select('*');
-    if (error) {
-      console.error('Failed to fetch invoice data:', error);
-      return;
-    }
-
-    if (data && data.length > 0) {
-      invoiceRows.value = data.map((invoice) => ({
-        ...invoice,
-        isEditing: false,
-      }));
-    } else {
-      console.error('No invoice data found.');
-    }
-  } catch (error) {
-    console.error('Failed to fetch invoice data:', error);
-  }
-};
-
-
-const filteredInvoiceRows = computed(() => {
-  if (!selectedCustomer.value) {
-    return invoiceRows.value;
-  }
-  if (!selectedInvoiceNumber.value) {
-    return invoiceRows.value.filter(
-      (row) => row.customer_id === selectedCustomer.value.id
-    );
-  }
-  return invoiceRows.value.filter(
-    (row) =>
-      row.customer_id === selectedCustomer.value.id &&
-      row.invoice_number === selectedInvoiceNumber.value
-  );
-});
-
-
-    const fetchSelectedData = async () => {
-      try {
-        if (selectedCustomer.value && selectedInvoiceNumber.value) {
-          // Query for the selected customer
-          const { data: customerData, error: customerError } = await supabase
-            .from('customer')
-            .select('*')
-            .eq('id', selectedCustomer.value.id)
-            .single();
-
-          if (customerError) {
-            console.error('Failed to fetch customer data:', customerError);
-            return;
-          }
-
-          // Query for the selected invoice number
-          const { data: invoiceData, error: invoiceError } = await supabase
-            .from('invoice')
-            .select('*')
-            .eq('invoice_number', selectedInvoiceNumber.value)
-            .single();
-
-          if (invoiceError) {
-            console.error('Failed to fetch invoice data:', invoiceError);
-            return;
-          }
-
-          // Query for the table or row where the selected invoice number and customer are used
-          // Replace `tableName` and `rowId` with the appropriate values for your scenario
-          const { data: selectedData, error: selectedDataError } = await supabase
-            .from('invoice')
-            .select('*')
-            .eq('invoice_id', invoiceData.id)
-            .eq('customer_id', customerData.id)
-            .single();
-
-          if (selectedDataError) {
-            console.error('Failed to fetch selected data:', selectedDataError);
-            return;
-          }
-
-          // Process the fetched data as needed
-          console.log('Selected Customer Data:', customerData);
-          console.log('Selected Invoice Data:', invoiceData);
-          console.log('Selected Data:', selectedData);
-        }
-      } catch (error) {
-        console.error('Failed to fetch selected data:', error);
-      }
-    };
-
-const editRow = (index) => {
-  isEditing.value[index] = !isEditing.value[index];
-};
-
-
-const deleteRow = async (index) => {
-  const invoice = invoiceRows.value[index];
-  if (!invoice.id) {
-    invoiceRows.value.splice(index, 1);
-    return;
-  }
-  try {
-    await supabase.from('invoice').delete().match({ id: invoice.id });
-    invoiceRows.value.splice(index, 1);
-  } catch (error) {
-    console.error('Failed to delete row:', error);
-  }
-};
-const addNewRow = () => {
-  const newRow = {
-    description: '',
-    quantity: 0,
-    price_per_unit: 0,
-    customer_id: selectedCustomer.value.id,
-    invoice_number: selectedInvoiceNumber.value,
-    isEditing: true,
-  };
-
-  invoiceRows.value.unshift(newRow);
-};
-
-
-const saveChanges = async () => {
-  try {
-    for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
-      const invoice = filteredInvoiceRows.value[i];
-      if (!invoice) continue;
-
-      const { description, price_per_unit, quantity } = invoice;
-      const total = quantity * price_per_unit;
-
-      if (invoice.id) {
-        await supabase
-          .from('invoice')
-          .update({ description, price_per_unit, quantity, total })
-          .match({ id: invoice.id });
-
-        isEditing[i] = false;
-      } else {
-        const newRow = {
-          description,
-          price_per_unit,
-          quantity,
-          total,
-          customer_id: selectedCustomer.value.id,
-          invoice_number: selectedInvoiceNumber.value,
-        };
-
-        const { data, error } = await supabase.from('invoice').insert([newRow]);
-        if (error) {
-          console.error('Failed to insert new row:', error);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          invoiceRows.value[i].id = data[0].id;
-          isEditing.value[i] = false;
-        } else {
-          console.error('No invoice data returned after insert.');
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Failed to update data:', error);
-  }
-};
-
-
-    onMounted(() => {
-      fetchCustomers();
-      fetchInvoiceData();
-      fetchSelectedData();
-    });
-
-return {
-  customers,
-  invoiceRows,
-  selectedCustomer,
-  selectedInvoiceNumber,
-  filteredInvoiceRows,
-  deleteRow,
-  saveChanges,
-  editRow,
-  isEditing,
-  addNewRow, // Add this line
-};
-
-  },
-};
 </script>
+
+<style>
+body {
+  margin-top: 20px;
+  color: #484b51;
+}
+
+.text-secondary-d1 {
+  color: #728299 !important;
+}
+
+.page-header {
+  margin: 0 0 1rem;
+  padding-bottom: 1rem;
+  padding-top: .5rem;
+  border-bottom: 1px dotted #e2e2e2;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.page-title {
+  padding: 0;
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 300;
+}
+
+.brc-default-l1 {
+  border-color: #dce9f0 !important;
+}
+
+.ml-n1,
+.mx-n1 {
+  margin-left: -.25rem !important;
+}
+
+.mr-n1,
+.mx-n1 {
+  margin-right: -.25rem !important;
+}
+
+.mb-4,
+.my-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.text-grey-m2 {
+  color: #888a8d !important;
+}
+
+.text-success-m2 {
+  color: #86bd68 !important;
+}
+
+.font-bolder,
+.text-600 {
+  font-weight: 600 !important;
+}
+
+.text-110 {
+  font-size: 110% !important;
+}
+
+.text-blue {
+  color: #478fcc !important;
+}
+
+.pb-25,
+.py-25 {
+  padding-bottom: .75rem !important;
+}
+
+.pt-25,
+.py-25 {
+  padding-top: .75rem !important;
+}
+
+.bgc-default-tp1 {
+  background-color: rgba(121, 169, 197, .92) !important;
+}
+
+.bgc-default-l4,
+.bgc-h-default-l4:hover {
+  background-color: #f3f8fa !important;
+}
+
+.page-header .page-tools {
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.btn-light {
+  color: #757984;
+  background-color: #f5f6f9;
+  border-color: #dddfe4;
+}
+
+.w-2 {
+  width: 1rem;
+}
+
+.text-120 {
+  font-size: 120% !important;
+}
+
+.text-primary-m1 {
+  color: #4087d4 !important;
+}
+
+.text-danger-m1 {
+  color: #dd4949 !important;
+}
+
+.text-blue-m2 {
+  color: #68a3d5 !important;
+}
+
+.text-150 {
+  font-size: 150% !important;
+}
+
+.text-60 {
+  font-size: 60% !important;
+}
+
+.text-grey-m1 {
+  color: #7b7d81 !important;
+}
+
+.align-bottom {
+  vertical-align: bottom !important;
+}
+</style>

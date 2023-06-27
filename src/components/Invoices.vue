@@ -1,34 +1,39 @@
 <template>
-  <div class="page-content container">
-    <div class="page-header text-blue-d2" v-if="companyData">
-      <h1 class="page-title text-secondary-d1">
-        {{ companyData ? companyData.company_name : 'Loading...' }}
-        <small class="page-info">
-          <i class="fa fa-angle-double-right text-80"></i>
-        </small>
-      </h1>
-      <div class="page-tools">
-        <div class="action-buttons">
-          <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
-            <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-            Print
-          </a>
-          <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
-            <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
-            Export
-          </a>
-        </div>
-      </div>
-    </div>
+  <div class="page-content container mb-5">
+      <div class="page-header text-blue-d2">
+          <h1 class="page-title text-secondary-d1">
+              <!--Invoice-->
+              <small class="page-info">
+                  <i class="fa fa-angle-double-right text-80"></i>
+                  <!--ID: #111-222-->
+              </small>
+          </h1>
 
-    <div class="container px-0">
-      <div class="row mt-4">
-        <div class="col-12 col-lg-12">
-          <div class="row">
-            <div class="col-12">
-              <div class="text-center text-150" v-if="companyData">
-                <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-                <span class="text-default-d3">{{ companyData ? companyData.company_name : 'Loading...' }}-{{ companyData ?
+          <div class="page-tools">
+              <div class="action-buttons">
+                  <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
+                      <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
+                      Print
+                  </a>
+                  <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
+                      <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
+                      Export
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      <div class="container px-0">
+          <div class="row mt-4">
+              <div class="col-12 col-lg-12">
+                  <div class="row">
+                      <div class="col-12">
+                                                  <div class="text-center text-150">
+                              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
+                              <span class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span></div>
+                          <div class="text-center text-150">
+                              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
+                              <span class="text-default-d3">{{ companyData ? companyData.company_name : 'Loading...' }}-{{ companyData ?
                   companyData.profession : 'Loading...' }}{{ companyData ? companyData.name : 'Loading...' }}{{
     companyData ? companyData.surname : 'Loading...' }},{{ companyData ? companyData.street : 'Loading...'
   }}.{{ companyData ? companyData.street_number : 'Loading...' }}{{ companyData ? companyData.postal_code
@@ -36,16 +41,18 @@
               </div>
             </div>
           </div>
+
           <hr class="row brc-default-l1 mx-n1 mb-4" />
+          
           <div class="row">
             <div class="col-sm-6 mt-3">
               <div v-if="customerData">
-                <span class="text-sm text-grey-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
+                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
                 }}</span>
-                <span class="text-sm text-grey-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
+                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
                 }}</span>
               </div>
-              <div class="text-grey-m2" v-if="customerData">
+              <div class="text-dark-m2" v-if="customerData">
                 <div class="my-1">
                   {{ customerData ? customerData.street : 'Loading...' }}, {{ customerData ? customerData.streetnumber :
                     'Loading...' }}
@@ -65,63 +72,60 @@
                 </div>
               </div>
             </div>
-            <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end pe-5">
+            <div class=" col-sm-5 align-self-start d-sm-flex justify-content-end pe-5">
               <hr class="d-sm-none" />
-              <div class="text-grey-m2 my-3">
+              <div class="text-dark-m2 text-sm my-3">
                 <div class="my-2 d-flex justify-content-between">
-                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                      class="text-600 text-90">Rechnung - Nr:</span></div>
+                  <div class="col-9"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                      class="">Rechnung - Nr:</span></div>
                   <div class="col-9 text-end"  v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
                 </div>
 
                 <div class="my-2 d-flex justify-content-between">
-                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                      class="text-600 text-90">Datum:</span></div>
+                  <div class="col-9"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                      class="">Datum:</span></div>
                   <div class="col-9 text-end" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
                 </div>
 
                 <div class="my-2 d-flex justify-content-between">
-                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                      class="text-600 text-90">UiD:</span></div>
+                  <div class="col-9"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                      class="">UiD:</span></div>
                   <div class="col-9 text-end" v-if="customerData">{{ companyData ? companyData.uid_number : 'Loading...' }}</div>
                 </div>
 
                 <div class="my-2 d-flex justify-content-between">
-                  <div class="col-6"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                      class="text-600 text-90">MwSt:</span></div>
+                  <div class="col-9"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                      class="">MwSt:</span></div>
                   <div class="col-9 text-end" v-if="companyData">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
                 </div>
               </div>
             </div>
           </div>
            <div class="mt-4">
-<table class="table table-borderless border-0 border-b-2">
+<table class="row table table-borderless border-0 border-b-2">
   <thead>
-    <tr>
-      <th class="text-dark bg-light"></th>
-      <th class="text-dark bg-light">Pos.</th>
-      <th class="text-dark bg-light">Description</th>
-      <th class="text-dark bg-light">Qty</th>
-      <th class="text-dark bg-light">Unit Price</th>
-      <th class="text-dark bg-light">Amount</th>
+    <tr class="row text-600 py-25">
+      <th class="text-dark bg-light sm-block col-1">Pos.</th>
+   
+      <th class="text-dark bg-light col-9 col-sm-5">Bezeichnung/Beschreibung</th>
+      <th class="text-dark bg-light d-none d-sm-block col-4 col-sm-2">Menge</th>
+      <th class="text-dark bg-light d-none d-sm-block col-sm-2">Preis/Stück</th>
+
+      <th class="text-dark bg-light col-2 text-end">PositionPreis</th>
     </tr>
   </thead>
   <tbody class="text-95 text-secondary-d3">
-    <tr v-for="(row, index) in invoiceData.invoice_rows" :key="index">
-      <td>{{ index + 1 }}</td>
-      <td>{{ row.position }}</td>
-      <td>{{ row.description }}</td>
-      <td>{{ row.quantity }}</td>
-      <td>{{ row.price_per_unit }}</td>
-      <td class="text-secondary-d2">{{ row.total }}</td>
+    <tr class="row text-300 py-25" v-for="(row, index) in invoiceData.invoice_rows" :key="index">
+      <td class="text-dark sm-block col-1">{{ index + 1 }}</td>
+ 
+      <td class="col-9 col-sm-5">{{ row.description }}</td>
+      <td class="d-none d-sm-block col-2">{{ row.quantity }}</td>
+      <td class="d-none d-sm-block col-2 text-95">{{ row.price_per_unit }}</td>
+  
+      <td class="col-2 text-secondary-d2 text-end">{{ row.total }}.-CHF</td>
     </tr>
   </tbody>
 </table>
-
-          </div>
-
-
-
           <div class="row border-b-2 brc-default-l2"></div>
 
           <div class="container text-start mt-5">
@@ -132,18 +136,18 @@
               <div class="col text-end">
 
               </div>
-              <div class="col text-end">
+              <div class="col-2 text-end">
                {{ invoiceTotal }}
               </div>
             </div>
             <div class="row align-items-end">
-              <div class="col">
+              <div class="col-5">
                 Mehrwertsteuer
               </div>
-              <div class="col text-end">
+              <div class="col text-center">
                 7,7%
               </div>
-              <div class="col text-end">
+              <div class="col-2 text-end">
                 {{ invoiceTotalWithTax }} 
               </div>
             </div>
@@ -151,11 +155,11 @@
               <div class="col">
                 <p class="fw-bold mb-0">Rechnugsbetrag</p>ink.Material
               </div>
-              <div class="col text-end">
+              <div class="col text-center">
                 <p class="fw-bold">inkl.MwSt.</p>
               </div>
-              <div class="col text-end">
-                <p class="fw-bold">{{  finalCalculation }}</p>
+              <div class="col-2 text-center">
+                <p class="fw-bold text-end"><u>{{  finalCalculation }}</u></p>
               </div>
             </div>
           </div>
@@ -169,7 +173,7 @@
           </div>
           <div class="container mt-5">
             <div class="row">
-              <div class="col-4">Freundliche Grüsse</div>
+              <div class="col-4 mt-5">Freundliche Grüsse</div>
             </div>
             <div class="row mt-5">
               <div class="col-4" v-if="companyData">{{ companyData ? companyData.name : 'Loading...' }}{{ companyData ? companyData.surname :
@@ -178,15 +182,15 @@
 
 
             <br>
-            <div class="row">
-              <div class="col-sm-3 mt-3 ">
-                <div v-if="companyData">
-                  <span class="text-sm text-secondary align-middle">{{ companyData ? companyData.company_name :
+            <div class="row mt-5">
+              <div class="col-sm-5 mt-3 mb-2">
+                <div >
+                  <span class="text-sm text-dark align-middle">{{ companyData ? companyData.company_name :
                     'Loading...' }}</span>
-                  <span class="text-sm text-secondary align-middle">{{ companyData ? companyData.name : 'Loading...' }}{{
+                  <span class="text-sm text-dark align-middle">{{ companyData ? companyData.name : 'Loading...' }}{{
                     companyData ? companyData.surname : 'Loading...' }}</span>
                 </div>
-                <div class="text-secondary" v-if="companyData">
+                <div class="text-dark" >
                   <div class="my-1">
                     {{ companyData ? companyData.street : 'Loading...' }}, {{ companyData ? companyData.street_number :
                       'Loading...' }}
@@ -198,10 +202,10 @@
                 </div>
 
               </div>
-              <div class="col-sm-3 mt-3" v-if="companyData">
+              <div class="col-sm-4 mt-3 mb-2">
                 <div>
-                  <span class="text-sm text-grey-m2 align-middle">GLKB</span>
-                  <span class="text-sm text-grey-m2 align-middle"></span>
+                  <span class="text-sm text-dark-m2 align-middle">GLKB</span>
+          
                 </div>
                 <div>
                   <span class="text-sm text-dark align-middle">Konto:</span>
@@ -220,20 +224,20 @@
                 <div>
                 </div>
               </div>
-              <div class="col-sm-3 mt-3" v-if="companyData">
-                <div>
-                  <span class="text-sm text-grey-m2 align-middle">Tel:</span>
-                  <span class="text-sm text-grey-m2 align-middle">{{ companyData ? companyData.phone_number : 'Loading...'
+              <div class="col-sm-3 mt-3 mb-2 text-end">
+                <div >
+                  <span class="text-sm text-dark-m2 align-middle">Tel:</span>
+                  <span class="text-sm text-dark-m2 align-middle">{{ companyData ? companyData.phone_number : 'Loading...'
                   }}</span>
                 </div>
                 <div>
-                  <span class="text-sm text-grey-m2 align-middle">Web:</span>
-                  <span class="text-sm text-grey-m2 align-middle">{{ companyData ? companyData.webpage : 'Loading...'
+                  <span class="text-sm text-dark-m2 align-middle">Web:</span>
+                  <span class="text-sm text-dark-m2 align-middle">{{ companyData ? companyData.webpage : 'Loading...'
                   }}</span>
                 </div>
                 <div>
-                  <span class="text-sm text-grey-m2 align-middle">Mail:</span>
-                  <span class="text-sm text-grey-m2 align-middle">{{ companyData ? companyData.email : 'Loading...'
+                  <span class="text-sm text-dark-m2 align-middle">Mail:</span>
+                  <span class="text-sm text-dark-m2 align-middle">{{ companyData ? companyData.email : 'Loading...'
                   }}</span>
                 </div>
                 <div>
@@ -244,9 +248,8 @@
         </div>
       </div>
     </div>
+     </div>
   </div>
-
-
 </template> 
 
 <script>
