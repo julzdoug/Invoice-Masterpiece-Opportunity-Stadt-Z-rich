@@ -130,10 +130,10 @@
                 Zwischensumme
               </div>
               <div class="col text-end">
-{{ invoiceTotal }}
+
               </div>
               <div class="col text-end">
-                Amount list
+               {{ invoiceTotal }}
               </div>
             </div>
             <div class="row align-items-end">
@@ -144,7 +144,7 @@
                 7,7%
               </div>
               <div class="col text-end">
-                with Tax
+                {{ invoiceTotalWithTax }} 
               </div>
             </div>
             <div class="row align-items-end">
@@ -155,7 +155,7 @@
                 <p class="fw-bold">inkl.MwSt.</p>
               </div>
               <div class="col text-end">
-                <p class="fw-bold">Gesamtbetrag</p>
+                <p class="fw-bold">{{  finalCalculation }}</p>
               </div>
             </div>
           </div>
@@ -250,7 +250,7 @@
 </template> 
 
 <script>
-import { ref, onMounted,computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import { useRoute } from 'vue-router';
 
@@ -264,6 +264,10 @@ export default {
 
   setup(props) {
     const route = useRoute();
+
+    const invoiceTotal = ref('0.00.-CHF');
+    const invoiceTotalWithTax = ref('0.00.-CHF');
+    const finalCalculation = ref('0.00.-CHF');
 
     const invoiceData = ref({});
     const companyData = ref(null);
@@ -281,7 +285,6 @@ export default {
           console.error('Failed to fetch invoice data:', error);
           return;
         }
-        
 
         if (data && data.length > 0) {
           invoiceData.value = data[0];
@@ -369,15 +372,31 @@ export default {
         console.error('Failed to fetch invoice rows:', error);
       }
     };
-// Compute the sum of 'row.total' values
-const invoiceTotal = computed(() => {
-  if (invoiceData.value.invoice_rows) {
-    return invoiceData.value.invoice_rows.reduce((total, row) => total + row.total, 0);
-  } else {
-    return 0;
-  }
-});
 
+    const formatNumber = (number) => {
+      const parts = number.toFixed(2).split('.');
+      const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+      return integerPart + '.' + parts[1] + '.-CHF';
+    };
+
+    watch(
+      invoiceData,
+      (newValue) => {
+        if (newValue.invoice_rows) {
+          const total = newValue.invoice_rows.reduce((acc, row) => acc + row.total, 0);
+          invoiceTotal.value = formatNumber(total);
+          const totalWithTax = total * 7.7 / 100;
+          invoiceTotalWithTax.value = formatNumber(totalWithTax);
+          const finalCalculationValue = total + totalWithTax;
+          finalCalculation.value = formatNumber(finalCalculationValue);
+        } else {
+          invoiceTotal.value = '0.00.-CHF';
+          invoiceTotalWithTax.value = '0.00.-CHF';
+          finalCalculation.value = '0.00.-CHF';
+        }
+      },
+      { deep: true }
+    );
 
     onMounted(() => {
       fetchInvoiceData();
@@ -391,10 +410,13 @@ const invoiceTotal = computed(() => {
       fetchCompanyData,
       fetchCustomerData,
       invoiceTotal,
+      invoiceTotalWithTax,
+      finalCalculation,
     };
   },
 };
 </script>
+
 
 
 
