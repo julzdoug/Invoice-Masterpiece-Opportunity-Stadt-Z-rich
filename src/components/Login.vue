@@ -64,7 +64,7 @@ export default {
   emits: ['login-success'], 
   setup(_, { emit }) {
     const router = useRouter();
-    const user = ref(null);
+    const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
     const signupEmail = ref("");
     const signupPassword = ref("");
     const signinEmail = ref("");
@@ -94,6 +94,8 @@ export default {
         if (error) throw error;
         const signedInUser = data.user;
         console.log("User signed in successfully:", signedInUser);
+         isAuthenticated.value = true; 
+         localStorage.setItem('user', JSON.stringify(signedInUser)); 
         emit('login-success', signedInUser); // Emit the 'login-success' event with the signedInUser object
         router.push("/"); // Redirect to home page after successful sign-in
       } catch (error) {

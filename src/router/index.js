@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Company from "../components/Company.vue";
 import Customer from "../components/Customer.vue";
-import HelloWorld from "../components/HelloWorld.vue"
+import HelloWorld from "../components/HelloWorld.vue";
+import Firma_Kunde from "../components/Firma_Kunde.vue";
 import createInvoice from '../components/createInvoice.vue';
 import Invoices from '../components/Invoices.vue';
 
@@ -12,15 +13,23 @@ const routes = [
     name: "HelloWorld",
     component: HelloWorld,
   },
+    {
+    path: '/Firma_Kunde',
+    name: 'Firma_Kunde',
+    component: Firma_Kunde,
+meta: { requiresAuth: true },
+  },
   {
     path: '/customer',
     name: 'Customer',
-    component: Customer
+    component: Customer,
+meta: { requiresAuth: true },
   },
   {
     path: '/company',
     name: 'Company',
-    component: Company
+    component: Company,
+    meta: { requiresAuth: true },
   },
   {
         path: '/createInvoice',
