@@ -74,11 +74,11 @@
           <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
           <th class="text-dark bg-light">Pos.</th>
        
-          <th class="text-dark bg-light">InvoiceNumber</th>
-          <th class="text-dark bg-light">Description</th>
-          <th class="text-dark bg-light">Qty</th>
-          <th class="text-dark bg-light">Unit Price</th>
-          <th class="width=140 text-dark bg-light">Amount</th>
+          <th class="text-dark bg-light">Rechnungsnummer</th>
+          <th class="text-dark bg-light">Bezeichnung</th>
+          <th class="text-dark bg-light">Menge</th>
+          <th class="text-dark bg-light">Preis/Stück</th>
+          <th class="width=140 text-dark bg-light">Positionspreis</th>
         </tr>
       </thead>
       <tbody class="text-95 text-secondary-d3">
