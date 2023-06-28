@@ -1,16 +1,28 @@
 <template>
-  <select v-model="selectedTable" class="form-select" aria-label="Default select example">
-    <option disabled value="">Select a table</option>
-    <option value="customer">Customer</option>
-    <option value="company">Company</option>
-  </select>
-<select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3"
-    aria-label="Default select example">
-    <option disabled value="">Select an entry</option>
-    <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
-      {{ entry.name }}
-    </option>
-  </select>  
+<h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
+<div class="row">
+  <div class="col-3 d-flex align-items-center justify-content-end">
+    <h1 class="fs-5">Firma oder Kunde:</h1>
+  </div>
+  <div class="col-3 d-flex justify-content-center align-items-center">
+    <select v-model="selectedTable" class="form-select mt-5 custom-select w-100" aria-label="Default select example">
+      <option disabled value="">Select a table</option>
+      <option value="customer">Customer</option>
+      <option value="company">Company</option>
+    </select>
+  </div>
+  <div class="col-3 d-flex align-items-center justify-content-end">
+    <h1 class="fs-5">Name Erstellen oder Ändern:</h1>
+  </div>
+  <div class="col-3 d-flex justify-content-center align-items-center mt-2">
+    <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3 w-100" aria-label="Default select example">
+      <option disabled value="">Select an entry</option>
+      <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
+        {{ entry.name }}
+      </option>
+    </select>
+  </div>
+</div>
 
 
 
@@ -321,8 +333,8 @@
 
   </div>
   <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn- btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn- btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
+    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
+    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
         'Ändern'
       }}</button>
   </div>
