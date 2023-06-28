@@ -39,7 +39,6 @@
           </div>
         </div>
 
-        <hr class="row brc-default-l1 mx-n1 mb-4" />
 
 <div class="row align-item mt-5 d-flex ms-5">
   <div class="col-sm mt-4">
@@ -423,7 +422,7 @@ export default {
       const imgData = canvas.toDataURL("image/png");
 
       // Add the image to the PDF document
-      doc.addImage(imgData, "PNG", 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+      doc.addImage(imgData, "PNG", 0, 0, doc.internal.pageSize.getHeight, doc.internal.pageSize.getWidth);
 
       // Save the PDF
       doc.save('invoice.pdf');
@@ -557,9 +556,9 @@ body {
  height:197;
  font-size:70%;
   /* Example styles */
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   padding: 20px;
-  border: 5px solid #ccc;
+  border: 5px solid #ffffff;
   border-radius: 5px;
 }
 

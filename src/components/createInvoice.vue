@@ -1,34 +1,50 @@
 
 <template>
+
+      <div>
+
+<div class="row">
+  <div class="col-3">
+    <h1 class="fs-5">Firma:</h1>
+    <select v-model="selectedCompany" class="form-select mt-4 custom-select" aria-label="Select a company">
+      <option disabled value="">Select a company</option>
+      <option v-for="company in companies" :key="company.id" :value="company">
+        {{ company.profession }}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-3 d-flex justify-content-center">
+    <h1 class="fs-5">Kunde:</h1>
+    <select v-model="selectedCustomer" class="form-select mt-5 custom-select" aria-label="Select a customer">
+      <option disabled value="">Select a customer</option>
+      <option v-for="customer in customers" :key="customer.id" :value="customer">
+        {{ customer.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-3 ms-5 d-flex text-center justify-content-end">
+   <h1 class="fs-5">Rechnungsnummer:</h1>
+    <select v-model="selectedInvoiceNumber" class="form-select mt-5 custom-select col-7" v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Select Invoice Number">
+      
+      <option disabled value="">Select Invoice Number</option>
+      <option value="" selected>Show All</option>
+      <option v-for="invoice in filteredInvoiceNumbers" :value="invoice" :key="invoice">
+        {{ invoice }}
+      </option>
+    </select>
+  </div>
+</div>
+
+
+
   <div class="row">
     <hr class="mt-3">
     <div class="col-sm-3 mt-3">
-      <div>
-<select v-model="selectedCompany" class="form-select mt-3" aria-label="Select a company">
-  <option disabled value="">Select a company</option>
-  <option v-for="company in companies" :key="company.id" :value="company">
-    {{ company.profession }}
-  </option>
-</select>
-
-
-<select v-model="selectedCustomer" class="form-select mt-3" aria-label="Select a customer">
-  <option disabled value="">Select a customer</option>
-  <option v-for="customer in customers" :key="customer.id" :value="customer">
-    {{ customer.name }}
-  </option>
-</select>
-
-<select v-model="selectedInvoiceNumber" class="form-select mt-3" v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Select Invoice Number" >
-  <option disabled value="">Select Invoice Number</option>
-  <option value="" selected>Show All</option>
-  <option v-for="invoice in filteredInvoiceNumbers" :value="invoice" :key="invoice">
-    {{ invoice }}
-  </option>
-</select>
 <div v-if="selectedCustomer && !selectedInvoiceNumber">
-        <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Invoice Number">
-        <button @click="generateInvoiceNumber" class="btn btn-primary mt-2" >Generate</button>
+        <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
+        <button @click="generateInvoiceNumber" class="btn btn-primary mt-2" >Rechnungsnummer Generieren</button>
       </div>
       </div>
       <div class="text-secondary">
@@ -111,8 +127,8 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
-    <button class="btn btn-primary mt-3" @click="saveChanges">Save Changes</button>
+    <button class="btn btn-primary mt-3" @click="addNewRow">Neue Bestellung</button>
+    <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Zur Rechnugng</button>
   </div>
 </template>
 
@@ -427,6 +443,14 @@ const navigateToInvoice = () => {
   },
 };
 </script>
+
+<style>
+.custom-select {
+  height: 38px;
+  width: 50%; /* Adjust the height as needed */
+}
+
+</style>
 
 
 <!-- <script>
