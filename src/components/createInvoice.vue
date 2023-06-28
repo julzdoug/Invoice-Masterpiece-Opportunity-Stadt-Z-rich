@@ -127,7 +127,7 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
+    <button class="btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
     <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Zur Rechnugng</button>
   </div>
 </template>
