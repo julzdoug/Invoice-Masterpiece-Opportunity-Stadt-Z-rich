@@ -1,5 +1,5 @@
 <template>
-  <div  class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
+  <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
     <div class="page-header text-blue-d2">
 
       <h1 class="page-title text-secondary-d1">
@@ -9,18 +9,18 @@
           {{ companyData ? companyData.company_name : 'Loading...' }}
         </small>
       </h1>
-<div class="page-tools">
-  <a class="btn bg-white btn-light mx-1px text-95" ref="content" data-title="PDF" @click="exportToPDF">
-    <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-    PDF
-  </a>
-</div>
+      <div class="page-tools">
+        <a class="btn bg-white btn-light mx-1px text-95" ref="content" data-title="PDF" @click="printInvoice">
+          <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
+          PDF
+        </a>
+      </div>
     </div>
  
-  <div id="invoice-section" class="container invoice-section px-0" >
+  <div id="invoice-section" class="container invoice-section px-0">
     <div class="row mt-4">
       <div class="col-12 col-lg-12">
-        <header id="header-section" class="row page-header">
+        <div class="row">
           <div class="col-12">
             <div class="text-center text-150 print-text-100">
   <!-- Content -->
@@ -36,7 +36,7 @@
 
             </div>
           </div>
-        </header>
+        </div>
 
 
 <div class="row align-item d-flex ms-5">
@@ -162,7 +162,7 @@
 </div>
 
             <br>
-<footer  id="footer-section" class="row col mt-5 align justify-content-start page-footer ">
+<div class="row col mt-5 align justify-content-start">
   <div class="col-sm adress mt-3 mb-2">
     <!-- First column aligned at the start -->
     <div>
@@ -255,7 +255,7 @@
       </div>
     </div>
   </div>
-</footer>
+</div>
 
 
 
@@ -273,12 +273,10 @@
 
 <script>
 import { ref, onMounted, computed, watch } from 'vue';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import html2pdf from 'html2pdf.js';
 import { createClient } from '@supabase/supabase-js';
 import { useRoute } from 'vue-router';
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -402,62 +400,24 @@ export default {
       return integerPart + '.' + parts[1] + '.-CHF';
     };
 
-
-const exportToPDF = async () => {
+    const exportToPDF = async () => {
   // Get the HTML content of the invoice section
   const invoiceSection = document.getElementById('invoice-section');
 
-  // Create a new jsPDF instance
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4',
-  });
+  // Create the configuration for html2pdf
+  const config = {
+    margin: [0, 0, 0, 0], // Set margin to 0 on all sides
+    filename: 'invoice.pdf',
+    image: { type: 'png', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  };
 
-  // Convert HTML to canvas
-  const canvas = await html2canvas(invoiceSection);
-
-  // Convert canvas to base64 image
-  const imgData = canvas.toDataURL('image/png');
-
-  // Set the initial values for the first page
-  let marginTop = 0;
-  let remainingHeight = 297;
-
-  // Define the header and footer content
-  const headerContent = document.getElementById('header-section').innerHTML;
-  const footerContent = document.getElementById('footer-section').innerHTML;
-
-  // Iterate over each page
-  while (remainingHeight > 0) {
-    // Add a new page
-    doc.addPage();
-
-    // Add the header
-    doc.setFontSize(12);
-    doc.text(headerContent, 10, 10);
-
-    // Add the footer
-    doc.setFontSize(10);
-    doc.text(footerContent, 10, doc.internal.pageSize.getHeight() - 10);
-
-    // Add the image to the page
-    doc.addImage(imgData, 'PNG', 10, marginTop + 20, 190, 250);
-
-    // Calculate the remaining height and adjust the marginTop
-    remainingHeight = doc.internal.pageSize.getHeight() - (marginTop + 20 + 250);
-    marginTop += 250;
-
-    // Check if there is enough space for another image
-    if (remainingHeight > 0) {
-      // Add a page break
-      doc.addPage();
-    }
-  }
-
-  // Save the PDF
-  doc.save('invoice.pdf');
+  // Generate the PDF using html2pdf
+  await html2pdf().set(config).from(invoiceSection).save();
 };
+
+
 
 
 
@@ -514,30 +474,8 @@ const exportToPDF = async () => {
       exportToPDF,
       printInvoice,
       isReadyToPrint,
-        pageNumber: ref(1)
     };
   },
-methods: {
-  printInvoice() {
-    const content = document.getElementById('header-section');
-    const opt = {
-      filename: 'invoice.pdf',
-      pagebreak: { mode: 'avoid-all', before: '.page-break' },
-      margin: { top: 10, right: 10, bottom: 10, left: 10 },
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, logging: true },
-      jsPDF: { unit: 'px', format: 'a4', orientation: 'portrait' },
-      page: {
-        callback: () => {
-          this.pageNumber++; // Increment the page number
-        }
-      }
-    };
-    html2pdf().from(content).set(opt).save();
-  }
-}
-
-
 };
 
 </script>
