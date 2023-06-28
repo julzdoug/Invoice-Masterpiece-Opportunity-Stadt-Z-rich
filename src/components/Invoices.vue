@@ -82,7 +82,7 @@
  <div class="container">
  <div class="row">
   <div class="col-sm-11 d-flex">
-<table class="table-responsive col table-borderless border-0 border-b-2">
+<table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
   <!-- Table content -->
   <thead>
     <tr class="row text-600 py-25">

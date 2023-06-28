@@ -65,7 +65,7 @@
         </div>
       </div>
     </div>
-     <table class="table table-borderless border-0 border-b-2" v-if="selectedInvoiceNumber !== '' || generateInvoiceNumber !== ''">
+     <table class="table table-borderless border-0 border-b-2" v-if="selectedInvoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
 
       <thead>
         <tr>
