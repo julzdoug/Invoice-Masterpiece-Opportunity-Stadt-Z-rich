@@ -27,7 +27,7 @@
               <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
               <span class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
             </div>
-            <div class="text-center text-150 print-text-100">
+            <div class="text-center text-150 print-text-100 mb-5">
   <!-- Content -->
               <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
 <span class="text-default-d3 fs-6">
@@ -39,7 +39,7 @@
         </div>
 
 
-<div class="row align-item mt-5 d-flex ms-5">
+<div class="row align-item d-flex ms-5">
   <div class="col-sm mt-4">
     <!-- Customer Data -->
     <div v-if="customerData">
@@ -400,29 +400,25 @@ export default {
       return integerPart + '.' + parts[1] + '.-CHF';
     };
 
-const exportToPDF = async () => {
+    const exportToPDF = async () => {
   // Get the HTML content of the invoice section
   const invoiceSection = document.getElementById('invoice-section');
 
-  // Create a new jsPDF instance
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4',
-  });
+  // Create the configuration for html2pdf
+  const config = {
+    margin: [0, 0, 0, 0], // Set margin to 0 on all sides
+    filename: 'invoice.pdf',
+    image: { type: 'png', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  };
 
-  // Convert HTML to canvas
-  const canvas = await html2canvas(invoiceSection);
-
-  // Convert canvas to base64 image
-  const imgData = canvas.toDataURL('image/png');
-
-  // Add the image to the PDF document
-  doc.addImage(imgData, 'PNG', 0, 0, 210, 297); // A4 dimensions: 210mm x 297mm
-
-  // Save the PDF
-  doc.save('invoice.pdf');
+  // Generate the PDF using html2pdf
+  await html2pdf().set(config).from(invoiceSection).save();
 };
+
+
+
 
 
 
@@ -438,61 +434,6 @@ const exportToPDF = async () => {
       return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
     });
 
-
-    /* const exportToPDF = async () => {
-      // Get the HTML content of the invoice section
-      const invoiceSection = document.getElementById('invoice-section');
-    
-      // Create a new jsPDF instance
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'pt',
-        format: 'a4',
-        hotfixes: ['px_scaling'],
-      });
-    
-      // Convert HTML to canvas
-      const mmToPt = (mm) => {
-        return mm * 2.83465; // Convert millimeters to points (1mm = 2.83465pt)
-      };
-    
-      const a4Width = mmToPt(210); // A4 width in points
-      const a4Height = mmToPt(297); // A4 height in points
-    
-      const scale = 2.15; // Scale down factor (50%)
-    
-      const canvas = await html2canvas(invoiceSection, {
-        scale: window.devicePixelRatio * scale, // Use the device pixel ratio for better quality and apply scale factor
-        width: a4Width * scale, // Apply scale factor to width
-        height: a4Height * scale, // Apply scale factor to height
-      });
-    
-      // Convert canvas to base64 image
-      const imgData = canvas.toDataURL('image/png');
-    
-      // Calculate the contentOffsetY dynamically based on the height of the invoice section and scaled content
-      const contentHeight = invoiceSection.offsetHeight * scale;
-      const availableHeight = a4Height - contentHeight;
-      const contentOffsetY = Math.max(availableHeight, 0); // Ensure non-negative offset
-    
-      // Add the image to the PDF document with adjusted y-coordinate
-      doc.addImage(imgData, 'PNG', 0, contentOffsetY, a4Width, a4Height);
-    
-      // Save the PDF
-      doc.save('invoice.pdf');
-    };
-    
-    const printInvoice = () => {
-      if (isReadyToPrint.value) {
-        exportToPDF();
-      } else {
-        alert('Invoice data is not loaded. Please wait for the data to load before printing.');
-      }
-    };
-    
-    const isReadyToPrint = computed(() => {
-      return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
-    }); */
 
 
 
@@ -542,6 +483,9 @@ const exportToPDF = async () => {
 
 
 <style>
+
+
+
 body {
   size: 0;
   margin-top: 0;
