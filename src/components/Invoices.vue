@@ -30,11 +30,10 @@
             <div class="text-center text-150 print-text-100">
   <!-- Content -->
               <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-              <span class="text-default-d3">{{ companyData ? companyData.company_name : 'Loading...' }}-{{ companyData ?
-                companyData.profession : 'Loading...' }}{{ companyData ? companyData.name : 'Loading...' }}{{
-    companyData ? companyData.surname : 'Loading...' }},{{ companyData ? companyData.street : 'Loading...'
-  }}.{{ companyData ? companyData.street_number : 'Loading...' }}{{ companyData ? companyData.postal_code
-  : 'Loading...' }}{{ companyData ? companyData.place : 'Loading...' }}</span>
+<span class="text-default-d3 fs-6">
+  {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name} ${companyData.surname}, ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` : 'Loading...' }}
+</span>
+
             </div>
           </div>
         </div>
@@ -401,32 +400,30 @@ export default {
       return integerPart + '.' + parts[1] + '.-CHF';
     };
 
-    const exportToPDF = async () => {
-      // Get the HTML content of the invoice section
-      const invoiceSection = document.getElementById('invoice-section');
+const exportToPDF = async () => {
+  // Get the HTML content of the invoice section
+  const invoiceSection = document.getElementById('invoice-section');
 
-      // Create a new jsPDF instance
-      const doc = new jsPDF({
-        orientation: "Portrait",
-        unit: "px",
-        format: "a4",
-        hotfixes: ["px_scaling"],
-      });
+  // Create a new jsPDF instance
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4',
+  });
 
-      // Convert HTML to canvas
-      const canvas = await html2canvas(invoiceSection, {
-        scale: window.devicePixelRatio, // Use the device pixel ratio for better quality
-      });
+  // Convert HTML to canvas
+  const canvas = await html2canvas(invoiceSection);
 
-      // Convert canvas to base64 image
-      const imgData = canvas.toDataURL("image/png");
+  // Convert canvas to base64 image
+  const imgData = canvas.toDataURL('image/png');
 
-      // Add the image to the PDF document
-      doc.addImage(imgData, "PNG", 0, 0, doc.internal.pageSize.getHeight, doc.internal.pageSize.getWidth);
+  // Add the image to the PDF document
+  doc.addImage(imgData, 'PNG', 0, 0, 210, 297); // A4 dimensions: 210mm x 297mm
 
-      // Save the PDF
-      doc.save('invoice.pdf');
-    };
+  // Save the PDF
+  doc.save('invoice.pdf');
+};
+
 
 
     const printInvoice = () => {

@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-3">
     <h1 class="fs-5">Firma:</h1>
-    <select v-model="selectedCompany" class="form-select mt-4 custom-select" aria-label="Select a company">
+    <select v-model="selectedCompany" class="form-select mt-4 custom-select" aria-label="Wählen Sie die Frima">
       <option disabled value="">Select a company</option>
       <option v-for="company in companies" :key="company.id" :value="company">
         {{ company.profession }}
@@ -16,7 +16,7 @@
 
   <div class="col-3 d-flex justify-content-center">
     <h1 class="fs-5">Kunde:</h1>
-    <select v-model="selectedCustomer" class="form-select mt-5 custom-select" aria-label="Select a customer">
+    <select v-model="selectedCustomer" class="form-select mt-5 custom-select" aria-label="Wählen Sie denn Kunden">
       <option disabled value="">Select a customer</option>
       <option v-for="customer in customers" :key="customer.id" :value="customer">
         {{ customer.name }}
@@ -26,7 +26,7 @@
 
   <div class="col-3 ms-5 d-flex text-center justify-content-end">
    <h1 class="fs-5">Rechnungsnummer:</h1>
-    <select v-model="selectedInvoiceNumber" class="form-select mt-5 custom-select col-7" v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Select Invoice Number">
+    <select v-model="selectedInvoiceNumber" class="form-select mt-5 custom-select col-7" v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Wählen Sie die Rechnungsnummer">
       
       <option disabled value="">Select Invoice Number</option>
       <option value="" selected>Show All</option>
@@ -224,7 +224,7 @@ const selectedCompany = ref(null);
 
       const invoiceNumbers = new Set();
       for (const row of invoiceRows.value) {
-        if (row.customer_id === selectedCustomer.value.id) {
+        if (row.customer_id === selectedCustomer.value.id && row.company_id === selectedCompany.value.id) {
           invoiceNumbers.add(row.invoice_number);
         }
       }
