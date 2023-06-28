@@ -570,7 +570,7 @@ body {
 }
 
 .ansprechung {
-  margin-top: 30%;
+  margin-top: 10%;
 }
 
 .text-secondary-d1 {
