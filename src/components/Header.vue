@@ -10,9 +10,9 @@
         <li class="nav-item">
           <a class="nav-link ms-5 me-5" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
         </li>
-<!--                 <li class="nav-item">
+                <li class="nav-item">
           <a class="nav-link ms-5 me-5" @click="handleMenuClick('editInvoice')">Rechnung Ändern</a>
-        </li> -->
+        </li>
         <li class="nav-item">
           <a class="nav-link ms-5" @click="handleMenuClick('Invoices')">Rechnungen</a>
         </li>
