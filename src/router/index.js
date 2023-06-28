@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Company from "../components/Company.vue";
-import Customer from "../components/Customer.vue";
+
 import HelloWorld from "../components/HelloWorld.vue";
 import Firma_Kunde from "../components/Firma_Kunde.vue";
 import createInvoice from '../components/createInvoice.vue';
@@ -19,18 +18,7 @@ const routes = [
     component: Firma_Kunde,
 meta: { requiresAuth: true },
   },
-  {
-    path: '/customer',
-    name: 'Customer',
-    component: Customer,
-meta: { requiresAuth: true },
-  },
-  {
-    path: '/company',
-    name: 'Company',
-    component: Company,
-    meta: { requiresAuth: true },
-  },
+
   {
         path: '/createInvoice',
         name: 'createInvoice',
