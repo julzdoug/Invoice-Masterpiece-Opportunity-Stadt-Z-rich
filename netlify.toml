@@ -19,3 +19,6 @@
   #  publish = "dist" # Folder with the static content for _redirect file
 
   ## more info on configuring this file: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+VITE_SUPABASE_URL=https://enqqwgaongvfodzdlgmu.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVucXF3Z2Fvbmd2Zm9kemRsZ211Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODUwMDEyNzEsImV4cCI6MjAwMDU3NzI3MX0.6qzSyPR5HxNZTJD3uger8hCqIkfch7ZzLSVAXTZGs-k
