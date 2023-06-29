@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="containerf">
+  <div class="container mt-5" id="containerf">
         <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
     <div class="form-container sign-up-container">
@@ -7,7 +7,7 @@
         <!-- Sign-Up Form -->
         <h1>Mach einen Konto</h1>
     <div class="social-container">
-      <a href="#" class="social" @click="handleGoogleSignup"> <i class="bi bi-google"></i></a>
+  
       <a href="#" class="social" @click="handleLinkedInSignup"><i class="bi bi-linkedin"></i></a>
     </div>
         <span>Registriere dich mit E-mail</span>
@@ -22,9 +22,7 @@
         <!-- Sign-In Form -->
         <h1>Anmelden</h1>
         <div class="social-container">
-      <a href="#" class="social" @click="handleGoogleSignin">
-        <i class="bi bi-google"></i>
-      </a>
+
       <a href="#" class="social" @click="handleLinkedInSignin">
         <i class="bi bi-linkedin"></i>
       </a>
@@ -143,6 +141,7 @@ const handleLinkedInSignup = async () => {
 
     const handleSignin = async () => {
       try {
+
         const { error, data } = await supabase.auth.signInWithPassword({
           email: signinEmail.value,
           password: signinPassword.value,
@@ -156,7 +155,21 @@ const handleLinkedInSignup = async () => {
         router.push("/"); // Redirect to home page after successful sign-in
       } catch (error) {
         alert(error.message);
-      }
+      } 
+        try {
+    loading.value = true
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.value,
+    })
+    if (error) throw error
+    alert('Check your email for the login link!')
+  } catch (error) {
+    if (error instanceof Error) {
+      alert(error.message)
+    }
+  } finally {
+    loading.value = false
+  }
       
     };
 
