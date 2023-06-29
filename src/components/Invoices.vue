@@ -16,10 +16,9 @@
         </a>
       </div>
     </div>
-             <div id="first_head" class="first_head text-center text-150 print-text-100">
-  <!-- Content -->
-              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-              <span class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
+             <div class="first_head text-center text-150 print-text-100">
+
+              <span id="first_head"  class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
             </div>
   <div id="invoice-section" class="container invoice-section px-0">
     <div class="row mt-4">
@@ -134,7 +133,7 @@
                 <p class="fw-bold">inkl.MwSt.</p>
               </div>
               <div class="col-2 text-end me-4">
-                <p class="fw-bold text-end"><u>{{ finalCalculation }}</u></p>
+                <u><p class="fw-bold text-end">{{ finalCalculation }}</p></u>
               </div>
             </div>
           </div>
@@ -283,85 +282,80 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default {
 
   
-  methods: {
-async printInvoice() {
-  const invoiceSection = document.getElementById('invoice-section');
-  const headerSection = document.getElementById('first_head');
+methods: {
+  async printInvoice() {
+    const invoiceSection = document.getElementById('invoice-section');
+    const headerSection = document.getElementById('first_head');
 
-  // Create a new jsPDF instance
-  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    // Create a new jsPDF instance
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
 
-  // Get the total height of the invoice section
-  const sectionHeight = invoiceSection.offsetHeight;
+    // Get the total height of the invoice section
+    const sectionHeight = invoiceSection.offsetHeight;
 
-  // Define the height for each page (excluding the header and margin)
-  const contentHeight = 227; // Adjust this value as needed
-  const marginHeight = 30; // Adjust this value as needed
+    // Define the height for each page (excluding the header and margin)
+    const contentHeight = 227; // Adjust this value as needed
+    const marginHeight = 30; // Adjust this value as needed
 
-  // Calculate the number of pages (including the first page)
-  const totalPages = Math.ceil(sectionHeight / contentHeight);
+    // Calculate the number of pages (including the first page)
+    const totalPages = Math.ceil(sectionHeight / contentHeight);
 
-  // Set the initial y position for the content
-  let y = 0;
+    // Set the initial y position for the content
+    let y = 0;
 
-  // Loop through each page
-  for (let i = 0; i < totalPages; i++) {
-    // Set the page height and width
-    doc.setPageSize('a4');
-    doc.addPage();
+    // Define the current page number
+    let currentPage = 1;
 
-    // If it's not the first page, adjust the y position to account for the header and margin
-    if (i > 0) {
-      // Draw a margin on the page
-      doc.setDrawColor(0);
-      doc.setFillColor(255);
-      doc.rect(0, 0, doc.internal.pageSize.getWidth(), marginHeight, 'F');
+    // Loop through each page
+    for (let i = 0; i < totalPages; i++) {
+      // Set the page height and width
+      doc.setPageSize('a4');
+      doc.addPage();
 
-      y = marginHeight;
-      doc.setPage(i + 1);
+      // If it's not the first page, draw the header manually
+      if (i > 0) {
+        doc.setFontSize(12);
+        doc.text(`Page ${currentPage}`, 10, 10); // Adjust the position of the page number
 
-      // Clone the header section to include it on the second page
-      const clonedHeader = headerSection.cloneNode(true);
-      clonedHeader.style.position = 'absolute';
-      clonedHeader.style.top = '0';
-      clonedHeader.style.left = '0';
-      document.body.appendChild(clonedHeader);
+        // Adjust the y position to account for the header
+        y = marginHeight;
+        currentPage++;
+        isFirstPage = false;
+      }
+
+      // Clone the invoice section to avoid modifying the original element
+      const clonedSection = invoiceSection.cloneNode(true);
+
+      // Adjust the height of the cloned section to fit the content
+      const sectionContent = clonedSection.querySelector('.invoice-section-content');
+      sectionContent.style.height = `${contentHeight - marginHeight}px`;
+
+      // Move the cloned section to the correct position on the page
+      clonedSection.style.position = 'absolute';
+      clonedSection.style.top = `${y}px`;
+
+      // Append the cloned section to the document body
+      document.body.appendChild(clonedSection);
+
+      // Use html2canvas to render the cloned section as an image
+      const canvas = await html2canvas(clonedSection, { useCORS: true });
+      const imgData = canvas.toDataURL('image/png');
+
+      // Add the image to the PDF document
+      doc.addImage(imgData, 'PNG', 0, 0);
+
+      // Remove the cloned section from the document body
+      document.body.removeChild(clonedSection);
+
+      // Increment the current page number
+      currentPage++;
     }
 
-    // Clone the invoice section to avoid modifying the original element
-    const clonedSection = invoiceSection.cloneNode(true);
-
-    // Adjust the height of the cloned section to fit the content
-    const sectionContent = clonedSection.querySelector('.invoice-section-content');
-    sectionContent.style.height = `${contentHeight - marginHeight}px`;
-
-    // Move the cloned section to the correct position on the page
-    clonedSection.style.position = 'absolute';
-    clonedSection.style.top = `${y}px`;
-
-    // Append the cloned section to the document body
-    document.body.appendChild(clonedSection);
-
-    // Use html2canvas to render the cloned section as an image
-    const canvas = await html2canvas(clonedSection, { useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
-
-    // Add the image to the PDF document
-    doc.addImage(imgData, 'PNG', 0, 0);
-
-    // Remove the cloned sections from the document body
-    document.body.removeChild(clonedSection);
-
-    if (i > 0) {
-      document.body.removeChild(clonedHeader);
-    }
+    // Save the PDF document
+    doc.save('invoice.pdf');
   }
+},
 
-  // Save the PDF document
-  doc.save('invoice.pdf');
-}
-
-  },
 
   name: 'Invoices',
   props: ['invoiceNumber'],
@@ -373,7 +367,7 @@ async printInvoice() {
     const invoiceData = ref({});
     const companyData = ref(null);
     const customerData = ref(null);
-
+const showPageNumbers = ref(false);
     const fetchInvoiceData = async () => {
       try {
         const { data, error } = await supabase
@@ -509,44 +503,6 @@ async printInvoice() {
       return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
     });
 
-
-/*     const exportToPDF = async () => {
-  // Get the HTML content of the invoice section
-  const invoiceSection = document.getElementById('invoice-section');
-
-  // Create the configuration for html2pdf
-  const config = {
-    margin: [0, 0, 0, 0], // Set margin to 0 on all sides
-    filename: 'invoice.pdf',
-    image: { type: 'png', quality: 1 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  };
-
-  // Generate the PDF using html2pdf
-  await html2pdf().set(config).from(invoiceSection).save();
-}; */
-
-
-
-
-
-
-/*     const printInvoice = () => {
-      if (isReadyToPrint.value) {
-        exportToPDF();
-      } else {
-        alert('Invoice data is not loaded. Please wait for the data to load before printing.');
-      }
-    };
-
-    const isReadyToPrint = computed(() => {
-      return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
-    }); */
-
-
-
-
     watch(
       invoiceData,
       (newValue) => {
@@ -583,7 +539,8 @@ async printInvoice() {
       finalCalculation,
       exportToPDF,
      printInvoice,  
-   isReadyToPrint,   
+   isReadyToPrint,  
+    showPageNumbers, 
     };
   },
 };
