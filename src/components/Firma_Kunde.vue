@@ -1,20 +1,20 @@
 <template>
 <h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
 <div class="row">
-  <div class="col-3 d-flex align-items-center justify-content-end">
+  <div class="col-md-3  d-flex align-items-center justify-content-end">
     <h1 class="fs-5">Firma oder Kunde:</h1>
   </div>
-  <div class="col-3 d-flex justify-content-center align-items-center">
+  <div class="col-md-3 col-9 d-flex justify-content-center align-items-center">
     <select v-model="selectedTable" class="form-select mt-5 custom-select w-100" aria-label="Default select example">
       <option disabled value="">Select a table</option>
       <option value="customer">Customer</option>
       <option value="company">Company</option>
     </select>
   </div>
-  <div class="col-3 d-flex align-items-center justify-content-end">
+  <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
     <h1 class="fs-5">Name Erstellen oder Ändern:</h1>
   </div>
-  <div class="col-3 d-flex justify-content-center align-items-center mt-2">
+  <div class="col-md-3 col-9 d-flex justify-content-center align-items-center mt-2">
     <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3 w-100" aria-label="Default select example">
       <option disabled value="">Select an entry</option>
       <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
@@ -29,15 +29,13 @@
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
-        <div class="form-group col-md-6 mb-3">
+        <div class="form-group col-md-6 col-sm-12 mb-3">
                <div class="row">
   <div class="col-2 d-flex justify-content-start">
       </div>
   <div class="col-8 d-flex ms-3 justify-content-center">
     <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
-        'Ändern'
-      }}</button>
+    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Ändern'}}</button>
   </div>
   <div class="col-2 d-flex justify-content-end">
   </div>
@@ -61,7 +59,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Unternehmen:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -73,10 +71,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Unternehmen.
+            Unternehmen Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Firma:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -88,12 +86,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Firma.
+            Firma Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -104,10 +102,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Vorname.
+            Vorname Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Name:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -118,12 +116,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Name.
+            Name Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Strasse:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -134,10 +132,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Strasse.
+            Strasse Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -149,12 +147,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Nummer.
+           Nummer Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Postleitzahl:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -166,10 +164,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Postleitzahl.
+            Postleitzahl Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Ort:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -180,12 +178,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Ort.
+            Ort Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Email:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -196,10 +194,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Email.
+            Email Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Webpage:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -211,12 +209,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Webpage.
+            Webpage Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Telefon Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -228,10 +226,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Telefon Nummer.
+           Telefon Nummer Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">UiD Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -243,12 +241,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter UiD Nummer.
+            UiD Nummer Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">IBAN:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -259,10 +257,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter IBAN.
+           IBAN Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -273,12 +271,12 @@
             </template>
           </div>
           <class class="invalid-feedback">
-            Enter Mehrwertsteuer.
+            Mehrwertsteuer Bitte eintragen.
           </class>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Bank:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -289,10 +287,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Bank.
+            Bank Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Konto Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -304,20 +302,20 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Konto Nummer.
+            Konto Nummer Bitte eintragen.
           </div>
         </div>
       </div>
      <div class="row">
   <div class="col-2 d-flex justify-content-start">
-    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany">löschen</button> 
+    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany" :disabled="deleteClicked">löschen</button> 
   </div>
   <div class="col-8 d-flex justify-content-center">
 
   </div>
   <div class="col-2 d-flex justify-content-end">
-    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany">Erstellen</button>
-    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany" :disabled="deleteClicked">Erstellen</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges" :disabled="deleteClicked">Speichern</button>
   </div>
 </div>
 
@@ -344,7 +342,7 @@
 </div>
 
  <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -355,10 +353,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Vorname.
+           Vorname Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Name:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -369,12 +367,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Name.
+            Name Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Strasse:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -385,10 +383,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Strasse.
+            Strasse Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -400,12 +398,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Nummer.
+            Nummer Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Postleitzahl:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -417,10 +415,10 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Postleitzahl.
+            Postleitzahl Bitte eintragen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Ort:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -431,12 +429,12 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Ort.
+             Ort Bitte eintragen.
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Email:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -447,20 +445,20 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Email.
+            Email Bitte eingeben.
           </div>
         </div>
       </div>
       <div class="row">
   <div class="col-2 d-flex justify-content-start">
-    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer">löschen</button>
+    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer" :disabled="deleteClicked">löschen</button>
   </div>
   <div class="col-8 d-flex justify-content-center">
 
   </div>
   <div class="col-2 d-flex justify-content-end">
-    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer">Erstellen</button>
-    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges">Speichern</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer" :disabled="deleteClicked">Erstellen</button>
+    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges" :disabled="deleteClicked">Speichern</button>
   </div>
 </div>
     </form>
@@ -468,15 +466,13 @@
 </template>
 
 <script>
-import { MyFunction } from './MyFunction';
+
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-import { checkAuth } from '../auth.js';
-checkAuth();
 
 function getFormData(selectedTable, customerData, companyData) {
   if (selectedTable === 'customer') {
@@ -512,9 +508,12 @@ function getFormData(selectedTable, customerData, companyData) {
     };
   }
 }
-MyFunction();
+
 export default {
   setup() {
+       const deleteClicked = ref(false);
+    const createClicked = ref(false);
+    const saveClicked = ref(false);
     const router = useRouter();
     const selectedTable = ref('');
     const entries = {
@@ -559,6 +558,8 @@ export default {
     const customer = ref([]);
 
     async function saveChanges() {
+           if (!saveClicked.value) {
+        saveClicked.value = true;
       try {
         if (selectedTable.value === 'customer' && customerId.value) {
           // Update existing customer
@@ -570,9 +571,9 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-          location.reload();
           // Handle success or show appropriate message to the user
           console.log('Customer data updated successfully!');
+           
         } else if (selectedTable.value === 'company' && companyId.value) {
           // Update existing company
           const { data, error } = await supabase
@@ -583,9 +584,10 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-          location.reload();
+        
           // Handle success or show appropriate message to the user
           console.log('Company data updated successfully!');
+          
         } else {
           // Handle the case when the selected table or entry ID is not available
           throw new Error('Invalid table or entry ID');
@@ -593,6 +595,11 @@ export default {
       } catch (error) {
         console.error('Error saving changes:', error.message);
         // Show an error message to the user or handle the error appropriately
+      }
+      finally {
+        router.push({ name: 'HelloWorld' });
+          saveClicked.value = false;
+        }
       }
     }
 
@@ -641,6 +648,8 @@ export default {
     }
 
     async function createNewCompany() {
+  if (!createClicked.value) {
+        createClicked.value = true;
       try {
         const { data, error } = await supabase
           .from('company')
@@ -672,15 +681,23 @@ export default {
           companyId.value = data[0].id;
           selectedCompany.value = data[0].id; // Select the newly created customer
           isEditing.value = true;
-          location.reload();
-          await loadCustomerList(); // Reload the customer list after creating a new customer
+                    await loadCustomerList();
+                    // Reload the customer list after creating a new customer
         }
       } catch (error) {
         console.error('Failed to create a new customer:', error);
       }
+finally {
+   router.push({ name: 'HelloWorld' });
+          createClicked.value = false;
+        }
+      }
+
     }
 
     async function createNewCustomer() {
+if (!createClicked.value) {
+        createClicked.value = true;
       try {
         const { data, error } = await supabase
           .from('customer')
@@ -702,11 +719,16 @@ export default {
           customerId.value = data[0].id;
           selectedCustomer.value = data[0].id; // Select the newly created customer
           isEditing.value = true;
-               location.reload();
+            
           await loadCustomerList(); // Reload the customer list after creating a new customer
         }
       } catch (error) {
         console.error('Failed to create a new customer:', error);
+      }
+      finally {
+        router.push({ name: 'HelloWorld' });
+          createClicked.value = false;
+        }
       }
     }
 
@@ -742,6 +764,8 @@ export default {
 
 
       async function deleteCompany() {
+         if (!deleteClicked.value) {
+        deleteClicked.value = true;
       const customerIdToDelete = companyId.value;
       if (customerIdToDelete) {
         try {
@@ -755,12 +779,17 @@ export default {
           } else {
             // Remove the deleted customer from the form
             selectedCustomer.value = null;
-           location.reload(); // Optionally, you can reload the customer list after deleting the customer
+              // Optionally, you can reload the customer list after deleting the customer
             await loadCustomerList();
           }
         } catch (error) {
           console.error('Failed to delete customer:', error);
         }
+        finally {
+         router.push({ name: 'HelloWorld' });
+          deleteClicked.value = false;
+        }
+      }
       } else {
         console.error('No customer selected to delete');
       }
@@ -768,9 +797,9 @@ export default {
 
 
 
-
-
     async function deleteCustomer() {
+        if (!deleteClicked.value) {
+        deleteClicked.value = true;
       const customerIdToDelete = customerId.value;
       if (customerIdToDelete) {
         try {
@@ -784,16 +813,21 @@ export default {
           } else {
             // Remove the deleted customer from the form
             selectedCustomer.value = null;
-             location.reload();// Optionally, you can reload the customer list after deleting the customer
-            await loadCustomerList();
+
           }
         } catch (error) {
           console.error('Failed to delete customer:', error);
+        } 
+         finally {
+          router.push({ name: 'HelloWorld' });
+          deleteClicked.value = false;
         }
+      }
       } else {
         console.error('No customer selected to delete');
       }
     }
+
 
     function handleCustomerData(data) {
       if (Array.isArray(data)) {
@@ -881,7 +915,91 @@ export default {
       }
       entries.company = companies;
     }
+    function isEmptyForm() {
+      const {
+        name,
+        surname,
+        street,
+        streetnumber,
+        postcode,
+        place,
+        email,
+      } = customerData.value;
+      return (
+        name === '' &&
+        surname === '' &&
+        street === '' &&
+        streetnumber === '' &&
+        postcode === '' &&
+        place === '' &&
+        email === ''
+      );
+    }
 
+    async function submitCustomerForm() {
+      try {
+        const { data, error } = await supabase.from('customer').insert([getCustomerData()]);
+
+        if (error) {
+          console.error('Failed to submit customer form:', error);
+          return;
+        }
+
+        console.log('Customer form submitted successfully!');
+        // Clear form fields
+        customerData.value = {
+          name: '',
+          surname: '',
+          street: '',
+          streetnumber: '',
+          postcode: '',
+          place: '',
+          email: '',
+
+        };
+        // Clear selected entry
+        selectedEntry.value = null;
+      } catch (error) {
+        console.error('Failed to submit customer form:', error);
+      }
+    }
+
+    async function submitCompanyForm() {
+      try {
+        const { data, error } = await supabase.from('company').insert([getCompanyData()]);
+
+        if (error) {
+          console.error('Failed to submit company form:', error);
+          return;
+        }
+
+        console.log('Company form submitted successfully!');
+        // Clear form fields
+        companyData.value = {
+          logo: '',
+          company_name: '',
+          profession: '',
+          name: '',
+          surname: '',
+          street: '',
+          street_number: '',
+          postal_code: '',
+          place: '',
+          uid_number: '',
+          account: '',
+          iban_number: '',
+          phone_number: '',
+          webpage: '',
+          email: '',
+          MwSt: '',
+          bank: '',
+        };
+        // Clear selected entry
+        selectedEntry.value = null;
+      } catch (error) {
+        console.error('Failed to submit company form:', error);
+      }
+    }
 
     async function checkUserAndFetchData() {
       const { data, error } = await supabase.auth.getUser();
@@ -991,6 +1109,12 @@ export default {
       createNewCompany,
       deleteCompany,
       deleteCustomer,
+         deleteClicked,
+      createClicked,
+      saveClicked,
+            isEmptyForm,   
+      submitCustomerForm,
+      submitCompanyForm,
     };
   },
 };
