@@ -16,20 +16,17 @@
         </a>
       </div>
     </div>
- 
+             <div id="first_head" class="first_head text-center text-150 print-text-100">
+  <!-- Content -->
+              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
+              <span class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
+            </div>
   <div id="invoice-section" class="container invoice-section px-0">
     <div class="row mt-4">
       <div class="col-12 col-lg-12">
         <div class="row">
           <div class="col-12">
-            <div class="text-center text-150 print-text-100">
-  <!-- Content -->
-              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-              <span class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
-            </div>
             <div class="text-center text-150 print-text-100 mb-5">
-  <!-- Content -->
-              <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
 <span class="text-default-d3 fs-6">
   {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name} ${companyData.surname}, ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` : 'Loading...' }}
 </span>
@@ -81,7 +78,7 @@
  </div>
  <div class="container">
  <div class="row">
-  <div class="col-sm-11 d-flex">
+  <div id="billhead" class="col-sm-11 d-flex">
 <table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
   <!-- Table content -->
   <thead>
@@ -104,9 +101,9 @@
   </tbody>
 </table>
 </div>
-          <div class="row brc-default-l2 text-start">
+          <div  class="row brc-default-l2 text-start">
 
-          <div class="col-sm-12 container text-start mt-5">
+          <div id="bill" class="col-sm-12 container text-start mt-5">
             <div class="row">
               <div class="col-3">
                 Zwischensumme
@@ -162,7 +159,7 @@
 </div>
 
             <br>
-<div class="row col mt-5 align justify-content-start">
+<div id="footer" class="row col mt-5 align justify-content-start">
   <div class="col-sm adress mt-3 mb-2">
     <!-- First column aligned at the start -->
     <div>
@@ -273,16 +270,99 @@
 
 <script>
 import { ref, onMounted, computed, watch } from 'vue';
-import { createClient } from '@supabase/supabase-js';
-import { useRoute } from 'vue-router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { createClient } from '@supabase/supabase-js';
+import { useRoute } from 'vue-router';
+
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default {
+
+  
+  methods: {
+async printInvoice() {
+  const invoiceSection = document.getElementById('invoice-section');
+  const headerSection = document.getElementById('first_head');
+
+  // Create a new jsPDF instance
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+  // Get the total height of the invoice section
+  const sectionHeight = invoiceSection.offsetHeight;
+
+  // Define the height for each page (excluding the header and margin)
+  const contentHeight = 227; // Adjust this value as needed
+  const marginHeight = 30; // Adjust this value as needed
+
+  // Calculate the number of pages (including the first page)
+  const totalPages = Math.ceil(sectionHeight / contentHeight);
+
+  // Set the initial y position for the content
+  let y = 0;
+
+  // Loop through each page
+  for (let i = 0; i < totalPages; i++) {
+    // Set the page height and width
+    doc.setPageSize('a4');
+    doc.addPage();
+
+    // If it's not the first page, adjust the y position to account for the header and margin
+    if (i > 0) {
+      // Draw a margin on the page
+      doc.setDrawColor(0);
+      doc.setFillColor(255);
+      doc.rect(0, 0, doc.internal.pageSize.getWidth(), marginHeight, 'F');
+
+      y = marginHeight;
+      doc.setPage(i + 1);
+
+      // Clone the header section to include it on the second page
+      const clonedHeader = headerSection.cloneNode(true);
+      clonedHeader.style.position = 'absolute';
+      clonedHeader.style.top = '0';
+      clonedHeader.style.left = '0';
+      document.body.appendChild(clonedHeader);
+    }
+
+    // Clone the invoice section to avoid modifying the original element
+    const clonedSection = invoiceSection.cloneNode(true);
+
+    // Adjust the height of the cloned section to fit the content
+    const sectionContent = clonedSection.querySelector('.invoice-section-content');
+    sectionContent.style.height = `${contentHeight - marginHeight}px`;
+
+    // Move the cloned section to the correct position on the page
+    clonedSection.style.position = 'absolute';
+    clonedSection.style.top = `${y}px`;
+
+    // Append the cloned section to the document body
+    document.body.appendChild(clonedSection);
+
+    // Use html2canvas to render the cloned section as an image
+    const canvas = await html2canvas(clonedSection, { useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+
+    // Add the image to the PDF document
+    doc.addImage(imgData, 'PNG', 0, 0);
+
+    // Remove the cloned sections from the document body
+    document.body.removeChild(clonedSection);
+
+    if (i > 0) {
+      document.body.removeChild(clonedHeader);
+    }
+  }
+
+  // Save the PDF document
+  doc.save('invoice.pdf');
+}
+
+  },
+
   name: 'Invoices',
   props: ['invoiceNumber'],
   setup(props) {
@@ -400,7 +480,37 @@ export default {
       return integerPart + '.' + parts[1] + '.-CHF';
     };
 
-    const exportToPDF = async () => {
+        const exportToPDF = async () => {
+      // Get the HTML content of the invoice section
+      const invoiceSection = document.getElementById('invoice-section');
+
+      // Create the configuration for html2pdf
+      const config = {
+        margin: [0, 0, 0, 0], // Set margin to 0 on all sides
+        filename: 'invoice.pdf',
+        image: { type: 'png', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      };
+
+      // Generate the PDF using html2pdf
+      await html2pdf().set(config).from(invoiceSection).save();
+    };
+
+    const printInvoice = () => {
+      if (isReadyToPrint.value) {
+        exportToPDF();
+      } else {
+        alert('Invoice data is not loaded. Please wait for the data to load before printing.');
+      }
+    };
+
+    const isReadyToPrint = computed(() => {
+      return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
+    });
+
+
+/*     const exportToPDF = async () => {
   // Get the HTML content of the invoice section
   const invoiceSection = document.getElementById('invoice-section');
 
@@ -415,14 +525,14 @@ export default {
 
   // Generate the PDF using html2pdf
   await html2pdf().set(config).from(invoiceSection).save();
-};
+}; */
 
 
 
 
 
 
-    const printInvoice = () => {
+/*     const printInvoice = () => {
       if (isReadyToPrint.value) {
         exportToPDF();
       } else {
@@ -432,7 +542,7 @@ export default {
 
     const isReadyToPrint = computed(() => {
       return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
-    });
+    }); */
 
 
 
@@ -472,8 +582,8 @@ export default {
       invoiceTotalWithTax,
       finalCalculation,
       exportToPDF,
-      printInvoice,
-      isReadyToPrint,
+     printInvoice,  
+   isReadyToPrint,   
     };
   },
 };
@@ -496,6 +606,7 @@ body {
  width:210;
  height:197;
  font-size:70%;
+ margin-top: auto;
   /* Example styles */
   background-color: #ffffff;
   padding: 20px;
