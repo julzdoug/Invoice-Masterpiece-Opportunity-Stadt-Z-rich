@@ -49,9 +49,9 @@ const route = useRoute();
 const router = useRouter();
 
 
-
-function signOut() {
-  supabase.auth.signOut();
+async function signOut() {
+  await supabase.auth.signOut();
+  router.push({ name: 'Login' }); // Redirect to Login component after logout
 }
 
 function handleMenuClick(componentName) {
