@@ -6,9 +6,9 @@
   </div>
   <div class="col-md-3 col-9 d-flex justify-content-center align-items-center">
     <select v-model="selectedTable" class="form-select mt-5 custom-select w-100" aria-label="Default select example">
-      <option disabled value="">Select a table</option>
-      <option value="customer">Customer</option>
-      <option value="company">Company</option>
+      <option disabled value="">Kunde oder Frima</option>
+      <option value="customer">Kunde</option>
+      <option value="company">Firma</option>
     </select>
   </div>
   <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
@@ -16,7 +16,7 @@
   </div>
   <div class="col-md-3 col-9 d-flex justify-content-center align-items-center mt-2">
     <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3 w-100" aria-label="Default select example">
-      <option disabled value="">Select an entry</option>
+      <option disabled value="">Bitte Wählen</option>
       <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
         {{ entry.name }}
       </option>
@@ -42,18 +42,19 @@
 </div>
           <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
-            <div class="input-with-image">
-              <template v-if="isEditing">
-                <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
-                <div class="image-preview" v-if="companyData.logo">
-                  <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
-                </div>
-              </template>
-              <template v-else>
-                <div class="image-preview">
-                  <img :src="companyData.logo || '/malertapsen.jpg'" alt="Company Logo" class="preview-image">
-                </div>
-              </template>
+            <div class="input-with-image bg-primary">
+<template>
+  <div class="image-preview" v-show="isEditing">
+    <input type="file" class="form-control" id="logoInput" ref="logoInput" @change="handleLogoChange($event)" />
+    <div class="image-preview" v-if="logoPreviewDataUrl">
+      <img :src="logoPreviewDataUrl" alt="Logo Preview" class="preview-image" ref="logoPreview" />
+    </div>
+  </div>
+  <div class="image-preview" v-show="!isEditing">
+    <img :src="getLogoDataUrl(companyData.logo)" alt="Company Logo" class="preview-image" ref="logoPreview" />
+  </div>
+</template>
+
             </div>
           </div>
         </div>
@@ -474,6 +475,8 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
+
 function getFormData(selectedTable, customerData, companyData) {
   if (selectedTable === 'customer') {
     return {
@@ -509,8 +512,44 @@ function getFormData(selectedTable, customerData, companyData) {
   }
 }
 
+
 export default {
+
+  methods: {
+    handleLogoChange(event) {
+      const file = event.target.files[0];
+      this.logoPreviewDataUrl = URL.createObjectURL(file);
+      this.uploadLogo(file);
+    },
+    async uploadLogo(file) {
+      try {
+        const { data, error } = await supabase.storage
+          .from('my-bucket')
+          .upload('path/to/logo.png', file);
+
+        if (error) {
+          console.error('Failed to upload logo image:', error);
+          return;
+        }
+
+        console.log('Logo image uploaded successfully:', data);
+      } catch (error) {
+        console.error('Failed to upload logo image:', error);
+      }
+    },
+    getLogoDataUrl(logo) {
+      if (logo) {
+        return 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, logo));
+      }
+      return '';
+    }
+  },
+
+  
   setup() {
+    const logoInput = ref(null);
+    const logoPreview = ref(null);
+
        const deleteClicked = ref(false);
     const createClicked = ref(false);
     const saveClicked = ref(false);
@@ -556,6 +595,31 @@ export default {
     const isEditing = ref(false);
     const selectedCustomer = ref(null);
     const customer = ref([]);
+
+
+
+    async function handleLogoChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const { data, error } = await supabase.storage.from('my-bucket').upload(file.name, file);
+          if (error) {
+            console.error('Failed to upload image:', error);
+          } else {
+            const fileUrl = data.url;
+            companyData.logo = fileUrl;
+            logoPreview.value.src = fileUrl;
+          }
+        } catch (error) {
+          console.error('Failed to upload image:', error);
+        }
+      } else {
+        companyData.logo = null;
+        logoPreview.value.src = null;
+      }
+    }
+
+
 
     async function saveChanges() {
            if (!saveClicked.value) {
@@ -861,9 +925,7 @@ if (!createClicked.value) {
       }
     });
 
-    function handleLogoChange(event) {
-      companyData.value.logo = event.target.files[0];
-    }
+
 
     async function saveCompanyChanges() {
       try {
@@ -1001,6 +1063,7 @@ if (!createClicked.value) {
       }
     }
 
+
     async function checkUserAndFetchData() {
       const { data, error } = await supabase.auth.getUser();
 
@@ -1020,6 +1083,20 @@ if (!createClicked.value) {
             console.error('Failed to fetch data:', error);
             return;
           }
+                // Upload the logo image
+      if (companyData.logo) {
+        const { data: fileData, error: uploadError } = await supabase
+          .storage
+          .from('my-bucket')
+          .upload('path/to/logo.png', companyData.logo);
+
+        if (uploadError) {
+          console.error('Failed to upload logo:', uploadError);
+          return;
+        }
+
+        console.log('Logo uploaded successfully:', fileData);
+      }
 
           companyData.value = data;
           companyId.value = data.id;
@@ -1115,6 +1192,9 @@ if (!createClicked.value) {
             isEmptyForm,   
       submitCustomerForm,
       submitCompanyForm,
+
+      logoPreviewDataUrl: '',
+     
     };
   },
 };

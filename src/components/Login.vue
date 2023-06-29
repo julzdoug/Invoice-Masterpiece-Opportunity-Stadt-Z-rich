@@ -1,50 +1,54 @@
 <template>
   <div class="container" id="containerf">
+        <div class="row">
+      <div class="col-md-6 col-lg-5 mx-auto">
     <div class="form-container sign-up-container">
       <form @submit.prevent="handleSignup">
         <!-- Sign-Up Form -->
-        <h1>Create Account</h1>
+        <h1>Mach einen Konto</h1>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
           <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <span>or use your email for registration</span>
-        <input type="text" v-model="name" placeholder="Name" class="form-control" />
-        <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username" class="form-control" />
-        <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Password" class="form-control" />
-        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+        <span>Registriere dich mit E-mail</span>
+        <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
+        <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username" class="form-control form-control-lg" />
+        <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort" class="form-control form-control-lg" />
+        <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
       <form @submit.prevent="handleSignin">
         <!-- Sign-In Form -->
-        <h1>Sign in</h1>
+        <h1>Anmelden</h1>
         <div class="social-container">
           <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
           <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
           <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <span>or use your account</span>
-        <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="username" class="form-control" />
-        <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Password" class="form-control" />
-        <a href="#">Forgot your password?</a>
+        <span>Benutze dein Konto</span>
+        <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name" class="form-control" />
+        <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Passwort" class="form-control" />
+        <a href="#">Passowrt vergessen?</a>
         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
       </form>
+    </div>
+   </div>
     </div>
 
     <!-- Sign-Up/Sign-In Panel -->
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
-          <h1>Welcome Back!</h1>
-          <p>To keep connected with us, please login with your personal info</p>
-          <button class="btn btn-outline-primary btn-block ghost" @click="showSigninPanel">Sign In</button>
+          <h1>Wilkommen bei Zachnung!</h1>
+          <p>Bitte Anmelden mit deinen Angaben</p>
+          <button class="btn btn-outline-primary btn-block ghost" @click="showSigninPanel">Anmelden</button>
         </div>
         <div class="overlay-panel overlay-right">
-          <h1>Hello, Friend!</h1>
-          <p>Enter your personal details and start your journey with us</p>
-          <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Sign Up</button>
+          <h1>Hallo Freund</h1>
+          <p>Trage deine Angaben Ein</p>
+          <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
         </div>
       </div>
     </div>
