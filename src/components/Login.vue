@@ -6,11 +6,10 @@
       <form @submit.prevent="handleSignup">
         <!-- Sign-Up Form -->
         <h1>Mach einen Konto</h1>
-        <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-          <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-        </div>
+    <div class="social-container">
+      <a href="#" class="social" @click="handleGoogleSignup"> <i class="bi bi-google"></i></a>
+      <a href="#" class="social" @click="handleLinkedInSignup"><i class="bi bi-linkedin"></i></a>
+    </div>
         <span>Registriere dich mit E-mail</span>
         <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
         <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username" class="form-control form-control-lg" />
@@ -23,9 +22,12 @@
         <!-- Sign-In Form -->
         <h1>Anmelden</h1>
         <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-          <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" class="social" @click="handleGoogleSignin">
+        <i class="bi bi-google"></i>
+      </a>
+      <a href="#" class="social" @click="handleLinkedInSignin">
+        <i class="bi bi-linkedin"></i>
+      </a>
         </div>
         <span>Benutze dein Konto</span>
         <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name" class="form-control" />
@@ -75,20 +77,69 @@ export default {
     const signinPassword = ref("");
     const name = ref("");
 
-    const handleSignup = async () => {
-      try {
-        const { user, error } = await supabase.auth.signUp({
-          email: signupEmail.value,
-          password: signupPassword.value,
-        });
-        if (error) throw error;
-        console.log("User signed up successfully:", user);
-        alert("Du hast ein E-mail erhalten bestätiigen.");
-        router.push("/"); // Redirect to home page after successful sign-up
-      } catch (error) {
-        alert(error.message);
-      }
-    };
+
+const handleSignup = async () => {
+  try {
+    const { user, error } = await supabase.auth.signUp({
+      email: signupEmail.value,
+      password: signupPassword.value,
+    });
+
+    if (error) throw error;
+
+    console.log("User signed up successfully:", user);
+
+    // Show message to check email for verification
+    alert("Du hast ein E-mail erhalten bestätigen.");
+
+    // Redirect to home page after successful sign-up
+    router.push("/");
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+const handleGoogleSignup = async () => {
+  try {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      redirect_to: 'https://enqqwgaongvfodzdlgmu.supabase.co/auth/v1/callback',
+    });
+
+    if (error) throw error;
+
+    console.log("User signed up with Google:", user);
+
+    // Show message to check email or continue with Google
+    alert("Please check your email to complete the sign-up process or continue with Google.");
+
+    // Redirect to home page after successful sign-up
+    router.push("/");
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+const handleLinkedInSignup = async () => {
+  try {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+      provider: 'linkedin',
+    redirect_to: ' https://enqqwgaongvfodzdlgmu.supabase.co/auth/v1/callback',
+    });
+    if (error) throw error;
+
+    console.log("User signed up with LinkedIn:", user);
+
+    // Show message to check email or continue with LinkedIn
+    alert("Please check your email to complete the sign-up process or continue with LinkedIn.");
+
+    // Redirect to home page after successful sign-up
+    router.push("/");
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 
     const handleSignin = async () => {
       try {
@@ -106,6 +157,7 @@ export default {
       } catch (error) {
         alert(error.message);
       }
+      
     };
 
     const showSigninPanel = () => {
@@ -135,7 +187,51 @@ export default {
       }
     });
 
+        const handleGoogleSignin = async () => {
+      try {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      redirect_to: 'https://enqqwgaongvfodzdlgmu.supabase.co/auth/v1/callback',
+    });
+
+   
+        if (error) throw error;
+
+        console.log("User signed in with Google:", user);
+
+        // Show message or perform any additional logic after successful sign-in
+
+        // Redirect to home page after successful sign-in
+        router.push("/");
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    const handleLinkedInSignin = async () => {
+      try {
+        const { user, error } = await supabase.auth.signInWithOAuth({
+          provider: 'linkedin',
+        redirect_to: ' https://enqqwgaongvfodzdlgmu.supabase.co/auth/v1/callback',
+    });
+
+        if (error) throw error;
+
+        console.log("User signed in with LinkedIn:", user);
+
+        // Show message or perform any additional logic after successful sign-in
+
+        // Redirect to home page after successful sign-in
+        router.push("/");
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+
     return {
+          handleGoogleSignin,
+      handleLinkedInSignin,
       signupEmail,
       signupPassword,
       signinEmail,
@@ -146,7 +242,8 @@ export default {
       showSigninPanel,
       showSignupPanel,
       user,
-
+    handleGoogleSignup,
+      handleLinkedInSignup,
       isAuthenticated,
 
     };
@@ -155,6 +252,7 @@ export default {
 </script>
   
   <style scoped>
+  @import 'bootstrap/dist/css/bootstrap.css';
 /* Login */
 
 h1 {
