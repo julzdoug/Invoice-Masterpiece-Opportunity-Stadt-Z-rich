@@ -83,6 +83,7 @@ export default {
         });
         if (error) throw error;
         console.log("User signed up successfully:", user);
+        alert("Du hast ein E-mail erhalten bestätiigen.");
         router.push("/"); // Redirect to home page after successful sign-up
       } catch (error) {
         alert(error.message);
