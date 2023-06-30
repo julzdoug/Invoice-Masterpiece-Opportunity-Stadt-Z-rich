@@ -272,7 +272,7 @@ import { ref, onMounted, computed, watch } from 'vue';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { createClient } from '@supabase/supabase-js';
-import { useRoute } from 'vue-router';
+
 
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -746,10 +746,6 @@ hr {
     color: #999999 !important;
   }
 
-  .page-header {
-    padding-bottom: 0.5rem;
-    padding-top: 0.25rem;
-  }
 
 .page-header {
   margin:auto;
@@ -764,10 +760,10 @@ hr {
   align-items: center;
 }
 
-  .ml-n1,
-  .mx-n1,
-  .mr-n1,
-  .mx-n1,
+
+
+
+
   .mb-4,
   .my-4 {
     margin: 0 !important;
