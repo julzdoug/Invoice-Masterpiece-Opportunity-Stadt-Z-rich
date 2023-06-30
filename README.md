@@ -1,5 +1,5 @@
 German (Deutsch):
-Prototyp Demo es folgen update um es Kommerziell zur verügung zu stellenn
+Prototyp Demo es folgen update um es Kommerziell zur verügung zu stellen
 Version 1.0
 Rechnungs-App
 Erstellt von Jules Schwarz
