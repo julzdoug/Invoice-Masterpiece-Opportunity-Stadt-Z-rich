@@ -1,5 +1,5 @@
 <template>
-  <!--Titel -->
+  <!--Titel copyright Jules Schwarz -->
   <h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
   <div class="row">
     <!--Auswahl-->
@@ -48,10 +48,8 @@
             <div class="input-with-image bg-primary">
               <template>
                 <div class="image-preview" v-show="isEditing">
-                  <input type="file" class="form-control" id="logoInput" ref="logoInput"
-                    @change="handleLogoChange($event)" />
                   <div class="image-preview" v-if="logoPreviewDataUrl">
-                    <img :src="logoPreviewDataUrl" alt="Logo Preview" class="preview-image" ref="logoPreview" />
+                    <img src="../assets/back.png" alt="logo app">
                   </div>
                 </div>
                 <div class="image-preview" v-show="!isEditing">
