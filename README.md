@@ -20,7 +20,7 @@ Generierung von PDF-Rechnungen
 Einfache Suche und Filterung von Rechnungen
 Installation
 Stellen Sie sicher, dass Node.js auf Ihrem System installiert ist.
-Klonen Sie das Repository: git clone https://github.com/your-username/rechnungs-app.git
+Klonen Sie das Repository: git clone https://github.com/julzdoug/Invoice-Masterpiece-Opportunity-Stadt-Z-rich.git
 Navigieren Sie in das Projektverzeichnis: cd rechnungs-app
 Installieren Sie die Abhängigkeiten: npm install
 Konfiguration
@@ -58,7 +58,7 @@ Generation of PDF invoices
 Simple search and filtering of invoices
 Installation
 Make sure Node.js is installed on your system.
-Clone the repository: git clone https://github.com/your-username/invoice-app.git
+Clone the repository: git clone https://github.com/julzdoug/Invoice-Masterpiece-Opportunity-Stadt-Z-rich.git
 Navigate to the project directory: cd invoice-app
 Install the dependencies: npm install
 Configuration
