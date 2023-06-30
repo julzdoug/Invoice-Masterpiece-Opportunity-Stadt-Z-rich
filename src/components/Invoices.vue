@@ -18,7 +18,7 @@
     </div>
     <!--Firmen Daten-->
     <div class="first_head text-center text-150 print-text-100">
-      <span id="first_head" class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
+      <span id="first_head" class="text-default-d3"></span>
     </div>
     <div id="invoice-section" class="container invoice-section px-0">
       <div class="row mt-4">
