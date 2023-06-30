@@ -1,42 +1,41 @@
 <template>
   <div class="container mt-5" id="containerf">
-        <div class="row">
+    <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
-    <div class="form-container sign-up-container">
-      <form @submit.prevent="handleSignup">
-        <!-- Sign-Up Form -->
-        <h1>Mach einen Konto</h1>
-    <div class="social-container">
-  
-   
-    </div>
-        <span>Registriere dich mit E-mail</span>
-        <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
-        <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username" class="form-control form-control-lg" />
-        <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort" class="form-control form-control-lg" />
-        <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
-      </form>
-    </div>
-    <div class="form-container sign-in-container">
-      <form @submit.prevent="handleSignin">
-        <!-- Sign-In Form -->
-        <h1>Anmelden</h1>
-        <img src="../assets/vue.svg" alt="">
-        <div class="social-container">
-
-  
+        <div class="form-container sign-up-container">
+          <form @submit.prevent="handleSignup">
+            <!--Anmeldung-->
+            <h1>Mach einen Konto</h1>
+            <div class="social-container">
+            </div>
+            <span>Registriere dich mit E-mail</span>
+            <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
+            <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username"
+              class="form-control form-control-lg" />
+            <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
+              class="form-control form-control-lg" />
+            <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
+          </form>
         </div>
-        <span>Benutze dein Konto</span>
-        <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name" class="form-control" />
-        <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Passwort" class="form-control" />
-        <a href="#">Passowrt vergessen?</a>
-        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-      </form>
+        <div class="form-container sign-in-container">
+          <form @submit.prevent="handleSignin">
+            <!-- Anmelde Formular-->
+            <h1>Anmelden</h1>
+            <img src="../assets/vue.svg" alt="">
+            <div class="social-container">
+            </div>
+            <span>Benutze dein Konto</span>
+            <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
+              class="form-control" />
+            <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Passwort"
+              class="form-control" />
+            <a href="#">Passowrt vergessen?</a>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          </form>
+        </div>
+      </div>
     </div>
-   </div>
-    </div>
-
-    <!-- Sign-Up/Sign-In Panel -->
+    <!-- Anmelde Fäche -->
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
@@ -46,13 +45,12 @@
         </div>
         <div class="overlay-panel overlay-right">
           <h1>Hallo Freund</h1>
-           <img src="../assets/logo.jpg" alt="" >
+          <img src="../assets/logo.jpg" alt="">
           <p>Trage deine Angaben Ein</p>
           <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -60,13 +58,12 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-
 import { isAuthenticated } from '../auth.js';
 
-
 export default {
-  emits: ['login-success'], 
+  emits: ['login-success'],
   setup(_, { emit }) {
+    //Eintellungen Allgemein 
     const router = useRouter();
     const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
     const signupEmail = ref("");
@@ -74,36 +71,26 @@ export default {
     const signinEmail = ref("");
     const signinPassword = ref("");
     const name = ref("");
-
-
-const handleSignup = async () => {
-  try {
-    const { user, error } = await supabase.auth.signUp({
-      email: signupEmail.value,
-      password: signupPassword.value,
-    });
-
-    if (error) throw error;
-
-    console.log("User signed up successfully:", user);
-
-    // Show message to check email for verification
-    alert("Du hast ein E-mail erhalten bestätigen.");
-
-    // Redirect to home page after successful sign-up
-    router.push("/");
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-
-
-
-
+    //Neu Registrieren 
+    const handleSignup = async () => {
+      try {
+        const { user, error } = await supabase.auth.signUp({
+          email: signupEmail.value,
+          password: signupPassword.value,
+        });
+        if (error) throw error;
+        console.log("User signed up successfully:", user);
+        // Meldung 
+        alert("Du hast ein E-mail erhalten bestätigen.");
+        // Umleitung zum Login
+        router.push("/");
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+    // Anmelde einstellung
     const handleSignin = async () => {
       try {
-
         const { error, data } = await supabase.auth.signInWithPassword({
           email: signinEmail.value,
           password: signinPassword.value,
@@ -111,36 +98,35 @@ const handleSignup = async () => {
         if (error) throw error;
         const signedInUser = data.user;
         console.log("User signed in successfully:", signedInUser);
-         isAuthenticated.value = true; 
-         localStorage.setItem('user', JSON.stringify(signedInUser)); 
-        emit('login-success', signedInUser); // Emit the 'login-success' event with the signedInUser object
-        router.push("/"); // Redirect to home page after successful sign-in
+        isAuthenticated.value = true;
+        localStorage.setItem('user', JSON.stringify(signedInUser));
+        emit('login-success', signedInUser);
+        //Erfolgreiches login Umgan
+        router.push("/");
+        // Weiterleitung Zum Hauptmenu HelloWorld
       } catch (error) {
         alert(error.message);
-      } 
- 
-      
+      }
     };
-
+    //Anmelde Fläche
     const showSigninPanel = () => {
       const container = document.getElementById("containerf");
       container.classList.remove("right-panel-active");
     };
-
+    // Registrierung Fläche
     const showSignupPanel = () => {
       const container = document.getElementById("containerf");
       container.classList.add("right-panel-active");
     };
-
+    // Benutzer Information Sammeln
     const fetchUser = async () => {
       const { user: authUser } = await supabase.auth.getSession();
       user.value = authUser;
     };
-
     onMounted(async () => {
       await fetchUser();
     });
-
+    // Authoriesurng vorgang via SupaBase
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {
         user.value = null;
@@ -149,11 +135,7 @@ const handleSignup = async () => {
       }
     });
 
-
-
-
     return {
-
       signupEmail,
       signupPassword,
       signinEmail,
@@ -165,19 +147,18 @@ const handleSignup = async () => {
       showSignupPanel,
       user,
       isAuthenticated,
-
     };
   },
 };
 </script>
   
-  <style scoped>
-  @import 'bootstrap/dist/css/bootstrap.css';
+<style scoped>
+@import 'bootstrap/dist/css/bootstrap.css';
 /* Login */
 
 img {
   height: 15vh;
-  width:15vh;
+  width: 15vh;
 }
 
 h1 {
@@ -293,6 +274,7 @@ input {
 }
 
 @keyframes show {
+
   0%,
   49.99% {
     opacity: 0;
@@ -386,5 +368,4 @@ input {
   margin: 0 5px;
   height: 40px;
   width: 40px;
-}
-</style>
+}</style>

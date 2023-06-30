@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <component :is="activeComponent" v-if="user" />
-     
   </div>
-
 </template>
 
 <script>
@@ -15,12 +13,14 @@ import Firma_Kunde from './Firma_Kunde.vue';
 import { isAuthenticated } from '../auth.js';
 
 export default {
+
   components: {
     editInvoice,
     Create_Invoice,
     Inovice,
     Firma_Kunde,
   },
+
   setup() {
     const user = ref(null);
     const activeComponent = ref("");

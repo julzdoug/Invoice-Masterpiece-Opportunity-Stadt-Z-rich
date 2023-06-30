@@ -1,7 +1,7 @@
 <template>
+  <!--Seten Information-->
   <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
     <div class="page-header text-blue-d2">
-
       <h1 class="page-title text-secondary-d1">
         {{ invoiceData.invoice_number }}
         <small class="page-info">
@@ -16,255 +16,262 @@
         </a>
       </div>
     </div>
-             <div class="first_head text-center text-150 print-text-100">
-
-              <span id="first_head"  class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
+    <!--Firmen Daten-->
+    <div class="first_head text-center text-150 print-text-100">
+      <span id="first_head" class="text-default-d3">{{ companyData ? companyData.logo : 'Loading...' }}</span>
+    </div>
+    <div id="invoice-section" class="container invoice-section px-0">
+      <div class="row mt-4">
+        <div class="col-12 col-lg-12">
+          <div class="row">
+            <div class="col-12">
+              <div class="text-center text-150 print-text-100 mb-5">
+                <span class="text-default-d3 fs-6">
+                  {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name}
+                                    ${companyData.surname},
+                                    ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` :
+                    'Loading...' }}
+                </span>
+              </div>
             </div>
-  <div id="invoice-section" class="container invoice-section px-0">
-    <div class="row mt-4">
-      <div class="col-12 col-lg-12">
-        <div class="row">
-          <div class="col-12">
-            <div class="text-center text-150 print-text-100 mb-5">
-<span class="text-default-d3 fs-6">
-  {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name} ${companyData.surname}, ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` : 'Loading...' }}
-</span>
+          </div>
 
+          <div class="row align-item d-flex ms-5">
+            <div class="col-sm mt-4">
+              <!-- Kunden Daten -->
+              <div v-if="customerData">
+                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
+                }}</span>
+                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
+                }}</span>
+                <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }}, {{ customerData ?
+                  customerData.streetnumber : 'Loading...' }}</div>
+                <div class="my-1" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }}, {{
+                  customerData ? customerData.place : 'Loading...' }}</div>
+                <div class="my-1 mt-5 pt-5" v-if="invoiceData">
+                  <div class="ansprechung"></div>
+                  <b class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
+                </div>
+                <div class="col-sm-12">
+                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter Herr Name {{ customerData ? customerData.name :
+                    'Loading...' }}</div>
+                  <div class="my-1 mt-3">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
+                    unterbreiten.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4 me-5 be-1 mt-3">
+              <!-- RechnungsDaten -->
+              <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
+                <div class="my-2 d-flex justify-content-between">
+                  <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
+                  <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
+                </div>
+                <div class="my-2 d-flex justify-content-between">
+                  <div class="col-7 texts-end"> <span class="">Datum:</span></div>
+                  <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
+                </div>
+                <div class="my-2 d-flex justify-content-between">
+                  <div class="col-7 texts-end"> <span class="">UiD:</span></div>
+                  <div class="col-10 pe-5 text-end" v-if="customerData">{{ companyData ? companyData.uid_number :
+                    'Loading...' }}</div>
+                </div>
+                <div class="my-2 d-flex justify-content-between">
+                  <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
+                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.MwSt : 'Loading...' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div id="billhead" class="col-sm-11 d-flex">
+                  <table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
+                    <!-- Rechnungsangaben -->
+                    <thead>
+                      <tr class="row text-600 py-25">
+                        <th class="text-dark bg-light col-2 col-sm-1">Pos.</th>
+                        <th class="text-dark bg-light col-8 col-sm-5">Bezeichnung/Beschreibung</th>
+                        <th class="text-dark bg-light d-none d-sm-block col-sm-2">Menge</th>
+                        <th class="text-dark bg-light d-none d-sm-block col-sm-2">Preis/Stück</th>
+                        <th class="text-dark bg-light col-2 col-sm-2 text-end">PositionPreis</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-95 text-secondary-d3">
+                      <tr class="row text-300 py-25" v-for="(row, index) in invoiceData.invoice_rows" :key="index">
+                        <td class="text-dark col-2 col-sm-1">{{ index + 1 }}</td>
+                        <td class="col-8 col-sm-5">{{ row.description }}</td>
+                        <td class="d-none d-sm-block col-sm-2">{{ row.quantity }}</td>
+                        <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>
+                        <td class="col-2 col-sm-2 text-secondary-d2 text-end">{{ row.total }}.-CHF</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Kalkulation-->
+                <div class="row brc-default-l2 text-start">
+                  <div id="bill" class="col-sm-12 container text-start mt-5">
+                    <div class="row">
+                      <div class="col-3">
+                        Zwischensumme
+                      </div>
+                      <div class="col text-end">
+                      </div>
+                      <div class="col-2 text-end me-4">
+                        {{ invoiceTotal }}
+                      </div>
+                    </div>
+                    <div class="row align-items">
+                      <div class="col-5">
+                        Mehrwertsteuer
+                      </div>
+                      <div class="col text-center">
+                        7,7%
+                      </div>
+                      <div class="col-2 text-end me-4">
+                        {{ invoiceTotalWithTax }}
+                      </div>
+                    </div>
+                    <div class="row align-items-end">
+                      <div class="col">
+                        <p class="fw-bold mb-0">Rechnugsbetrag</p>ink.Material
+                      </div>
+                      <div class="col text-center">
+                        <p class="fw-bold">inkl.MwSt.</p>
+                      </div>
+                      <div class="col-2 text-end me-4">
+                        <u>
+                          <p class="fw-bold text-end">{{ finalCalculation }}</p>
+                        </u>
+                      </div>
+                    </div>
+                  </div>
+                  // Rechnungs end sätze
+                  <hr class="row brc-default-l1 mx-n1 mb-4 mt-5" />
+                  <div class="col-sm-12 container donwpart">
+                    <div class="row">
+                      <div class="col-3">Rechnungsbetrag zahlbar bis</div>
+                      <div class="col-3 text-start" v-if="invoiceData">
+                        <p class="fw-bold mb-0">{{ invoiceData.invoice_date }} + 30days</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container mt-5">
+                    <div class="row">
+                      <div class="col-4 mt-5">Freundliche Grüsse</div>
+                    </div>
+                    <div class="row mt-5">
+                      <div class="col-4" v-if="companyData">{{ companyData ? companyData.name : 'Loading...' }}{{
+                        companyData ?
+                        companyData.surname :
+                        'Loading...' }}</div>
+                    </div>
+                  </div>
+                  <br>
+                  <div id="footer" class="row col mt-5 align justify-content-start">
+                    <div class="col-sm adress mt-3 mb-2">
+                      <!-- Firmen Angaben Fussnote -->
+                      <div>
+                        <span class="text-sm text-dark align-middle">{{ companyData ? companyData.company_name :
+                          'Loading...' }}</span>
+                        <span class="text-sm text-dark align-middle">{{ companyData ? companyData.name : 'Loading...' }}{{
+                          companyData ? companyData.surname : 'Loading...' }}</span>
+                      </div>
+                      <div class="text-dark">
+                        <div class="my-1">
+                          {{ companyData ? companyData.street : 'Loading...' }}, {{ companyData ?
+                            companyData.street_number :
+                            'Loading...' }}
+                        </div>
+                        <div class="my-1">
+                          {{ companyData ? companyData.postal_code : 'Loading...' }}, {{ companyData ? companyData.place :
+                            'Loading...' }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm  mt-3 adress mb-2 ps-5 justify-content-center">
+                      <!-- Second column aligned at the center -->
+                      <div class="row">
+                        <div class="col-10 text-center">
+                          <div class="row">
+                            <div class="col text-start">
+                              <div class="text-sm-3 text-dark-m2">GLKB</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-2">
+                              <div class="text-sm ps-6 text-start text-dark">Konto:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.account : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-2">
+                              <div class="text-sm ps-6 text-start text-dark">IBAN:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.iban : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-2">
+                              <div class="text-sm ps-6 text-start text-dark">MwSt:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm mt-3 mb-2 adress justify-content-end">
+                      <!-- Third column aligned at the end -->
+                      <div class="row">
+                        <div class="col-10">
+                          <div class="row">
+                            <div class="col text-start">
+                              <div class="text-sm-3 text-dark-m2"></div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-4">
+                              <div class="text-sm text-start text-dark">Telefon:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.phone_number : 'Loading...' }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-4">
+                              <div class="text-sm text-start text-dark">Website:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.webpage : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-4">
+                              <div class="text-sm text-start text-dark">E-Mail:</div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark">{{ companyData ? companyData.email : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-
-<div class="row align-item d-flex ms-5">
-  <div class="col-sm mt-4">
-    <!-- Customer Data -->
-    <div v-if="customerData">
-      <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...' }}</span>
-      <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...' }}</span>
-      <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }}, {{ customerData ? customerData.streetnumber : 'Loading...' }}</div>
-      <div class="my-1" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }}, {{ customerData ? customerData.place : 'Loading...' }}</div>
-      <div class="my-1 mt-5 pt-5" v-if="invoiceData">
-       <div class="ansprechung"></div>
-        <b class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
       </div>
-  <div class="col-sm-12">      
-    <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter Herr Name {{ customerData ? customerData.name : 'Loading...' }}</div>
-      <div class="my-1 mt-3">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu unterbreiten.</div></div> 
     </div>
   </div>
-
-
-  <div class="col-sm-4 me-5 be-1 mt-3">
-    <!-- Invoice Data -->
-    <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
-        <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
-      </div>
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">Datum:</span></div>
-        <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
-      </div>
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">UiD:</span></div>
-        <div class="col-10 pe-5 text-end" v-if="customerData">{{ companyData ? companyData.uid_number : 'Loading...' }}</div>
-      </div>
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
-        <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
-      </div>
-    </div>
- </div>
- <div class="container">
- <div class="row">
-  <div id="billhead" class="col-sm-11 d-flex">
-<table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
-  <!-- Table content -->
-  <thead>
-    <tr class="row text-600 py-25">
-      <th class="text-dark bg-light col-2 col-sm-1">Pos.</th>
-      <th class="text-dark bg-light col-8 col-sm-5">Bezeichnung/Beschreibung</th>
-      <th class="text-dark bg-light d-none d-sm-block col-sm-2">Menge</th>
-      <th class="text-dark bg-light d-none d-sm-block col-sm-2">Preis/Stück</th>
-      <th class="text-dark bg-light col-2 col-sm-2 text-end">PositionPreis</th>
-    </tr>
-  </thead>
-  <tbody class="text-95 text-secondary-d3">
-    <tr class="row text-300 py-25" v-for="(row, index) in invoiceData.invoice_rows" :key="index">
-      <td class="text-dark col-2 col-sm-1">{{ index + 1 }}</td>
-      <td class="col-8 col-sm-5">{{ row.description }}</td>
-      <td class="d-none d-sm-block col-sm-2">{{ row.quantity }}</td>
-      <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>
-      <td class="col-2 col-sm-2 text-secondary-d2 text-end">{{ row.total }}.-CHF</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-          <div  class="row brc-default-l2 text-start">
-
-          <div id="bill" class="col-sm-12 container text-start mt-5">
-            <div class="row">
-              <div class="col-3">
-                Zwischensumme
-              </div>
-              <div class="col text-end">
-
-              </div>
-              <div class="col-2 text-end me-4">
-                {{ invoiceTotal }}
-              </div>
-            </div>
-            <div class="row align-items">
-              <div class="col-5">
-                Mehrwertsteuer
-              </div>
-              <div class="col text-center">
-                7,7%
-              </div>
-              <div class="col-2 text-end me-4">
-                {{ invoiceTotalWithTax }}
-              </div>
-            </div>
-            <div class="row align-items-end">
-              <div class="col">
-                <p class="fw-bold mb-0">Rechnugsbetrag</p>ink.Material
-              </div>
-              <div class="col text-center">
-                <p class="fw-bold">inkl.MwSt.</p>
-              </div>
-              <div class="col-2 text-end me-4">
-                <u><p class="fw-bold text-end">{{ finalCalculation }}</p></u>
-              </div>
-            </div>
-          </div>
-               <hr class="row brc-default-l1 mx-n1 mb-4 mt-5" />
-          <div class="col-sm-12 container donwpart">
-            <div class="row">
-              <div class="col-3">Rechnungsbetrag zahlbar bis</div>
-              <div class="col-3 text-start" v-if="invoiceData">
-                <p class="fw-bold mb-0">{{ invoiceData.invoice_date }} + 30days</p>
-              </div>
-            </div>
-          </div>
-          <div class="container mt-5">
-            <div class="row">
-              <div class="col-4 mt-5">Freundliche Grüsse</div>
-            </div>
-            <div class="row mt-5">
-              <div class="col-4" v-if="companyData">{{ companyData ? companyData.name : 'Loading...' }}{{ companyData ?
-                companyData.surname :
-                'Loading...' }}</div>
-            </div>
-</div>
-
-            <br>
-<div id="footer" class="row col mt-5 align justify-content-start">
-  <div class="col-sm adress mt-3 mb-2">
-    <!-- First column aligned at the start -->
-    <div>
-      <span class="text-sm text-dark align-middle">{{ companyData ? companyData.company_name : 'Loading...' }}</span>
-      <span class="text-sm text-dark align-middle">{{ companyData ? companyData.name : 'Loading...' }}{{
-        companyData ? companyData.surname : 'Loading...' }}</span>
-    </div>
-    <div class="text-dark">
-      <div class="my-1">
-        {{ companyData ? companyData.street : 'Loading...' }}, {{ companyData ? companyData.street_number :
-          'Loading...' }}
-      </div>
-      <div class="my-1">
-        {{ companyData ? companyData.postal_code : 'Loading...' }}, {{ companyData ? companyData.place :
-          'Loading...' }}
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-sm  mt-3 adress mb-2 ps-5 justify-content-center">
-    <!-- Second column aligned at the center -->
-    <div class="row">
-      <div class="col-10 text-center">
-        <div class="row">
-          <div class="col text-start">
-            <div class="text-sm-3 text-dark-m2">GLKB</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-2">
-            <div class="text-sm ps-6 text-start text-dark">Konto:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.account : 'Loading...' }}</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-2">
-            <div class="text-sm ps-6 text-start text-dark">IBAN:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.iban : 'Loading...' }}</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-2">
-            <div class="text-sm ps-6 text-start text-dark">MwSt:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-sm mt-3 mb-2 adress justify-content-end">
-    <!-- Third column aligned at the end -->
-    <div class="row">
-      <div class="col-10">
-        <div class="row">
-          <div class="col text-start">
-            <div class="text-sm-3 text-dark-m2"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <div class="text-sm text-start text-dark">Telefon:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.phone_number : 'Loading...' }}</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <div class="text-sm text-start text-dark">Website:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.webpage : 'Loading...' }}</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <div class="text-sm text-start text-dark">E-Mail:</div>
-          </div>
-          <div class="col-7 text-end">
-            <div class="text-sm text-dark">{{ companyData ? companyData.email : 'Loading...' }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-</div>
-
-</div>
-    </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </template> 
 
 <script>
@@ -273,90 +280,57 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { createClient } from '@supabase/supabase-js';
 
-
-
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default {
+  // PDF umwandlung
+  methods: {
+    async printInvoice() {
+      const invoiceSection = document.getElementById('invoice-section');
+      const headerSection = document.getElementById('first_head');
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const sectionHeight = invoiceSection.offsetHeight;
+      const contentHeight = 227;
+      const marginHeight = 30;
+      const totalPages = Math.ceil(sectionHeight / contentHeight);
 
-  
-methods: {
-  async printInvoice() {
-    const invoiceSection = document.getElementById('invoice-section');
-    const headerSection = document.getElementById('first_head');
+      let y = 0;
+      let currentPage = 1;
 
-    // Create a new jsPDF instance
-    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      for (let i = 0; i < totalPages; i++) {
 
-    // Get the total height of the invoice section
-    const sectionHeight = invoiceSection.offsetHeight;
+        doc.setPageSize('a4');
+        doc.addPage();
 
-    // Define the height for each page (excluding the header and margin)
-    const contentHeight = 227; // Adjust this value as needed
-    const marginHeight = 30; // Adjust this value as needed
+        if (i > 0) {
+          doc.setFontSize(12);
+          doc.text(`Page ${currentPage}`, 10, 10);
+          y = marginHeight;
+          currentPage++;
+          isFirstPage = false;
+        }
+        const clonedSection = invoiceSection.cloneNode(true);
+        const sectionContent = clonedSection.querySelector('.invoice-section-content');
 
-    // Calculate the number of pages (including the first page)
-    const totalPages = Math.ceil(sectionHeight / contentHeight);
+        sectionContent.style.height = `${contentHeight - marginHeight}px`;
+        clonedSection.style.position = 'absolute';
+        clonedSection.style.top = `${y}px`;
 
-    // Set the initial y position for the content
-    let y = 0;
+        document.body.appendChild(clonedSection);
 
-    // Define the current page number
-    let currentPage = 1;
+        const canvas = await html2canvas(clonedSection, { useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
 
-    // Loop through each page
-    for (let i = 0; i < totalPages; i++) {
-      // Set the page height and width
-      doc.setPageSize('a4');
-      doc.addPage();
-
-      // If it's not the first page, draw the header manually
-      if (i > 0) {
-        doc.setFontSize(12);
-        doc.text(`Page ${currentPage}`, 10, 10); // Adjust the position of the page number
-
-        // Adjust the y position to account for the header
-        y = marginHeight;
+        doc.addImage(imgData, 'PNG', 0, 0);
+        document.body.removeChild(clonedSection);
         currentPage++;
-        isFirstPage = false;
       }
-
-      // Clone the invoice section to avoid modifying the original element
-      const clonedSection = invoiceSection.cloneNode(true);
-
-      // Adjust the height of the cloned section to fit the content
-      const sectionContent = clonedSection.querySelector('.invoice-section-content');
-      sectionContent.style.height = `${contentHeight - marginHeight}px`;
-
-      // Move the cloned section to the correct position on the page
-      clonedSection.style.position = 'absolute';
-      clonedSection.style.top = `${y}px`;
-
-      // Append the cloned section to the document body
-      document.body.appendChild(clonedSection);
-
-      // Use html2canvas to render the cloned section as an image
-      const canvas = await html2canvas(clonedSection, { useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
-
-      // Add the image to the PDF document
-      doc.addImage(imgData, 'PNG', 0, 0);
-
-      // Remove the cloned section from the document body
-      document.body.removeChild(clonedSection);
-
-      // Increment the current page number
-      currentPage++;
+      doc.save('invoice.pdf');
     }
-
-    // Save the PDF document
-    doc.save('invoice.pdf');
-  }
-},
-
-
+  },
+  // Angaben der Zahlen und wie man sie Speichert 
   name: 'Invoices',
   props: ['invoiceNumber'],
   setup(props) {
@@ -367,7 +341,8 @@ methods: {
     const invoiceData = ref({});
     const companyData = ref(null);
     const customerData = ref(null);
-const showPageNumbers = ref(false);
+    const showPageNumbers = ref(false);
+    // Rechnungsdaten Laden
     const fetchInvoiceData = async () => {
       try {
         const { data, error } = await supabase
@@ -393,7 +368,7 @@ const showPageNumbers = ref(false);
         console.error('Failed to fetch invoice data:', error);
       }
     };
-
+    // Firmen Daten Laden
     const fetchCompanyData = async () => {
       const companyId = invoiceData.value?.company_id;
 
@@ -420,7 +395,7 @@ const showPageNumbers = ref(false);
         console.error('Failed to fetch company data:', error);
       }
     };
-
+    // Kunden Daten Laden
     const fetchCustomerData = async () => {
       const customerId = invoiceData.value?.customer_id;
 
@@ -447,7 +422,7 @@ const showPageNumbers = ref(false);
         console.error('Failed to fetch customer data:', error);
       }
     };
-
+    // Bestellungs positionen sammeln
     const fetchInvoiceRowsByNumber = async (invoiceNumber) => {
       try {
         const { data, error } = await supabase
@@ -467,27 +442,23 @@ const showPageNumbers = ref(false);
         console.error('Failed to fetch invoice rows:', error);
       }
     };
-
+    // Nummer Anpassen
     const formatNumber = (number) => {
       const parts = number.toFixed(2).split('.');
       const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "'");
       return integerPart + '.' + parts[1] + '.-CHF';
     };
-
-        const exportToPDF = async () => {
-      // Get the HTML content of the invoice section
+    // PDF Expotiern
+    const exportToPDF = async () => {
       const invoiceSection = document.getElementById('invoice-section');
 
-      // Create the configuration for html2pdf
       const config = {
-        margin: [0, 0, 0, 0], // Set margin to 0 on all sides
+        margin: [0, 0, 0, 0],
         filename: 'invoice.pdf',
         image: { type: 'png', quality: 1 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       };
-
-      // Generate the PDF using html2pdf
       await html2pdf().set(config).from(invoiceSection).save();
     };
 
@@ -538,9 +509,9 @@ const showPageNumbers = ref(false);
       invoiceTotalWithTax,
       finalCalculation,
       exportToPDF,
-     printInvoice,  
-   isReadyToPrint,  
-    showPageNumbers, 
+      printInvoice,
+      isReadyToPrint,
+      showPageNumbers,
     };
   },
 };
@@ -550,9 +521,6 @@ const showPageNumbers = ref(false);
 
 
 <style>
-
-
-
 body {
   size: 0;
   margin-top: 0;
@@ -560,11 +528,10 @@ body {
 }
 
 .invoice-section {
- width:210;
- height:197;
- font-size:70%;
- margin-top: auto;
-  /* Example styles */
+  width: 210;
+  height: 197;
+  font-size: 70%;
+  margin-top: auto;
   background-color: #ffffff;
   padding: 20px;
   border: 5px solid #ffffff;
@@ -572,8 +539,9 @@ body {
 }
 
 .adress {
-  font-size:xx-small;
+  font-size: xx-small;
 }
+
 .downpart {
   margin-top: 20%;
 }
@@ -726,17 +694,16 @@ hr {
     font-size: 14px;
   }
 
-.invoice-section {
- width:auto;
- height:auto;
- font-size:medium;
- margin-top: auto;
-  /* Example styles */
-  background-color: #ffffff;
-  padding:2%;
-  border: 2px solid #ffffff;
-  border-radius: 2px;
-}
+  .invoice-section {
+    width: auto;
+    height: auto;
+    font-size: medium;
+    margin-top: auto;
+    background-color: #ffffff;
+    padding: 2%;
+    border: 2px solid #ffffff;
+    border-radius: 2px;
+  }
 
   .page-title {
     font-size: 1.5rem;
@@ -747,27 +714,21 @@ hr {
   }
 
 
-.page-header {
-  margin:auto;
-  padding-bottom:2%;
-  padding-top:content;
-  border-bottom: 1px dotted #e2e2e2;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-
-
-
+  .page-header {
+    margin: auto;
+    padding-bottom: 2%;
+    padding-top: content;
+    border-bottom: 1px dotted #e2e2e2;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    align-items: center;
+  }
 
   .mb-4,
   .my-4 {
     margin: 0 !important;
   }
-}
-
-</style>
+}</style>
