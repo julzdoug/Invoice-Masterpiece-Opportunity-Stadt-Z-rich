@@ -3,6 +3,8 @@ Prototyp Demo es folgen update um es Kommerziell zur verügung zu stellenn
 Version 1.0
 Rechnungs-App
 Erstellt von Jules Schwarz
+Erstellt mit Vue3, Node, Bootstrap, API Supabase, jsPDFmake.
+
 
 Demo-Version
 Eine Demo-Version der Anwendung ist verfügbar unter: https://invoicejules.netlify.app
@@ -41,7 +43,7 @@ Version 1.0
 
 Invoice App
 Created by Jules Schwarz
-
+Use Vue3, Node, Bootstrap, API Supabase, jsPDFmake.
 Demo Version
 A demo version of the application is available at: https://invoicejules.netlify.app
 
