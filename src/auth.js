@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { supabase } from './supabase.js';
 
+// Supabase Angaben für die Authentiefierung
 export const isAuthenticated = ref(false);
 
 export const checkAuth = () => {
@@ -21,20 +22,14 @@ export const login = async (email, password) => {
     });
     if (error) throw error;
     const user = data.user;
-    isAuthenticated.value = true; // Update the authentication state
-    localStorage.setItem('user', JSON.stringify(user)); // Store the user object in local storage
-    return user; // Return the authenticated user object
+    isAuthenticated.value = true;
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
   } catch (error) {
-    throw error.message; // Throw an error message if login fails
+    throw error.message;
   }
 };
-
-// Function to check for stored authentication token during app initialization
-
-
-// Function to clear authentication token and reset the authentication state
 export const logout = () => {
-  
   localStorage.removeItem('user');
   isAuthenticated.value = false;
 };

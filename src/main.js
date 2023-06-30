@@ -11,16 +11,16 @@ const app = createApp(App);
 app.use(router);
 
 supabase.auth.onAuthStateChange((event, session) => {
-  isAuthenticated.value = session !== null; // Update isAuthenticated based on the session state
+  isAuthenticated.value = session !== null; // Update Auhtentiefierung von Session 
 });
 
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && !isAuthenticated.value) {
-    next({ name: 'Login' }); // Redirect to the login page if not authenticated
+    next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
   } else if (to.name === 'Login' && isAuthenticated.value) {
-    next({ name: 'HelloWorld' }); // Redirect to the HelloWorld page if already authenticated and trying to access the login page
+    next({ name: 'HelloWorld' }); // Um leitung zum Hauptmenu HelloWorld
   } else {
-    next(); // Continue to the next route
+    next(); // Weiter leiten zu nächste Route
   }
 });
 

@@ -1,18 +1,11 @@
 <template>
+  <!--Navigation Balken-->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarText"
-        aria-controls="navbarText"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
@@ -20,12 +13,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" @click="handleMenuClick('editInvoice')">Rechnung Ändern</a> -->
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" @click="handleMenuClick('Invoices')">Rechnungen</a> -->
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
@@ -48,7 +35,6 @@ import { supabase } from '../supabase';
 const route = useRoute();
 const router = useRouter();
 
-
 async function signOut() {
   await supabase.auth.signOut();
   router.push({ name: 'Login' }); // Redirect to Login component after logout
@@ -62,8 +48,6 @@ function handleMenuClick(componentName) {
   router.push({ name: componentName });
 }
 
-
-
 </script>
 
 <style scoped>
@@ -72,16 +56,17 @@ nav {
   color: white;
   height: 20vh;
 }
+
 .logout {
-    display: block;
-    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
-  
-  
-    color: var(--bs-nav-link-color);
-    text-decoration: none;
-    background: 0 0;
-    border: 0;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+  display: block;
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+
+
+  color: var(--bs-nav-link-color);
+  text-decoration: none;
+  background: 0 0;
+  border: 0;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 }
 
 .Zachnung {

@@ -2,11 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Login from '../src/components/Login.vue';
 import HelloWorld from '../src/components/HelloWorld.vue';
-
 import createInvoice from '../src/components/createInvoice.vue';
 import Invoices from '../src/components/Invoices.vue';
 import Firma_Kunde from '../src/components/Firma_Kunde.vue';
-// Import the MainLayout component
 import MainLayout from '../src/components/MainLayout.vue';
 
 import { isAuthenticated } from '../src/auth.js';
@@ -22,7 +20,6 @@ const routes = [
         component: HelloWorld,
         meta: { requiresAuth: true },
       },
- 
       {
         path: '/createInvoice',
         name: 'createInvoice',
@@ -30,14 +27,13 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-    path: '/invoices/:invoiceNumber',
-    name: 'Invoices',
-    component: Invoices,
-    props: true,
+        path: '/invoices/:invoiceNumber',
+        name: 'Invoices',
+        component: Invoices,
+        props: true,
         meta: { requiresAuth: true },
       },
-
-     {
+      {
         path: '/Firma_Kunde',
         name: 'Firma_Kunde',
         component: Firma_Kunde,
@@ -52,7 +48,6 @@ const routes = [
   },
 ];
 
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -66,7 +61,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router; 
+export default router;
 
 
 

@@ -1,60 +1,64 @@
 <template>
-<h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
-<div class="row">
-  <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
-    <h1 class="fs-5">Firma oder Kunde:</h1>
+  <!--Titel -->
+  <h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
+  <div class="row">
+    <!--Auswahl-->
+    <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
+      <h1 class="fs-5">Firma oder Kunde:</h1>
+    </div>
+    <div class="col-md-3 col-9 d-flex justify-content-center align-items-center">
+      <select v-model="selectedTable" class="form-select mt-2 custom-select w-100" aria-label="Default select example">
+        <option disabled value="">Kunde oder Frima</option>
+        <option value="customer">Kunde</option>
+        <option value="company">Firma</option>
+      </select>
+    </div>
+    <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
+      <h1 class="fs-5">Name Erstellen oder Ändern:</h1>
+    </div>
+    <div class="col-md-3 col-9 d-flex justify-content-center align-items-center mt-2">
+      <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3 w-100"
+        aria-label="Default select example">
+        <option disabled value="">Bitte Wählen</option>
+        <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
+          {{ entry.name }}
+        </option>
+      </select>
+    </div>
   </div>
-  <div class="col-md-3 col-9 d-flex justify-content-center align-items-center">
-    <select v-model="selectedTable" class="form-select mt-2 custom-select w-100" aria-label="Default select example">
-      <option disabled value="">Kunde oder Frima</option>
-      <option value="customer">Kunde</option>
-      <option value="company">Firma</option>
-    </select>
-  </div>
-  <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
-    <h1 class="fs-5">Name Erstellen oder Ändern:</h1>
-  </div>
-  <div class="col-md-3 col-9 d-flex justify-content-center align-items-center mt-2">
-    <select v-if="selectedTable && entries[selectedTable]" v-model="selectedEntry" class="form-select mt-3 w-100" aria-label="Default select example">
-      <option disabled value="">Bitte Wählen</option>
-      <option v-for="entry in entries[selectedTable]" :key="entry.id" :value="entry">
-        {{ entry.name }}
-      </option>
-    </select>
-  </div>
-</div>
-
-
-
+  <!-- Wenn Firma Gewählt Fläche-->
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
-               <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-      </div>
-  <div class="col-8 d-flex ms-3 justify-content-center">
-    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Ändern'}}</button>
-  </div>
-  <div class="col-2 d-flex justify-content-end">
-  </div>
-</div>
+          <div class="row">
+            <div class="col-2 d-flex justify-content-start">
+            </div>
+            <div class="col-8 d-flex ms-3 justify-content-center">
+              <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{
+                isEditing ? 'Cancel' : 'Neu' }}</button>
+              <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{
+                isEditing ? 'Cancel' : 'Ändern' }}</button>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+            </div>
+          </div>
           <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
             <div class="input-with-image bg-primary">
-<template>
-  <div class="image-preview" v-show="isEditing">
-    <input type="file" class="form-control" id="logoInput" ref="logoInput" @change="handleLogoChange($event)" />
-    <div class="image-preview" v-if="logoPreviewDataUrl">
-      <img :src="logoPreviewDataUrl" alt="Logo Preview" class="preview-image" ref="logoPreview" />
-    </div>
-  </div>
-  <div class="image-preview" v-show="!isEditing">
-    <img :src="getLogoDataUrl(companyData.logo)" alt="Company Logo" class="preview-image" ref="logoPreview" />
-  </div>
-</template>
-
+              <template>
+                <div class="image-preview" v-show="isEditing">
+                  <input type="file" class="form-control" id="logoInput" ref="logoInput"
+                    @change="handleLogoChange($event)" />
+                  <div class="image-preview" v-if="logoPreviewDataUrl">
+                    <img :src="logoPreviewDataUrl" alt="Logo Preview" class="preview-image" ref="logoPreview" />
+                  </div>
+                </div>
+                <div class="image-preview" v-show="!isEditing">
+                  <img :src="getLogoDataUrl(companyData.logo)" alt="Company Logo" class="preview-image"
+                    ref="logoPreview" />
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -148,7 +152,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-           Nummer Bitte eintragen.
+            Nummer Bitte eintragen.
           </div>
         </div>
       </div>
@@ -227,7 +231,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-           Telefon Nummer Bitte eintragen.
+            Telefon Nummer Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -258,7 +262,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-           IBAN Bitte eintragen.
+            IBAN Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -307,42 +311,40 @@
           </div>
         </div>
       </div>
-     <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany" :disabled="deleteClicked">löschen</button> 
-  </div>
-  <div class="col-8 d-flex justify-content-center">
-
-  </div>
-  <div class="col-2 d-flex justify-content-end">
-    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany" :disabled="deleteClicked">Erstellen</button>
-    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges" :disabled="deleteClicked">Speichern</button>
-  </div>
-</div>
-
-
-
+      <div class="row">
+        <div class="col-2 d-flex justify-content-start">
+          <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCompany"
+            :disabled="deleteClicked">löschen</button>
+        </div>
+        <div class="col-8 d-flex justify-content-center">
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+          <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCompany"
+            :disabled="deleteClicked">Erstellen</button>
+          <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges"
+            :disabled="deleteClicked">Speichern</button>
+        </div>
+      </div>
+      <!--Wenn Kunde gewählt-->
     </form>
   </div>
   <div v-else-if="selectedTable === 'customer'">
     <form class="container mt-5" @submit.prevent="submitCustomerForm">
-
-                               <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-
-  </div>
-  <div class="col-8 d-flex justify-content-center">
-    <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
-        'Ändern'
-      }}</button>
-  </div>
-  <div class="col-2 d-flex justify-content-end">
-
-  </div>
-</div>
-
- <div class="row">
+      <div class="row">
+        <div class="col-2 d-flex justify-content-start">
+        </div>
+        <div class="col-8 d-flex justify-content-center">
+          <button class="btn btn-primary btn-md" v-if="selectedTable && !selectedEntry" @click="toggleEditMode">{{
+            isEditing ? 'Cancel' : 'Neu' }}</button>
+          <button class="btn btn-primary btn-md" v-if="selectedTable && selectedEntry" @click="toggleEditMode">{{
+            isEditing ? 'Cancel' :
+            'Ändern'
+          }}</button>
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
@@ -354,7 +356,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-           Vorname Bitte eintragen.
+            Vorname Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -430,7 +432,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-             Ort Bitte eintragen.
+            Ort Bitte eintragen.
           </div>
         </div>
       </div>
@@ -451,31 +453,30 @@
         </div>
       </div>
       <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-    <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer" :disabled="deleteClicked">löschen</button>
-  </div>
-  <div class="col-8 d-flex justify-content-center">
-
-  </div>
-  <div class="col-2 d-flex justify-content-end">
-    <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer" :disabled="deleteClicked">Erstellen</button>
-    <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges" :disabled="deleteClicked">Speichern</button>
-  </div>
-</div>
+        <div class="col-2 d-flex justify-content-start">
+          <button class="btn btn-danger btn-lg" v-if="selectedTable && selectedEntry" @click="deleteCustomer"
+            :disabled="deleteClicked">löschen</button>
+        </div>
+        <div class="col-8 d-flex justify-content-center">
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+          <button class="btn btn-success btn-lg" v-if="selectedTable && !selectedEntry" @click="createNewCustomer"
+            :disabled="deleteClicked">Erstellen</button>
+          <button class="btn btn-success btn-lg" v-if="selectedTable && selectedEntry" @click="saveChanges"
+            :disabled="deleteClicked">Speichern</button>
+        </div>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
-
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-
 
 function getFormData(selectedTable, customerData, companyData) {
   if (selectedTable === 'customer') {
@@ -512,15 +513,16 @@ function getFormData(selectedTable, customerData, companyData) {
   }
 }
 
-
 export default {
 
   methods: {
+    // Funktion Wie mit dem Logo umzugehen Funkctionier noch nicht wie vorgesehen
     handleLogoChange(event) {
       const file = event.target.files[0];
       this.logoPreviewDataUrl = URL.createObjectURL(file);
       this.uploadLogo(file);
     },
+
     async uploadLogo(file) {
       try {
         const { data, error } = await supabase.storage
@@ -537,6 +539,7 @@ export default {
         console.error('Failed to upload logo image:', error);
       }
     },
+
     getLogoDataUrl(logo) {
       if (logo) {
         return 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, logo));
@@ -544,13 +547,11 @@ export default {
       return '';
     }
   },
-
-  
+  // Einstellungen
   setup() {
     const logoInput = ref(null);
     const logoPreview = ref(null);
-
-       const deleteClicked = ref(false);
+    const deleteClicked = ref(false);
     const createClicked = ref(false);
     const saveClicked = ref(false);
     const router = useRouter();
@@ -589,15 +590,12 @@ export default {
       postcode: '',
       place: '',
       email: '',
-
     });
     const customerId = ref(null);
     const isEditing = ref(false);
     const selectedCustomer = ref(null);
     const customer = ref([]);
-
-
-
+    // Wechsel Logo Funktione. funktioniert noch nicht
     async function handleLogoChange(event) {
       const file = event.target.files[0];
       if (file) {
@@ -618,55 +616,44 @@ export default {
         logoPreview.value.src = null;
       }
     }
-
-
-
+    // Eingaben Speichern
     async function saveChanges() {
-           if (!saveClicked.value) {
+      if (!saveClicked.value) {
         saveClicked.value = true;
-      try {
-        if (selectedTable.value === 'customer' && customerId.value) {
-          // Update existing customer
-          const { data, error } = await supabase
-            .from('customer')
-            .update(getFormData(selectedTable.value, customerData.value, companyData.value))
-            .eq('id', customerId.value);
+        try {
+          if (selectedTable.value === 'customer' && customerId.value) {
+            // Update bestehender Kunde
+            const { data, error } = await supabase
+              .from('customer')
+              .update(getFormData(selectedTable.value, customerData.value, companyData.value))
+              .eq('id', customerId.value);
 
-          if (error) {
-            throw new Error(error.message);
+            if (error) {
+              throw new Error(error.message);
+            }
+            console.log('Customer data updated successfully!');
+          } else if (selectedTable.value === 'company' && companyId.value) {       
+            const { data, error } = await supabase
+              .from('company')
+              .update(getFormData(selectedTable.value, customerData.value, companyData.value))
+              .eq('id', companyId.value);
+            if (error) {
+              throw new Error(error.message);
+            }
+            console.log('Company data updated successfully!');
+          } else {  
+            throw new Error('Invalid table or entry ID');
           }
-          // Handle success or show appropriate message to the user
-          console.log('Customer data updated successfully!');
-           
-        } else if (selectedTable.value === 'company' && companyId.value) {
-          // Update existing company
-          const { data, error } = await supabase
-            .from('company')
-            .update(getFormData(selectedTable.value, customerData.value, companyData.value))
-            .eq('id', companyId.value);
-
-          if (error) {
-            throw new Error(error.message);
-          }
-        
-          // Handle success or show appropriate message to the user
-          console.log('Company data updated successfully!');
-          
-        } else {
-          // Handle the case when the selected table or entry ID is not available
-          throw new Error('Invalid table or entry ID');
+        } catch (error) {
+          console.error('Error saving changes:', error.message);   
         }
-      } catch (error) {
-        console.error('Error saving changes:', error.message);
-        // Show an error message to the user or handle the error appropriately
-      }
-      finally {
-        router.push({ name: 'HelloWorld' });
+        finally {
+          router.push({ name: 'HelloWorld' });
           saveClicked.value = false;
         }
       }
     }
-
+    // Umgang mit neuem Kunde
     async function handleNewCustomer() {
       if (isEmptyForm()) {
         customerData.value = {
@@ -682,7 +669,7 @@ export default {
         isEditing.value = true;
       }
     }
-
+    // Lade Kunde und Frima Liste
     async function loadCustomerList() {
       try {
         const { data: customerData, error: customerError } = await supabase
@@ -710,105 +697,99 @@ export default {
         console.error('Failed to fetch customer and company lists:', error);
       }
     }
-
+    // Herstellung Firma eingaben
     async function createNewCompany() {
-  if (!createClicked.value) {
+      if (!createClicked.value) {
         createClicked.value = true;
-      try {
-        const { data, error } = await supabase
-          .from('company')
-          .insert([
-            {
-              logo: companyData.value.logo,
-              company_name: companyData.value.company_name,
-              profession: companyData.value.profession,
-              name: companyData.value.name,
-              surname: companyData.value.surname,
-              street: companyData.value.street,
-              street_number: companyData.value.street_number,
-              postal_code: companyData.value.postal_code,
-              place: companyData.value.place,
-              uid_number: companyData.value.uid_number,
-              account: companyData.value.account,
-              iban_number: companyData.value.iban_number,
-              phone_number: companyData.value.phone_number,
-              webpage: companyData.value.webpage,
-              email: companyData.value.email,
-              MwSt: companyData.value.MwSt,
-              bank: companyData.value.bank,
-            },
-          ]);
-
-        if (error) {
+        try {
+          const { data, error } = await supabase
+            .from('company')
+            .insert([
+              {
+                logo: companyData.value.logo,
+                company_name: companyData.value.company_name,
+                profession: companyData.value.profession,
+                name: companyData.value.name,
+                surname: companyData.value.surname,
+                street: companyData.value.street,
+                street_number: companyData.value.street_number,
+                postal_code: companyData.value.postal_code,
+                place: companyData.value.place,
+                uid_number: companyData.value.uid_number,
+                account: companyData.value.account,
+                iban_number: companyData.value.iban_number,
+                phone_number: companyData.value.phone_number,
+                webpage: companyData.value.webpage,
+                email: companyData.value.email,
+                MwSt: companyData.value.MwSt,
+                bank: companyData.value.bank,
+              },
+            ]);
+          if (error) {
+            console.error('Failed to create a new customer:', error);
+          } else {
+            companyId.value = data[0].id;
+            selectedCompany.value = data[0].id;
+            isEditing.value = true;
+            await loadCustomerList();           
+          }
+        } catch (error) {
           console.error('Failed to create a new customer:', error);
-        } else {
-          companyId.value = data[0].id;
-          selectedCompany.value = data[0].id; // Select the newly created customer
-          isEditing.value = true;
-                    await loadCustomerList();
-                    // Reload the customer list after creating a new customer
         }
-      } catch (error) {
-        console.error('Failed to create a new customer:', error);
-      }
-finally {
-   router.push({ name: 'HelloWorld' });
+        finally {
+          router.push({ name: 'HelloWorld' });
           createClicked.value = false;
         }
       }
 
     }
-
+    //Hertsellung neuer Kunde
     async function createNewCustomer() {
-if (!createClicked.value) {
+      if (!createClicked.value) {
         createClicked.value = true;
-      try {
-        const { data, error } = await supabase
-          .from('customer')
-          .insert([
-            {
-              name: customerData.value.name,
-              surname: customerData.value.surname,
-              street: customerData.value.street,
-              streetnumber: customerData.value.streetnumber,
-              postcode: customerData.value.postcode,
-              place: customerData.value.place,
-              email: customerData.value.email,
-            },
-          ]);
-
-        if (error) {
+        try {
+          const { data, error } = await supabase
+            .from('customer')
+            .insert([
+              {
+                name: customerData.value.name,
+                surname: customerData.value.surname,
+                street: customerData.value.street,
+                streetnumber: customerData.value.streetnumber,
+                postcode: customerData.value.postcode,
+                place: customerData.value.place,
+                email: customerData.value.email,
+              },
+            ]);
+          if (error) {
+            console.error('Failed to create a new customer:', error);
+          } else {
+            customerId.value = data[0].id;
+            selectedCustomer.value = data[0].id; // Neu Hergestellten Kunden
+            isEditing.value = true;
+            await loadCustomerList(); // Wieder neu laden Kunden Liste
+          }
+        } catch (error) {
           console.error('Failed to create a new customer:', error);
-        } else {
-          customerId.value = data[0].id;
-          selectedCustomer.value = data[0].id; // Select the newly created customer
-          isEditing.value = true;
-            
-          await loadCustomerList(); // Reload the customer list after creating a new customer
         }
-      } catch (error) {
-        console.error('Failed to create a new customer:', error);
-      }
-      finally {
-        router.push({ name: 'HelloWorld' });
+        finally {
+          router.push({ name: 'HelloWorld' });
           createClicked.value = false;
         }
       }
     }
-
+    //Lade Kunden Daten
     async function loadCustomerData() {
       if (!selectedTable.value || !selectedEntry.value) {
         clearFormData();
         return;
       }
-
       try {
         const { data, error } = await supabase
           .from(selectedTable.value)
           .select('*')
           .eq('id', selectedEntry.value)
           .single();
-
         if (error) {
           console.error(`Failed to fetch ${selectedTable.value} data:`, error);
         } else {
@@ -824,75 +805,69 @@ if (!createClicked.value) {
         console.error(`Failed to fetch ${selectedTable.value} data:`, error);
       }
     }
-
-
-
-      async function deleteCompany() {
-         if (!deleteClicked.value) {
+    // Lösche Firma
+    async function deleteCompany() {
+      if (!deleteClicked.value) {
         deleteClicked.value = true;
-      const customerIdToDelete = companyId.value;
-      if (customerIdToDelete) {
-        try {
-          const { data, error } = await supabase
-            .from('company')
-            .delete()
-            .match({ id: customerIdToDelete });
+        const customerIdToDelete = companyId.value;
+        if (customerIdToDelete) {
+          try {
+            const { data, error } = await supabase
+              .from('company')
+              .delete()
+              .match({ id: customerIdToDelete });
 
-          if (error) {
-            console.error('Failed to delete customer:', error);
-          } else {
-            // Remove the deleted customer from the form
-            selectedCustomer.value = null;
+            if (error) {
+              console.error('Failed to delete customer:', error);
+            } else {
+              // Remove the deleted customer from the form
+              selectedCustomer.value = null;
               // Optionally, you can reload the customer list after deleting the customer
-            await loadCustomerList();
-          }
-        } catch (error) {
-          console.error('Failed to delete customer:', error);
-        }
-        finally {
-         router.push({ name: 'HelloWorld' });
-          deleteClicked.value = false;
-        }
-      }
-      } else {
-        console.error('No customer selected to delete');
-      }
-    }
-
-
-
-    async function deleteCustomer() {
-        if (!deleteClicked.value) {
-        deleteClicked.value = true;
-      const customerIdToDelete = customerId.value;
-      if (customerIdToDelete) {
-        try {
-          const { data, error } = await supabase
-            .from('customer')
-            .delete()
-            .match({ id: customerIdToDelete });
-
-          if (error) {
+              await loadCustomerList();
+            }
+          } catch (error) {
             console.error('Failed to delete customer:', error);
-          } else {
-            // Remove the deleted customer from the form
-            selectedCustomer.value = null;
-
           }
-        } catch (error) {
-          console.error('Failed to delete customer:', error);
-        } 
-         finally {
-          router.push({ name: 'HelloWorld' });
-          deleteClicked.value = false;
+          finally {
+            router.push({ name: 'HelloWorld' });
+            deleteClicked.value = false;
+          }
         }
-      }
       } else {
         console.error('No customer selected to delete');
       }
     }
+    //Lösche Kunde
+    async function deleteCustomer() {
+      if (!deleteClicked.value) {
+        deleteClicked.value = true;
+        const customerIdToDelete = customerId.value;
+        if (customerIdToDelete) {
+          try {
+            const { data, error } = await supabase
+              .from('customer')
+              .delete()
+              .match({ id: customerIdToDelete });
 
-
+            if (error) {
+              console.error('Failed to delete customer:', error);
+            } else {
+              // Entfern den Kunden Daten vom Formular
+              selectedCustomer.value = null;
+            }
+          } catch (error) {
+            console.error('Failed to delete customer:', error);
+          }
+          finally {
+            router.push({ name: 'HelloWorld' });
+            deleteClicked.value = false;
+          }
+        }
+      } else {
+        console.error('No customer selected to delete');
+      }
+    }
+    //Umgang mit KundenDaten
     function handleCustomerData(data) {
       if (Array.isArray(data)) {
         customerData.value = data[0];
@@ -902,7 +877,7 @@ if (!createClicked.value) {
         customerId.value = data.id;
       }
     }
-
+    //Umgang Firmen Daten
     function handleCompanyData(data) {
       if (Array.isArray(data)) {
         companyData.value = data[0];
@@ -912,7 +887,6 @@ if (!createClicked.value) {
         companyId.value = data.id;
       }
     }
-
     watch(selectedEntry, (newEntry) => {
       if (newEntry) {
         if (selectedTable.value === 'customer') {
@@ -924,13 +898,10 @@ if (!createClicked.value) {
         }
       }
     });
-
-
-
+    //Speichern Firma Daten
     async function saveCompanyChanges() {
       try {
         const { data, error } = await updateCompanyData();
-
         if (error) {
           console.error('Failed to save changes:', error);
         } else {
@@ -940,7 +911,7 @@ if (!createClicked.value) {
         console.error('Failed to update data:', error);
       }
     }
-
+    // Update Firma Daten
     async function updateCompanyData() {
 
       return await supabase
@@ -948,14 +919,14 @@ if (!createClicked.value) {
         .update(getCompanyData())
         .eq('id', companyId.value);
     }
-
+    // Update KundenDaten
     async function updateCustomerData() {
       return await supabase
         .from('customer')
         .update(getCustomerData())
         .eq('id', customerId.value);
     }
-
+    // Daten Abrufen
     async function fetchData() {
       const { data: customers, error: customerError } = await supabase
         .from('customer')
@@ -966,7 +937,6 @@ if (!createClicked.value) {
         return;
       }
       entries.customer = customers;
-
       const { data: companies, error: companyError } = await supabase
         .from('company')
         .select('*')
@@ -975,8 +945,8 @@ if (!createClicked.value) {
         console.error('Error fetching companies:', companyError.message);
         return;
       }
-      entries.company = companies;
-    }
+      entries.company = companies;    }
+    //Leeres Formular
     function isEmptyForm() {
       const {
         name,
@@ -997,18 +967,16 @@ if (!createClicked.value) {
         email === ''
       );
     }
-
+    // Senden Kunden Formular
     async function submitCustomerForm() {
       try {
         const { data, error } = await supabase.from('customer').insert([getCustomerData()]);
-
         if (error) {
           console.error('Failed to submit customer form:', error);
-          return;
-        }
+          return;        }
 
         console.log('Customer form submitted successfully!');
-        // Clear form fields
+        // Formularfelder bereitstellen
         customerData.value = {
           name: '',
           surname: '',
@@ -1017,26 +985,23 @@ if (!createClicked.value) {
           postcode: '',
           place: '',
           email: '',
-
         };
-        // Clear selected entry
+        // Ausgewählt leeren
         selectedEntry.value = null;
       } catch (error) {
         console.error('Failed to submit customer form:', error);
       }
     }
-
+    // Senden Firma Formular
     async function submitCompanyForm() {
       try {
         const { data, error } = await supabase.from('company').insert([getCompanyData()]);
-
         if (error) {
           console.error('Failed to submit company form:', error);
           return;
         }
-
         console.log('Company form submitted successfully!');
-        // Clear form fields
+        // Leeren Eingabe Felder
         companyData.value = {
           logo: '',
           company_name: '',
@@ -1056,48 +1021,41 @@ if (!createClicked.value) {
           MwSt: '',
           bank: '',
         };
-        // Clear selected entry
+        // Leeren Eingabe
         selectedEntry.value = null;
       } catch (error) {
         console.error('Failed to submit company form:', error);
       }
     }
-
-
+    // Aktualiesren Daten
     async function checkUserAndFetchData() {
       const { data, error } = await supabase.auth.getUser();
-
       if (error) {
         console.error('Failed to fetch user data:', error);
         return;
       }
-
       if (data) {
         try {
           const { data, error } = await supabase
             .from('company')
             .select('*')
             .single();
-
           if (error) {
             console.error('Failed to fetch data:', error);
             return;
           }
-                // Upload the logo image
-      if (companyData.logo) {
-        const { data: fileData, error: uploadError } = await supabase
-          .storage
-          .from('my-bucket')
-          .upload('path/to/logo.png', companyData.logo);
-
-        if (uploadError) {
-          console.error('Failed to upload logo:', uploadError);
-          return;
-        }
-
-        console.log('Logo uploaded successfully:', fileData);
-      }
-
+          // Upload das Logo funktioniert noch nicht
+          if (companyData.logo) {
+            const { data: fileData, error: uploadError } = await supabase
+              .storage
+              .from('my-bucket')
+              .upload('path/to/logo.png', companyData.logo);
+            if (uploadError) {
+              console.error('Failed to upload logo:', uploadError);
+              return;
+            }
+            console.log('Logo uploaded successfully:', fileData);
+          }
           companyData.value = data;
           companyId.value = data.id;
         } catch (error) {
@@ -1105,7 +1063,7 @@ if (!createClicked.value) {
         }
       }
     }
-
+    // Formular leeren
     function clearFormData() {
       if (isEmptyForm()) {
         customerData.value = {
@@ -1138,6 +1096,7 @@ if (!createClicked.value) {
         };
       }
     }
+    // Eingaben wechseln
     function toggleEditMode() {
       if (selectedTable.value === 'customer') {
         if (customerData.value || isEmptyForm()) {
@@ -1149,19 +1108,12 @@ if (!createClicked.value) {
         }
       }
     }
-
     onMounted(async () => {
       onMounted(fetchData);
-
       await loadCustomerList();
       await checkUserAndFetchData();
     });
-
     watch(selectedTable, loadCustomerData);
-
-
-    
-
     return {
       selectedTable,
       entries,
@@ -1186,15 +1138,13 @@ if (!createClicked.value) {
       createNewCompany,
       deleteCompany,
       deleteCustomer,
-         deleteClicked,
+      deleteClicked,
       createClicked,
       saveClicked,
-            isEmptyForm,   
+      isEmptyForm,
       submitCustomerForm,
       submitCompanyForm,
-
       logoPreviewDataUrl: '',
-     
     };
   },
 };
@@ -1211,18 +1161,14 @@ if (!createClicked.value) {
   border-radius: 0.25rem;
   line-height: 2.0;
   min-height: 38px;
-  /* Add a fixed height */
 }
 
 .smaller-form {
-  display:flexbox; /* Adjust the value as needed */
-  margin-bottom: 10%;/* Enable vertical scrolling if necessary */
+  display: flexbox;
+  margin-bottom: 10%;
 }
 
 img {
   height: 50%;
   width: 50%;
-}
-
-
-</style>
+}</style>
