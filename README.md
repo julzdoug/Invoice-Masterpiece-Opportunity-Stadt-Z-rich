@@ -1,5 +1,6 @@
 German (Deutsch):
-
+Prototyp Demo es folgen update um es Kommerziell zur verügung zu stellenn
+Version 1.0
 Rechnungs-App
 Erstellt von Jules Schwarz
 
@@ -35,6 +36,8 @@ Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert.
 
 English:
+There will be update soon to make it for Commercial usage.
+Version 1.0
 
 Invoice App
 Created by Jules Schwarz
