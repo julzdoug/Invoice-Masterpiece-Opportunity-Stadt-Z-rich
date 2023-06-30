@@ -721,4 +721,57 @@ hr {
 
 
 
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+.invoice-section {
+ width:auto;
+ height:auto;
+ font-size:medium;
+ margin-top: auto;
+  /* Example styles */
+  background-color: #ffffff;
+  padding:2%;
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+}
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .text-secondary-d1 {
+    color: #999999 !important;
+  }
+
+  .page-header {
+    padding-bottom: 0.5rem;
+    padding-top: 0.25rem;
+  }
+
+.page-header {
+  margin:auto;
+  padding-bottom:2%;
+  padding-top:content;
+  border-bottom: 1px dotted #e2e2e2;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+  .ml-n1,
+  .mx-n1,
+  .mr-n1,
+  .mx-n1,
+  .mb-4,
+  .my-4 {
+    margin: 0 !important;
+  }
+}
+
 </style>
