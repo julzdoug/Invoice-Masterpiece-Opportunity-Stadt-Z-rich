@@ -147,7 +147,7 @@
                       </div>
                     </div>
                   </div>
-                  // Rechnungs end sätze
+                  <!-- Rechnungs end sätze -->
                   <hr class="row brc-default-l1 mx-n1 mb-4 mt-5" />
                   <div class="col-sm-12 container donwpart">
                     <div class="row">
