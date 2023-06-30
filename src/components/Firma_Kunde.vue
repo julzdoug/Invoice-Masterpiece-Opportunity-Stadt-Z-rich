@@ -45,16 +45,16 @@
           </div>
           <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
-            <div class="input-with-image bg-primary">
-              <template>
-                <div class="image-preview" v-show="isEditing">
-                  <div class="image-preview" v-if="logoPreviewDataUrl">
-                    <img src="../assets/back.png" alt="logo app">
-                  </div>
+            <div class="input-with-image">
+              <template v-if="isEditing">
+                <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
+                <div class="image-preview" v-if="companyData.logo">
+                  <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
                 </div>
-                <div class="image-preview" v-show="!isEditing">
-                  <img :src="getLogoDataUrl(companyData.logo)" alt="Company Logo" class="preview-image"
-                    ref="logoPreview" />
+              </template>
+              <template v-else>
+                <div class="image-preview">
+                  <img :src="companyData.logo || '../assets/back.png'" alt="Company Logo" class="preview-image">
                 </div>
               </template>
             </div>
@@ -547,9 +547,7 @@ export default {
   },
   // Einstellungen
   setup() {
-    const logoInput = ref(null);
-    const logoPreview = ref(null);
-    const deleteClicked = ref(false);
+       const deleteClicked = ref(false);
     const createClicked = ref(false);
     const saveClicked = ref(false);
     const router = useRouter();
@@ -593,28 +591,7 @@ export default {
     const isEditing = ref(false);
     const selectedCustomer = ref(null);
     const customer = ref([]);
-    // Wechsel Logo Funktione. funktioniert noch nicht
-    async function handleLogoChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        try {
-          const { data, error } = await supabase.storage.from('my-bucket').upload(file.name, file);
-          if (error) {
-            console.error('Failed to upload image:', error);
-          } else {
-            const fileUrl = data.url;
-            companyData.logo = fileUrl;
-            logoPreview.value.src = fileUrl;
-          }
-        } catch (error) {
-          console.error('Failed to upload image:', error);
-        }
-      } else {
-        companyData.logo = null;
-        logoPreview.value.src = null;
-      }
-    }
-    // Eingaben Speichern
+
     async function saveChanges() {
       if (!saveClicked.value) {
         saveClicked.value = true;
@@ -896,7 +873,11 @@ export default {
         }
       }
     });
-    //Speichern Firma Daten
+
+    function handleLogoChange(event) {
+      companyData.value.logo = event.target.files[0];
+    }
+
     async function saveCompanyChanges() {
       try {
         const { data, error } = await updateCompanyData();
@@ -1042,18 +1023,7 @@ export default {
             console.error('Failed to fetch data:', error);
             return;
           }
-          // Upload das Logo funktioniert noch nicht
-          if (companyData.logo) {
-            const { data: fileData, error: uploadError } = await supabase
-              .storage
-              .from('my-bucket')
-              .upload('path/to/logo.png', companyData.logo);
-            if (uploadError) {
-              console.error('Failed to upload logo:', uploadError);
-              return;
-            }
-            console.log('Logo uploaded successfully:', fileData);
-          }
+
           companyData.value = data;
           companyId.value = data.id;
         } catch (error) {
@@ -1136,13 +1106,12 @@ export default {
       createNewCompany,
       deleteCompany,
       deleteCustomer,
-      deleteClicked,
+         deleteClicked,
       createClicked,
       saveClicked,
-      isEmptyForm,
+            isEmptyForm,   
       submitCustomerForm,
       submitCompanyForm,
-      logoPreviewDataUrl: '',
     };
   },
 };
