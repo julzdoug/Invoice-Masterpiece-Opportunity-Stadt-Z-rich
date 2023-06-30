@@ -13,13 +13,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarText">
+      <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="nav-link active" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
+            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
+            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
           </li>
           <li class="nav-item">
             <!-- <a class="nav-link" @click="handleMenuClick('editInvoice')">Rechnung Ändern</a> -->
@@ -31,7 +31,7 @@
         <span class="navbar-text Zachnung me-3">Zachnung</span>
         <ul class="navbar-nav mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="logout nav-item me-2" @click="signOut">Logout</a>
+            <a class="logout nav-item me-2 bg-tertiary" @click="signOut">Logout</a>
           </li>
         </ul>
       </div>

@@ -1,11 +1,11 @@
 <template>
 <h1 class="text-center mt-5 mb-5">Information zu Firma oder Kunden Tragen Sie dies ein.</h1>
 <div class="row">
-  <div class="col-md-3  d-flex align-items-center justify-content-end">
+  <div class="col-md-3 col-9 d-flex align-items-center justify-content-end">
     <h1 class="fs-5">Firma oder Kunde:</h1>
   </div>
   <div class="col-md-3 col-9 d-flex justify-content-center align-items-center">
-    <select v-model="selectedTable" class="form-select mt-5 custom-select w-100" aria-label="Default select example">
+    <select v-model="selectedTable" class="form-select mt-2 custom-select w-100" aria-label="Default select example">
       <option disabled value="">Kunde oder Frima</option>
       <option value="customer">Kunde</option>
       <option value="company">Firma</option>
