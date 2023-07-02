@@ -5,7 +5,7 @@
         <div class="form-container sign-up-container">
           <form @submit.prevent="handleSignup">
             <!--Anmeldung-->
-            <h1>Mach einen Konto</h1>
+            <h1>Mach dein Konto</h1>
             <div class="social-container">
             </div>
             <span>Registriere dich mit E-mail</span>
