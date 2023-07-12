@@ -124,18 +124,19 @@
     <div class="container-fluid text-start">
   <div class="row align-items-center">
     <div class="col">
-      <img src="src/assets/vue.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
+      <img src="src/assets/vue.svg" alt="Logo" width="30" height="24" class="footer-image d-inline-block align-text-top mb-3">
     </div>
-        <div class="col">
-      <h3>Zachnung mach Deine Rechnung</h3>
+        <div class="col ">
+      <h3 class="footer-title">Zachnung mach Deine Rechnung</h3>
     </div>
-    <div class="col text-end align-item-end">
-      <span class="text-body-secondary copyright">© 2023 Jules Schwarz</span>
+    <div class="col  text-end align-item-end">
+      <span class="footer-copyright text-body-secondary copyright">© 2023 Jules Schwarz</span>
     </div>
   </div>
 
   </div>
 </footer>
+
   </div>
 </template>
 
@@ -251,6 +252,25 @@ export default {
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
 
+@media (max-width: 767px) {
+  .footer-image {
+    width: 20%;
+    height: 20%;
+  }
+ 
+  .footer-title {
+    font-size: 40%;
+    margin-bottom: 0;
+  }
+
+  .footer-copyright {
+    font-size: 30%;
+    padding-top: 30%;
+  }
+  
+}
+
+
 
 .button {
   height: auto;
@@ -277,7 +297,6 @@ export default {
   background-color: aliceblue;
 }
 .copyright {
-  margin: 30%;
   padding-top: 50%;
 }
 
