@@ -4,10 +4,16 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <row>
-    <a class="navbar-brand col" href="#">
+    <div class="container-fluid text-start">
+  <div class="row align-items-center">
+    <div class="col">
       <img src="src/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
-    </a>
-<button class="btn btn-outline-secondary col b-5 topButton" type="button" @click="toggleLogin">Rechnung Erstellen</button>
+    </div>
+        <div class="col">
+<button class="btn btn-sm btn-outline-secondary" type="button" @click="toggleLogin">Rechnung Erstellen</button>
+    </div>
+  </div>
+    </div>
 </row>
   </div>
 </nav>
@@ -37,12 +43,28 @@
 
 
 </main>
-      <h1>Ich interessiere mich leidenschaftlich dafür, neue Technologien zu lernen und kreative Lösungen für Probleme zu finden. Ich habe diese Projekt mir vorgenommen um mein erlerntes Wissen</h1>
-      <!-- Other landing page content -->
-      <button @click="toggleLogin">Register</button>
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 order-md-2">
+        <img src="src/assets/5900_5_10.jpg" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+        <div class="product-device shadow-sm d-md-none"></div>
+        <div class="product-device product-device-2 shadow-sm d-md-none"></div>
+      </div>
+      <div class="col-md-4 order-md-1">
+        <h1 class="display-3 fw-bold">In wenigen Schritte eine Rechnung machen</h1>
+        <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellung<br>mit einem Knopfdruck zur fertigen PDF Rechung</h3>
+
+        <div class="d-flex gap-3 justify-content-center lead fw-normal">
+<button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     </section>
     <section v-show="!showLandingPage">
-  <div class="container mt-5" id="containerf">
+  <div class="container mt-5 mb-5" id="containerf">
     <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
         <div class="form-container sign-up-container">
@@ -64,7 +86,7 @@
           <form @submit.prevent="handleSignin">
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
-            <img src="../assets/vue.svg" alt="">
+
             <div class="social-container">
             </div>
             <span>Benutze dein Konto</span>
@@ -72,7 +94,7 @@
               class="form-control" />
             <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control" />
-            <a href="#">Passowrt vergessen?</a>
+            <a href="#">Passwort vergessen?</a>
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
           </form>
         </div>
@@ -88,58 +110,29 @@
         </div>
         <div class="overlay-panel overlay-right">
           <h1>Hallo Freund</h1>
-          <img src="../assets/logo.jpg" alt="">
-          <p>Trage deine Angaben Ein</p>
+
+          <p>Neu hier Registration</p>
           <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
         </div>
       </div>
     </div>
   </div>
       </section>
-        <footer class="container py-5">
-  <div class="row">
-    <div class="col-12 col-md">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24"><title>Product</title><circle cx="12" cy="12" r="10"></circle><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"></path></svg>
-      <small class="d-block mb-3 text-body-secondary">© 2023 Jules Schwarz</small>
+<footer class="footer mt-auto py-3 bg-body-tertiary">
+
+    <div class="container-fluid text-start">
+  <div class="row align-items-center">
+    <div class="col">
+      <img src="src/assets/vue.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
     </div>
-    <div class="col-6 col-md">
-      <h5>Features</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-      </ul>
+        <div class="col">
+      <h3>Zachnung mach Deine Rechnung</h3>
     </div>
-    <div class="col-6 col-md">
-      <h5>Resources</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-      </ul>
+    <div class="col text-end align-item-end">
+      <span class="text-body-secondary copyright">© 2023 Jules Schwarz</span>
     </div>
-    <div class="col-6 col-md">
-      <h5>Resources</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>About</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-        <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-      </ul>
-    </div>
+  </div>
+
   </div>
 </footer>
   </div>
@@ -256,12 +249,14 @@ export default {
   
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
-/* Login */
+
+
 .header { 
   background-color: aliceblue;
 }
-.topButton {
-  margin-top: 20%;
+.copyright {
+  margin: 30%;
+  padding-top: 50%;
 }
 
 
