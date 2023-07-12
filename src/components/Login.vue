@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <header>
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
@@ -10,7 +11,7 @@
       <img src="src/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
     </div>
         <div class="col">
-<button class="btn btn-sm btn-outline-secondary" type="button" @click="toggleLogin">Rechnung Erstellen</button>
+<div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Rechnung Erstellen' : 'Go back' }}</div>
     </div>
   </div>
     </div>
@@ -250,6 +251,27 @@ export default {
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
 
+
+.button {
+  height: auto;
+  width: auto;
+  display: inline-block;
+  background: lightgray;
+  color: #fff;
+  outline: gray;
+  text-transform: uppercase;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 0px 17px 10px -10px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  -webkit-transition: all ease-in-out 300ms;
+  transition: all ease-in-out 300ms;
+}
+.button:hover {
+  box-shadow: 0px 37px 20px -20px rgba(0, 0, 0, 0.2);
+  -webkit-transform: translate(0px, -10px) scale(1.2);
+          transform: translate(0px, -10px) scale(1.2);
+}
 
 .header { 
   background-color: aliceblue;
