@@ -1,4 +1,47 @@
 <template>
+  <div>
+    <header>
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <row>
+    <a class="navbar-brand col" href="#">
+      <img src="src/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
+    </a>
+<button class="btn btn-outline-secondary col b-5 topButton" type="button" @click="toggleLogin">Rechnung Erstellen</button>
+</row>
+  </div>
+</nav>
+    </header>
+    <section v-show="showLandingPage">
+      
+<main>
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 order-md-2">
+        <img src="src/assets/sectionlogo.png" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+        <div class="product-device shadow-sm d-md-none"></div>
+        <div class="product-device product-device-2 shadow-sm d-md-none"></div>
+      </div>
+      <div class="col-md-4 order-md-1">
+        <h1 class="display-3 fw-bold">Zachnung</h1>
+        <h3 class="fw-normal text-muted mb-3">Mach deine Rechnung</h3>
+        <h3 class="fw-normal text-muted mb-3">danach zu einem PDF</h3>
+        <div class="d-flex gap-3 justify-content-center lead fw-normal">
+<button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Los gehts</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</main>
+      <h1>Ich interessiere mich leidenschaftlich dafür, neue Technologien zu lernen und kreative Lösungen für Probleme zu finden. Ich habe diese Projekt mir vorgenommen um mein erlerntes Wissen</h1>
+      <!-- Other landing page content -->
+      <button @click="toggleLogin">Register</button>
+    </section>
+    <section v-show="!showLandingPage">
   <div class="container mt-5" id="containerf">
     <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
@@ -52,6 +95,54 @@
       </div>
     </div>
   </div>
+      </section>
+        <footer class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24"><title>Product</title><circle cx="12" cy="12" r="10"></circle><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"></path></svg>
+      <small class="d-block mb-3 text-body-secondary">© 2023 Jules Schwarz</small>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Features</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Resources</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Resources</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Business</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Education</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Government</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Gaming</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>About</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
+        <li><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </div>
 </template>
 
 <script>
@@ -61,6 +152,17 @@ import { supabase } from "../supabase.js";
 import { isAuthenticated } from '../auth.js';
 
 export default {
+  data() {
+    return {
+      showLandingPage: true,
+    };
+  },
+  methods: {
+    toggleLogin() {
+      this.showLandingPage = !this.showLandingPage;
+    },
+  },
+
   emits: ['login-success'],
   setup(_, { emit }) {
     //Eintellungen Allgemein 
@@ -155,6 +257,13 @@ export default {
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
 /* Login */
+.header { 
+  background-color: aliceblue;
+}
+.topButton {
+  margin-top: 20%;
+}
+
 
 img {
   height: 15vh;
