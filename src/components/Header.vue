@@ -16,8 +16,11 @@
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
+        <span class="navbar-text me-3" v-if="user">{{ user.email }}</span>
         <ul class="navbar-nav mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
+            
+
             <a class="logout nav-item me-2 bg-tertiary" @click="signOut">Logout</a>
           </li>
         </ul>
@@ -26,14 +29,15 @@
   </nav>
 </template>
 
-
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { supabase } from '../supabase';
-
+import { isAuthenticated } from '../auth.js';
 const route = useRoute();
 const router = useRouter();
+const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
+
 
 async function signOut() {
   await supabase.auth.signOut();
@@ -47,8 +51,20 @@ function handleMenuClick(componentName) {
   }
   router.push({ name: componentName });
 }
+onMounted(async () => {
+  const session = supabase.auth.session();
+  if (session) {
+    user.value = {
+      email: session.user.email,
+      id: session.user.id,
+    };
+  }
+});
+
+
 
 </script>
+
 
 <style scoped>
 nav {
