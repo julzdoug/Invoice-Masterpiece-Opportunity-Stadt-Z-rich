@@ -1,5 +1,5 @@
 <template>
-  <!--Navigation Balken-->
+ 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -28,6 +28,39 @@
     </div>
   </nav>
 </template>
+
+
+
+<!-- <template>
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
+          <li class="nav-item">
+            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
+          </li>
+        </ul>
+        <span class="navbar-text Zachnung me-3">Zachnung</span>
+        <span class="navbar-text me-3" v-if="user">{{ user.email }}</span>
+        <ul class="navbar-nav mb-2 mb-lg-0 fs-4">
+          <li class="nav-item">
+            
+
+            <a class="logout nav-item me-2 bg-tertiary" @click="signOut">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template> -->
 
 <script setup>
 import { ref, onMounted } from 'vue';
