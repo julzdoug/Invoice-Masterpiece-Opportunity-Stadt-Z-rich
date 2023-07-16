@@ -180,7 +180,9 @@
         </div>
       </div>
     </form>
-    <button @click="submitCompanyForm">Next</button>
+      <div class="d-flex justify-content-center mt-3">
+    <button class="btn btn-primary" @click="submitCompanyForm">Next</button>
+    </div>
   </div>
 
   <!-- Step 3: Customer Form -->
@@ -265,7 +267,9 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </div> -->
     </form>
-    <button @click="submitCustomerForm">Next</button>
+          <div class="d-flex justify-content-center mt-3">
+    <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
+    </div>
   </div>
 
       <div v-if="step === 3">
@@ -279,7 +283,10 @@
           <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
         </div>
       </div>
-      <button @click="nextStep">Next</button>
+                <div class="d-flex justify-content-center mt-3">
+    <button class="btn btn-primary" @click="submitInvoiceForm()">Next</button>
+    </div>
+
     </div>
 
    <div v-if="step === 4">
@@ -347,19 +354,16 @@
         </table>
       </div>
       <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
-      <button class="btn btn-primary ms-5 mt-3" @click="saveInvoice">Save Invoice</button>
+      <button class="btn btn-primary ms-5 mt-3" @click="saveChanges()">Save Invoice</button>
     </div>
 
-    <div v-if="!showNextForm" class="d-flex justify-content-center mt-3">
-      <button type="button" class="btn btn-primary" @click="showNextForm = true">Next</button>
-    </div>
+
 </template>
-
-
 
 <script>
 import { ref } from 'vue';
 import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'vue-router';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -371,117 +375,186 @@ export default {
       step: 1,
       invoiceNumber: '',
       showNextForm: false,
-      companyData: {
-        // Company form data
-      },
-      customerData: {
-        // Customer form data
-      },
+      companyData: {},
+      customerData: {},
       invoiceRows: [],
       isEditing: [],
+      companyId: null,
+      customerId: null,
     };
   },
-  computed: {
-    filteredInvoiceRows() {
-      return this.invoiceRows.filter(row => row.invoice_number === this.invoiceNumber);
-    },
-  },
   methods: {
-    async submitCompanyForm() {
-      try {
-        const { data, error } = await supabase.from('company').insert([this.companyData]);
-        if (error) {
-          console.error('Failed to save company:', error);
-          return;
-        }
-        console.log('Company saved:', data);
-        this.step++;
-      } catch (error) {
-        console.error('Failed to save company:', error);
-      }
-    },
-    async submitCustomerForm() {
-      try {
-        const { data, error } = await supabase.from('customer').insert([this.customerData]);
-        if (error) {
-          console.error('Failed to save customer:', error);
-          return;
-        }
-        console.log('Customer saved:', data);
-        this.step++;
-      } catch (error) {
-        console.error('Failed to save customer:', error);
-      }
-    },
+
+async submitCompanyForm() {
+  try {
+    const { data, error } = await supabase
+      .from('company')
+      .insert([this.companyData])
+      .single();
+
+    if (error) {
+      console.error('Failed to save company:', error);
+      return;
+    }
+
+    console.log('Company saved:', data);
+
+    // Fetch the inserted company data to get the company ID
+    const { data: fetchedCompanyData, error: fetchError } = await supabase
+      .from('company')
+      .select('id')
+      .eq('company_name', this.companyData.company_name)
+      .single();
+
+    if (fetchError) {
+      console.error('Failed to fetch company data:', fetchError);
+      return;
+    }
+
+    this.companyId = fetchedCompanyData.id; // Save the inserted company ID
+
+    // Proceed to the next step
+    this.step++;
+  } catch (error) {
+    console.error('Failed to save company:', error);
+  }
+},
+
+
+async submitCustomerForm() {
+  try {
+    const { data, error } = await supabase
+      .from('customer')
+      .insert([{ ...this.customerData, company_id: this.companyId }])
+      .single();
+
+    if (error) {
+      console.error('Failed to save customer:', error);
+      return;
+    }
+
+    console.log('Customer saved:', data);
+    this.customerId = data.id; // Save the inserted customer ID
+
+    // Proceed to the next step
+   
+  } catch (error) {
+    console.error('Failed to save customer:', error);
+  }
+   this.step++;
+},
+
+
+
     generateInvoiceNumber() {
       // Generate the invoice number logic
       this.invoiceNumber = 'INV-001'; // Replace with your logic
     },
+
     nextStep() {
       this.step++;
     },
+
     addNewRow() {
       const newRow = {
-        id: '', // Generate a unique ID for the row
         invoice_number: this.invoiceNumber,
         description: '',
         quantity: 0,
         price_per_unit: 0.0,
+        customer_id: this.customerId,
+        company_id: this.companyId,
       };
       this.invoiceRows.push(newRow);
       this.isEditing.push(true);
     },
+
     editRow(index) {
       this.isEditing[index] = true;
     },
+
     deleteRow(index) {
       this.invoiceRows.splice(index, 1);
       this.isEditing.splice(index, 1);
     },
-    saveChanges() {
-      // Save the invoice rows to the database
-      const invoiceRowsData = this.invoiceRows.map(row => ({
-        ...row,
-        id: row.id || uuidv4(), // Generate a unique ID for new rows
-      }));
 
-      // Insert or update the invoice rows
-      supabase.from('invoice').upsert(invoiceRowsData)
-        .then(result => {
-          if (result.error) {
-            console.error('Failed to save invoice rows:', result.error);
-          } else {
-            console.log('Invoice rows saved:', result.data);
-          }
-        })
-        .catch(error => {
-          console.error('Failed to save invoice rows:', error);
-        });
-    },
     calculateRowTotal(row) {
       return row.quantity * row.price_per_unit;
     },
-    
-    saveInvoice() {
-      const invoiceData = {
-        invoice_number: this.invoiceNumber,
-        customer_id: this.customerData.id,
-        // You may need to adjust the properties based on your data structure
-        // Add additional properties as needed
-      };
 
-      supabase.from('invoice').insert([invoiceData])
-        .then(result => {
-          if (result.error) {
-            console.error('Failed to save invoice:', result.error);
-          } else {
-            console.log('Invoice saved:', result.data);
-          }
-        })
-        .catch(error => {
-          console.error('Failed to save invoice:', error);
-        });
-  },
+async submitInvoiceForm() {
+  try {
+    const { data, error } = await supabase
+      .from('invoice')
+      .insert([{ ...this.invoiceData, company_id: this.companyId, customer_id: this.customerId }])
+      .single();
+
+    if (error) {
+      console.error('Failed to save invoice:', error);
+      return;
+    }
+
+    console.log('Invoice saved:', data);
+
+    // Proceed to the next step or perform any other actions
+    this.step++;
+  } catch (error) {
+    console.error('Failed to save invoice:', error);
   }
+},
+
+    async saveChanges() {
+      try {
+        const invoicePromises = this.invoiceRows.map(async (invoice) => {
+          const { description, price_per_unit, quantity } = invoice;
+          const total = quantity * price_per_unit;
+          const customer_id = this.customerId;
+          const company_id = this.companyId;
+
+          if (invoice.id) {
+            await supabase
+              .from('invoice')
+              .update({ description, price_per_unit, quantity, total, customer_id, company_id })
+              .match({ id: invoice.id });
+            this.isEditing[invoice.id] = false;
+          } else {
+            const newRow = {
+              description,
+              price_per_unit,
+              quantity,
+              total,
+              customer_id,
+              company_id,
+              invoice_number: this.invoiceNumber,
+            };
+
+            const { data, error } = await supabase.from('invoice').insert([newRow]);
+            if (error) {
+              console.error('Failed to insert new row:', error);
+              return;
+            }
+            if (data && data.length > 0) {
+              invoice.id = data[0].id;
+              invoice.customer_id = data[0].customer_id;
+              invoice.company_id = data[0].company_id;
+              this.isEditing[invoice.id] = false;
+            } else {
+              console.error('No invoice data returned after insert.');
+            }
+          }
+        });
+
+        await Promise.all(invoicePromises);
+
+        // Update the selected company and customer with the new data
+        this.companyData = { ...this.companyData };
+        this.customerData = { ...this.customerData };
+
+        this.navigateToInvoice(); // Navigate to invoice after saving changes
+      } catch (error) {
+        console.error('Failed to save changes:', error);
+      }
+    },
+  },
 };
 </script>
+
