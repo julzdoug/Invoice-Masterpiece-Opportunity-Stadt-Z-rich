@@ -8,9 +8,9 @@
           <div class="row">
             <label for="logoInput">Company Logo</label>
             <div class="text-center col-4">
-              <div class="input-with-image">
-                <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
-              </div>
+        <div class="input-with-image">
+          <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
+        </div>
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@
         </div>
       </div>
                 <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary" @click="submitInvoiceForm()">Next</button>
+    <button class="btn btn-primary" @click="nextStep()">Next</button>
     </div>
 
     </div>
@@ -354,7 +354,7 @@
         </table>
       </div>
       <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
-      <button class="btn btn-primary ms-5 mt-3" @click="saveChanges()">Save Invoice</button>
+      <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Save Invoice</button>
     </div>
 
 
@@ -365,11 +365,14 @@ import { ref } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'vue-router';
 
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
 export default {
+
   data() {
     return {
       step: 1,
@@ -385,9 +388,22 @@ export default {
   },
   methods: {
 
+    
+    handleLogoChange(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    const logoDataUrl = reader.result;
+    this.companyData.logo = logoDataUrl.split(',')[1]; // Extract the Base64-encoded string
+  };
+  reader.readAsDataURL(file);
+},
+
+
 async submitCompanyForm() {
   try {
-    const { data, error } = await supabase
+  // Save the company data to the company table
+   const { data, error } = await supabase
       .from('company')
       .insert([this.companyData])
       .single();
@@ -396,6 +412,7 @@ async submitCompanyForm() {
       console.error('Failed to save company:', error);
       return;
     }
+    
 
     console.log('Company saved:', data);
 
@@ -420,7 +437,6 @@ async submitCompanyForm() {
   }
 },
 
-
 async submitCustomerForm() {
   try {
     const { data, error } = await supabase
@@ -434,16 +450,27 @@ async submitCustomerForm() {
     }
 
     console.log('Customer saved:', data);
-    this.customerId = data.id; // Save the inserted customer ID
+
+    // Fetch the inserted customer data to get the customer ID
+    const { data: fetchedCustomerData, error: fetchError } = await supabase
+      .from('customer')
+      .select('id')
+      .eq('name', this.customerData.name)
+      .single();
+
+    if (fetchError) {
+      console.error('Failed to fetch customer data:', fetchError);
+      return;
+    }
+
+    this.customerId = fetchedCustomerData.id; // Save the inserted customer ID
 
     // Proceed to the next step
-   
+    this.step++;
   } catch (error) {
     console.error('Failed to save customer:', error);
   }
-   this.step++;
 },
-
 
 
     generateInvoiceNumber() {
@@ -462,7 +489,7 @@ async submitCustomerForm() {
         quantity: 0,
         price_per_unit: 0.0,
         customer_id: this.customerId,
-        company_id: this.companyId,
+        company_id: this.companyId, 
       };
       this.invoiceRows.push(newRow);
       this.isEditing.push(true);
@@ -554,6 +581,11 @@ async submitInvoiceForm() {
         console.error('Failed to save changes:', error);
       }
     },
+
+  navigateToInvoice() {
+      this.$router.push({ name: 'Invoices', params: { invoiceNumber: this.invoiceNumber } });
+    },
+
   },
 };
 </script>

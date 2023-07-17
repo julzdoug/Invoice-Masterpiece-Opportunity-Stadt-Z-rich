@@ -277,7 +277,252 @@
   </div>
 </template> 
 
+
+
 <script>
+import { ref, onMounted, computed, watch } from 'vue';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export default {
+  // PDF umwandlung
+  methods: {
+    async printInvoice() {
+      const invoiceSection = document.getElementById('invoice-section');
+      const headerSection = document.getElementById('first_head');
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const sectionHeight = invoiceSection.offsetHeight;
+      const contentHeight = 227;
+      const marginHeight = 30;
+      const totalPages = Math.ceil(sectionHeight / contentHeight);
+
+      let y = 0;
+      let currentPage = 1;
+
+      for (let i = 0; i < totalPages; i++) {
+
+        doc.setPageSize('a4');
+        doc.addPage();
+
+        if (i > 0) {
+          doc.setFontSize(12);
+          doc.text(`Page ${currentPage}`, 10, 10);
+          y = marginHeight;
+          currentPage++;
+          isFirstPage = false;
+        }
+        const clonedSection = invoiceSection.cloneNode(true);
+        const sectionContent = clonedSection.querySelector('.invoice-section-content');
+
+        sectionContent.style.height = `${contentHeight - marginHeight}px`;
+        clonedSection.style.position = 'absolute';
+        clonedSection.style.top = `${y}px`;
+
+        document.body.appendChild(clonedSection);
+
+        const canvas = await html2canvas(clonedSection, { useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+
+        doc.addImage(imgData, 'PNG', 0, 0);
+        document.body.removeChild(clonedSection);
+        currentPage++;
+      }
+      doc.save('invoice.pdf');
+    }
+  },
+  // Angaben der Zahlen und wie man sie Speichert
+  name: 'Invoices',
+  props: ['invoiceNumber'],
+  setup(props) {
+    const invoiceTotal = ref('0.00.-CHF');
+    const invoiceTotalWithTax = ref('0.00.-CHF');
+    const finalCalculation = ref('0.00.-CHF');
+    const isInvoiceLoaded = ref(false);
+    const invoiceData = ref({});
+    const companyData = ref(null);
+    const customerData = ref(null);
+    const showPageNumbers = ref(false);
+    // Rechnungsdaten Laden
+    const fetchInvoiceData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('invoice')
+          .select('*')
+          .eq('invoice_number', props.invoiceNumber)
+          .limit(1);
+
+        if (error) {
+          console.error('Failed to fetch invoice data:', error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          invoiceData.value = data[0];
+          await fetchCompanyData();
+          await fetchCustomerData();
+          await fetchInvoiceRowsByNumber(props.invoiceNumber);
+        } else {
+          console.error('No data found for invoice number:', props.invoiceNumber);
+        }
+      } catch (error) {
+        console.error('Failed to fetch invoice data:', error);
+      }
+    };
+    // Firmen Daten Laden
+    const fetchCompanyData = async () => {
+      const companyId = invoiceData.value?.company_id;
+
+      if (!companyId) {
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('company')
+          .select('*')
+          .eq('id', companyId)
+          .single();
+
+        if (error) {
+          console.error('Failed to fetch company data:', error);
+          return;
+        }
+
+        if (data) {
+          companyData.value = data;
+        }
+      } catch (error) {
+        console.error('Failed to fetch company data:', error);
+      }
+    };
+    // Kunden Daten Laden
+    const fetchCustomerData = async () => {
+      const customerId = invoiceData.value?.customer_id;
+
+      if (!customerId) {
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('customer')
+          .select('*')
+          .eq('id', customerId)
+          .single();
+
+        if (error) {
+          console.error('Failed to fetch customer data:', error);
+          return;
+        }
+
+        if (data) {
+          customerData.value = data;
+        }
+      } catch (error) {
+        console.error('Failed to fetch customer data:', error);
+      }
+    };
+    // Bestellungs positionen sammeln
+    const fetchInvoiceRowsByNumber = async (invoiceNumber) => {
+      try {
+        const { data, error } = await supabase
+          .from('invoice_rows')
+          .select('*')
+          .eq('invoice_number', invoiceNumber);
+
+        if (error) {
+          console.error('Failed to fetch invoice rows:', error);
+          return;
+        }
+
+        if (data) {
+          invoiceData.value.invoice_rows = data;
+        }
+      } catch (error) {
+        console.error('Failed to fetch invoice rows:', error);
+      }
+    };
+    // Nummer Anpassen
+    const formatNumber = (number) => {
+      const parts = number.toFixed(2).split('.');
+      const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+      return integerPart + '.' + parts[1] + '.-CHF';
+    };
+    // PDF Expotiern
+    const exportToPDF = async () => {
+      const invoiceSection = document.getElementById('invoice-section');
+
+      const config = {
+        margin: [0, 0, 0, 0],
+        filename: 'invoice.pdf',
+        image: { type: 'png', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      };
+      await html2pdf().set(config).from(invoiceSection).save();
+    };
+
+    const printInvoice = () => {
+      if (isReadyToPrint.value) {
+        exportToPDF();
+      } else {
+        alert('Invoice data is not loaded. Please wait for the data to load before printing.');
+      }
+    };
+
+    const isReadyToPrint = computed(() => {
+      return isInvoiceLoaded.value && invoiceData.value.invoice_rows;
+    });
+
+    watch(
+      invoiceData,
+      (newValue) => {
+        if (newValue.invoice_rows) {
+          const total = newValue.invoice_rows.reduce((acc, row) => acc + row.total, 0);
+          invoiceTotal.value = formatNumber(total);
+          const totalWithTax = total * 7.7 / 100;
+          invoiceTotalWithTax.value = formatNumber(totalWithTax);
+          const finalCalculationValue = total + totalWithTax;
+          finalCalculation.value = formatNumber(finalCalculationValue);
+        } else {
+          invoiceTotal.value = '0.00.-CHF';
+          invoiceTotalWithTax.value = '0.00.-CHF';
+          finalCalculation.value = '0.00.-CHF';
+          isInvoiceLoaded.value = true;
+        }
+      },
+      { deep: true }
+    );
+
+    onMounted(() => {
+      fetchInvoiceData();
+    });
+
+    return {
+      invoiceData,
+      companyData,
+      customerData,
+      fetchInvoiceData,
+      fetchCompanyData,
+      fetchCustomerData,
+      invoiceTotal,
+      invoiceTotalWithTax,
+      finalCalculation,
+      exportToPDF,
+      printInvoice,
+      isReadyToPrint,
+      showPageNumbers,
+    };
+  },
+};
+</script>
+
+<!-- <script>
 import { ref, onMounted, computed, watch } from 'vue';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -519,7 +764,7 @@ export default {
   },
 };
 
-</script>
+</script> -->
 
 
 

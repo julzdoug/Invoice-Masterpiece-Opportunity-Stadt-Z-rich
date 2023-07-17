@@ -27,7 +27,7 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: '/invoices/:invoiceNumber',
+        path: '/Invoices/:invoiceNumber',
         name: 'Invoices',
         component: Invoices,
         props: true,
