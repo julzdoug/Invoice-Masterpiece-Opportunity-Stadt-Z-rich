@@ -1,7 +1,7 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
 
   <div v-if="step === 1">
-    <h1>Step 2: Company Form</h1>
+    <h1 class="justify-content-center">1. Rechnungsteller</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
@@ -187,7 +187,7 @@
 
   <!-- Step 3: Customer Form -->
   <div v-if="step === 2">
-    <h1>Step 3: Customer Form</h1>
+    <h1 class="justify-content-center">2. Kunde</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCustomerForm">
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
@@ -273,13 +273,13 @@
   </div>
 
       <div v-if="step === 3">
-      <div class="col-md-3 col-sm-12 ms-5 d-flex text-center justify-content-end">
-        <h1 class="fs-5">Rechnungsnummer:</h1>
+         <div class="row">
+      <div class="col-md-8 ms-5 d-flex text-center justify-content-center">
+        <h1 class="fs-5">3. Rechnungsnummer:</h1>
         <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
       </div>
-      <div class="row">
         <hr class="mt-3">
-        <div class="col-sm-3 col-sm-12 mt-3">
+        <div class="col-md-8 mt-3 text-center justify-content-center">
           <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
         </div>
       </div>
@@ -290,9 +290,10 @@
     </div>
 
    <div v-if="step === 4">
-      <h1>Step 4: Invoice Table</h1>
-      <div class="table-responsive">
-        <table class="col-sm-12 table table-borderless border-0 border-b-2"
+      <h1 class="justify-content-center">4. Rechnung</h1>
+       <div class="row">
+      <div class="table-responsive justify-content-center">
+        <table class="col-md-8 table table-borderless border-0 border-b-2"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
           <thead>
             <tr>
@@ -353,6 +354,7 @@
           </tbody>
         </table>
       </div>
+      </div>
       <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
       <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Save Invoice</button>
     </div>
@@ -389,15 +391,44 @@ export default {
   methods: {
 
     
-    handleLogoChange(event) {
+async handleLogoChange(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
-  reader.onloadend = () => {
-    const logoDataUrl = reader.result;
-    this.companyData.logo = logoDataUrl.split(',')[1]; // Extract the Base64-encoded string
+
+  reader.onloadend = async () => {
+    const logoDataUrl = reader.result.split(',')[1]; // Extract the Base64-encoded string
+    this.companyData.logo = logoDataUrl;
+
+    const bucketName = 'bucket'; // Replace with your bucket name
+
+    try {
+      const { data, error } = await supabase.createBucket(bucketName, { public: true });
+      if (error) {
+        console.log('Error creating bucket:', error.message);
+        return;
+      }
+
+      console.log('Bucket created successfully:', data);
+
+      const { data: uploadData, error: uploadError } = await supabase
+        .storage
+        .from(bucketName)
+        .upload('logo.png', logoDataUrl);
+
+      if (uploadError) {
+        console.log('Error uploading logo:', uploadError.message);
+        return;
+      }
+
+      console.log('Logo uploaded successfully:', uploadData);
+    } catch (error) {
+      console.error('Error handling logo change:', error);
+    }
   };
+
   reader.readAsDataURL(file);
 },
+
 
 
 async submitCompanyForm() {

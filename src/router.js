@@ -26,13 +26,7 @@ const routes = [
         component: createInvoice,
         meta: { requiresAuth: true },
       },
-      {
-        path: '/Invoices/:invoiceNumber',
-        name: 'Invoices',
-        component: Invoices,
-        props: true,
-        meta: { requiresAuth: true },
-      },
+
       {
         path: '/Firma_Kunde',
         name: 'Firma_Kunde',
@@ -41,6 +35,15 @@ const routes = [
       },
     ],
   },
+        {
+        path: '/Invoices/:invoiceNumber',
+        name: 'Invoices',
+        component: Invoices,
+        props: true,
+        meta: { requiresAuth: true },
+      },
+
+
   {
     path: '/login',
     name: 'Login',

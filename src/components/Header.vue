@@ -16,14 +16,14 @@
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
-        <span class="navbar-text me-3" v-if="user">{{ user.email }}</span>
-        <ul class="navbar-nav mb-2 mb-lg-0 fs-4">
-          <li class="nav-item">
-            
-
-            <a class="logout nav-item me-2 bg-tertiary" @click="signOut">Logout</a>
-          </li>
-        </ul>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="user">
+    {{ user.email }}
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" @click="signOut">Logout</a></li>
+  </ul>
+</div>
       </div>
     </div>
   </nav>

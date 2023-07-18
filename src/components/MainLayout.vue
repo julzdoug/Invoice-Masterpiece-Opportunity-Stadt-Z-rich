@@ -2,6 +2,7 @@
     <Header v-if="user" />
 <Hero v-if="user" />
 <Discription v-if="user" />
+<!-- <editInvoice v-if="user" /> -->
 <div class="fit">
   <InvoiceForm />
 <Footer />
@@ -20,6 +21,7 @@ import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
 import InvoiceForm from './InvoiceForm.vue';
+/* import editInvoice from './editInvoice.vue'; */
 // Your Supabase configuration
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -35,6 +37,7 @@ export default {
     Discription,
     Footer,
     InvoiceForm,
+/*     editInvoice, */
   },
 
   setup(_, { emit }) {
