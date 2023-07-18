@@ -1,6 +1,7 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
 
-  <div v-if="step === 1">
+  <div v-if="step === 1" class="d-flex justify-content-center align-items-center">
+    <div class="row">
     <h1 class="justify-content-center">1. Rechnungsteller</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
@@ -184,9 +185,10 @@
     <button class="btn btn-primary" @click="submitCompanyForm">Next</button>
     </div>
   </div>
-
+</div>
   <!-- Step 3: Customer Form -->
-  <div v-if="step === 2">
+  <div v-if="step === 2" class="d-flex justify-content-center align-items-center">
+    <div class="row">
     <h1 class="justify-content-center">2. Kunde</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCustomerForm">
       <div class="row">
@@ -271,28 +273,26 @@
     <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
     </div>
   </div>
+  </div>
 
-      <div v-if="step === 3">
-         <div class="row">
-      <div class="col-md-8 ms-5 d-flex text-center justify-content-center">
-        <h1 class="fs-5">3. Rechnungsnummer:</h1>
-        <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
-      </div>
-        <hr class="mt-3">
-        <div class="col-md-8 mt-3 text-center justify-content-center">
-          <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
-        </div>
-      </div>
-                <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary" @click="nextStep()">Next</button>
-    </div>
+<div v-if="step === 3" class="d-flex justify-content-center align-items-center">
+     <div class="row">
+  <div class="col-md-8 text-center">
+    <h1 class="fs-5">3. Rechnungsnummer:</h1>
+    <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
+    <hr class="mt-3">
+    <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
+    <button class="btn btn-primary mt-3" @click="nextStep()">Next</button>
+  </div>
+  
+</div>
+</div>
 
-    </div>
-
-   <div v-if="step === 4">
-      <h1 class="justify-content-center">4. Rechnung</h1>
-       <div class="row">
-      <div class="table-responsive justify-content-center">
+<div v-if="step === 4" class="d-flex justify-content-center align-items-center">
+   <div class="row">
+  <h1 class="text-center">4. Rechnung</h1>
+  <div class="col-md-8">
+    <div class="table-responsive">
         <table class="col-md-8 table table-borderless border-0 border-b-2"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
           <thead>
@@ -355,22 +355,24 @@
         </table>
       </div>
       </div>
-      <button class="btn btn-primary mt-3" @click="addNewRow">Add New Row</button>
-      <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Save Invoice</button>
-    </div>
 
+      <button class="btn btn-primary m-3" @click="addNewRow">Add New Row</button>
+      <button class="btn btn-primary ms-3 m-3" @click="saveChanges">Save Invoice</button>
+    </div>
+      </div>
 
 </template>
 
 <script>
 import { ref } from 'vue';
-import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'vue-router';
-
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const storage = supabase.storage;
+
 
 
 export default {
@@ -390,39 +392,32 @@ export default {
   },
   methods: {
 
-    
 async handleLogoChange(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
 
   reader.onloadend = async () => {
-    const logoDataUrl = reader.result.split(',')[1]; // Extract the Base64-encoded string
-    this.companyData.logo = logoDataUrl;
+    if (reader.readyState === FileReader.DONE) {
+      const logoData = file;
 
-    const bucketName = 'bucket'; // Replace with your bucket name
+      try {
+        const { data, error } = await supabase
+          .storage
+          .from('bucket')
+          .upload('logo.png', logoData);
 
-    try {
-      const { data, error } = await supabase.createBucket(bucketName, { public: true });
-      if (error) {
-        console.log('Error creating bucket:', error.message);
-        return;
+        if (error) {
+          console.log('Error uploading logo:', error.message);
+          return;
+        }
+
+        console.log('Logo uploaded successfully:', data);
+
+        // Update the companyData.logo with the file URL or identifier
+        this.companyData.logo = data.Key;
+      } catch (error) {
+        console.error('Error handling logo change:', error);
       }
-
-      console.log('Bucket created successfully:', data);
-
-      const { data: uploadData, error: uploadError } = await supabase
-        .storage
-        .from(bucketName)
-        .upload('logo.png', logoDataUrl);
-
-      if (uploadError) {
-        console.log('Error uploading logo:', uploadError.message);
-        return;
-      }
-
-      console.log('Logo uploaded successfully:', uploadData);
-    } catch (error) {
-      console.error('Error handling logo change:', error);
     }
   };
 
@@ -431,42 +426,38 @@ async handleLogoChange(event) {
 
 
 
-async submitCompanyForm() {
-  try {
-  // Save the company data to the company table
-   const { data, error } = await supabase
-      .from('company')
-      .insert([this.companyData])
-      .single();
+    async submitCompanyForm() {
+      try {
+        // Save the company data to the company table
+        const { data, error } = await supabase
+          .from('company')
+          .insert([this.companyData])
+          .single();
 
-    if (error) {
-      console.error('Failed to save company:', error);
-      return;
-    }
-    
+        if (error) {
+          console.error('Failed to save company:', error);
+          return;
+        }
 
-    console.log('Company saved:', data);
+        console.log('Company saved:', data);
 
-    // Fetch the inserted company data to get the company ID
-    const { data: fetchedCompanyData, error: fetchError } = await supabase
-      .from('company')
-      .select('id')
-      .eq('company_name', this.companyData.company_name)
-      .single();
+        const { data: fetchedCompanyData, error: fetchError } = await supabase
+          .from('company')
+          .select('id')
+          .eq('company_name', this.companyData.company_name)
+          .single();
 
-    if (fetchError) {
-      console.error('Failed to fetch company data:', fetchError);
-      return;
-    }
+        if (fetchError) {
+          console.error('Failed to fetch company data:', fetchError);
+          return;
+        }
 
-    this.companyId = fetchedCompanyData.id; // Save the inserted company ID
-
-    // Proceed to the next step
-    this.step++;
-  } catch (error) {
-    console.error('Failed to save company:', error);
-  }
-},
+        this.companyId = fetchedCompanyData.id; // Save the inserted company ID
+        this.step++;
+      } catch (error) {
+        console.error('Failed to save company:', error);
+      }
+    },
 
 async submitCustomerForm() {
   try {
@@ -502,7 +493,6 @@ async submitCustomerForm() {
     console.error('Failed to save customer:', error);
   }
 },
-
 
     generateInvoiceNumber() {
       // Generate the invoice number logic
