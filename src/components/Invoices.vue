@@ -21,6 +21,8 @@
   <span id="first_head" class="text-default-d3">
     <!-- Check if companyData.logo is set correctly -->
     <img v-if="companyData && companyData.logo" :src="companyData.logo" alt="Company Logo" />
+
+
     <span v-else>Loading...</span>
   </span>
 </div>
@@ -350,6 +352,7 @@ export default {
     const companyData = ref(null);
     const customerData = ref(null);
     const showPageNumbers = ref(false);
+    const logoUrl = ref(null);
     // Rechnungsdaten Laden
     const fetchInvoiceData = async () => {
       try {
@@ -376,44 +379,58 @@ export default {
         console.error('Failed to fetch invoice data:', error);
       }
     };
-    // Firmen Daten Laden
-  const fetchCompanyData = async () => {
-    const companyId = invoiceData.value?.company_id;
+   // Firmen Daten Laden
+    const fetchCompanyData = async () => {
+      const companyId = invoiceData.value?.company_id;
 
-    if (!companyId) {
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('company')
-        .select('*')
-        .eq('id', companyId)
-        .single();
-
-      if (error) {
-        console.error('Failed to fetch company data:', error);
+      if (!companyId) {
         return;
       }
 
-      if (data) {
-        companyData.value = data;
+      try {
+        const { data, error } = await supabase
+          .from('company')
+          .select('*')
+          .eq('id', companyId)
+          .single();
 
-        if (data.logo) {
-          // Check if logoUrl is set correctly
-const logoBlob = await supabase.storage
-  .from('bucket')
-  .download(data.logo);
-
-const logoUrl = URL.createObjectURL(logoBlob);
-
-companyData.value.logo = logoUrl;
+        if (error) {
+          console.error('Failed to fetch company data:', error);
+          return;
         }
+
+     if (data) {
+      companyData.value = data;
+
+      if (data.logo_name && data.bucket_id) {
+        // Fetch the company logo from the storage bucket and set the logo URL
+        const logoResponse = await supabase.storage.from(data.bucket_id).download(data.logo_name);
+
+        if (logoResponse.error) {
+          console.error('Error fetching company logo:', logoResponse.error.message);
+          return;
+        }
+
+        const logoBlob = logoResponse.data;
+        const logoUrl = URL.createObjectURL(new Blob([logoBlob]));
+
+        companyData.value.logo = logoUrl;
       }
-    } catch (error) {
-      console.error('Failed to fetch company data:', error);
     }
-  };
+  } catch (error) {
+    console.error('Failed to fetch company data:', error);
+  }
+    };
+
+function byteaToBase64(bytea) {
+  const byteArray = new Uint8Array(bytea.data);
+  let binary = '';
+  for (let i = 0; i < byteArray.byteLength; i++) {
+    binary += String.fromCharCode(byteArray[i]);
+  }
+  return 'data:image/png;base64,' + window.btoa(binary);
+};
+
 
     // Kunden Daten Laden
     const fetchCustomerData = async () => {
@@ -532,6 +549,7 @@ companyData.value.logo = logoUrl;
       printInvoice,
       isReadyToPrint,
       showPageNumbers,
+      logoUrl,
     };
   },
 };

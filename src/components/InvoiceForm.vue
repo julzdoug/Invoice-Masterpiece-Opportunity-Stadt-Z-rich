@@ -289,11 +289,10 @@
 </div>
 
 <div v-if="step === 4" class="d-flex justify-content-center align-items-center">
-   <div class="row">
-  <h1 class="text-center">4. Rechnung</h1>
   <div class="col-md-8">
-    <div class="table-responsive">
-        <table class="col-md-8 table table-borderless border-0 border-b-2"
+    <h1 class="text-center">4. Rechnung</h1>
+    <div class="table-responsive col-md-12">
+      <table class="table table-borderless border-0 border-b-2"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
           <thead>
             <tr>
@@ -354,13 +353,11 @@
           </tbody>
         </table>
       </div>
+      <button class="btn btn-primary text-center m-3" @click="addNewRow">Add New Row</button>
+      <button class="btn btn-primary text-end m-3" @click="saveChanges">Save Invoice</button>
       </div>
-
-      <button class="btn btn-primary m-3" @click="addNewRow">Add New Row</button>
-      <button class="btn btn-primary ms-3 m-3" @click="saveChanges">Save Invoice</button>
     </div>
-      </div>
-
+    
 </template>
 
 <script>
@@ -394,37 +391,39 @@ export default {
 
 async handleLogoChange(event) {
   const file = event.target.files[0];
-  const reader = new FileReader();
+  const fileName = file.name; // Use the original filename of the uploaded image
 
-  reader.onloadend = async () => {
-    if (reader.readyState === FileReader.DONE) {
-      const logoData = file;
+  try {
+    // Upload the file to the "bucket" storage with the dynamic filename
+    const { data, error } = await supabase.storage.from('bucket').upload(fileName, file);
 
-      try {
-        const { data, error } = await supabase
-          .storage
-          .from('bucket')
-          .upload('logo.png', logoData);
-
-        if (error) {
-          console.log('Error uploading logo:', error.message);
-          return;
-        }
-
-        console.log('Logo uploaded successfully:', data);
-
-        // Update the companyData.logo with the file URL or identifier
-        this.companyData.logo = data.Key;
-      } catch (error) {
-        console.error('Error handling logo change:', error);
-      }
+    if (error) {
+      console.log('Error uploading logo:', error.message);
+      return;
     }
-  };
 
-  reader.readAsDataURL(file);
+    console.log('Logo uploaded successfully:', data);
+
+    // Update the companyData.logo with the image URL
+    const logoUrl = URL.createObjectURL(file);
+    this.companyData.logo = logoUrl;
+    this.companyData.bucket_id = 'bucket';
+    this.companyData.logo_name = fileName;
+
+    // Save the logo information to the "company" table
+    const companyId = this.companyData.id; // Replace with the actual company ID
+    await supabase
+      .from('company')
+      .update({
+        logo: data,
+        bucket_id: 'bucket', // Replace 'bucket' with your actual bucket_id
+        logo_name: fileName,
+      })
+      .eq('id', companyId);
+  } catch (error) {
+    console.error('Error handling logo change:', error);
+  }
 },
-
-
 
     async submitCompanyForm() {
       try {
