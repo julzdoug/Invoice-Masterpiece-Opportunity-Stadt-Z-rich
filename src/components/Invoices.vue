@@ -104,7 +104,7 @@
                         <td class="text-dark col-2 col-sm-1">{{ index + 1 }}</td>
                         <td class="col-8 col-sm-5">{{ row.description }}</td>
                         <td class="d-none d-sm-block col-sm-2">{{ row.quantity }}</td>
-                        <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>
+                        <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>          
                         <td class="col-2 col-sm-2 text-secondary-d2 text-end">{{ row.total }}.-CHF</td>
                       </tr>
                     </tbody>
@@ -148,6 +148,7 @@
                       </div>
                     </div>
                   </div>
+                  
 
                    <!-- Rechnungs end sätze -->
 
@@ -173,6 +174,8 @@
                     </div>
                   </div>
                   <br>
+                                  </div>
+                <div class="container">
                   <div id="footer" class="row mt-5 align-items-end">
                     <div class="col adress mt-3 mb-2 justify-content-start">
                       <!-- Firmen Angaben Fussnote -->
@@ -293,6 +296,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default {
+  
   // Angaben der Zahlen und wie man sie Speichert 
   name: 'Invoices',
   props: ['invoiceNumber'],
