@@ -289,10 +289,10 @@
 </div>
 
 <div v-if="step === 4" class="d-flex justify-content-center align-items-center">
-  <div class="col-md-8">
+  <div class="col-md-10">
     <h1 class="text-center">4. Rechnung</h1>
-    <div class="table-responsive col-md-12">
-      <table class="table table-borderless border-0 border-b-2"
+    <div class="table-responsive">
+      <table class="table table-borderless border-0 border-b-2 col-md-6"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
           <thead>
             <tr>
@@ -351,13 +351,14 @@
               <td class="text-secondary-d2">{{ calculateRowTotal(row) }}</td>
             </tr>
           </tbody>
-        </table>
-      </div>
-      <button class="btn btn-primary text-center m-3" @click="addNewRow">Add New Row</button>
-      <button class="btn btn-primary text-end m-3" @click="saveChanges">Save Invoice</button>
-      </div>
+   </table>
     </div>
-    
+    <button class="btn btn-primary d-block mx-auto my-3" @click="addNewRow">Add New Row</button>
+    <button class="btn btn-primary d-block mx-auto my-3" @click="saveChanges">Save Invoice</button>
+  </div>
+</div>
+
+      
 </template>
 
 <script>
@@ -595,7 +596,7 @@ async submitInvoiceForm() {
         // Update the selected company and customer with the new data
         this.companyData = { ...this.companyData };
         this.customerData = { ...this.customerData };
-
+       
         this.navigateToInvoice(); // Navigate to invoice after saving changes
       } catch (error) {
         console.error('Failed to save changes:', error);
@@ -609,4 +610,3 @@ async submitInvoiceForm() {
   },
 };
 </script>
-
