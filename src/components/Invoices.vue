@@ -42,7 +42,7 @@
               <!-- Kunden Daten -->
               <div v-if="customerData">
                 <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
-                }}</span>
+                }}</span>&nbsp;
                 <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
                 }}</span>
                 <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }} {{ customerData ?
@@ -54,7 +54,8 @@
                   <b class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
                 </div>
                 <div class="col-sm-12">
-                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.name :
+                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
+                    'Loading...' }} {{ customerData ? customerData.name :
                     'Loading...' }}</div>
                   <div class="my-1 mt-3">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
                     unterbreiten.</div>
@@ -219,7 +220,7 @@
                               <div class="text-sm ps-6 text-start text-dark">IBAN:</div>
                             </div>
                             <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.iban : 'Loading...' }}</div>
+                              <div class="text-sm text-dark">{{ companyData ? companyData.iban_number : 'Loading...' }}</div>
                             </div>
                           </div>
                           <div class="row">
@@ -227,7 +228,7 @@
                               <div class="text-sm ps-6 text-start text-dark">MwSt:</div>
                             </div>
                             <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
+                              <div class="text-sm text-dark">{{ companyData ? companyData.mwst : 'Loading...' }}</div>
                             </div>
                           </div>
                         </div>

@@ -152,7 +152,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
-            <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.MwSt">
+            <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
           </div>
           <div class="invalid-feedback">
             Mehrwertsteuer Bitte eintragen.
@@ -191,6 +191,36 @@
     <div class="row">
     <h1 class="justify-content-center">2. Kunde</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCustomerForm">
+            <div class="row">
+<div class="col-md-6 mb-3 col-sm-12">
+  <label>Gender:</label>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="mrRadio"
+      value="Herr"
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="mrRadio">Herr</label>
+  </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="mrsRadio"
+      value="Frau"
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="mrsRadio">Frau</label>
+  </div>
+  <div class="invalid-feedback">
+    Ansprache.
+  </div>
+</div>
+        <div class="col-md-6 mb-3 col-sm-12">
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
@@ -494,10 +524,14 @@ async submitCustomerForm() {
   }
 },
 
-    generateInvoiceNumber() {
-      // Generate the invoice number logic
-      this.invoiceNumber = 'INV-001'; // Replace with your logic
-    },
+generateInvoiceNumber() {
+  const currentYear = new Date().getFullYear();
+  const randomNum = Math.floor(Math.random() * 100000);
+
+  // Combine the current year and the random number to form the invoice number
+  this.invoiceNumber = `${currentYear}-${randomNum}`;
+},
+
 
     nextStep() {
       this.step++;
