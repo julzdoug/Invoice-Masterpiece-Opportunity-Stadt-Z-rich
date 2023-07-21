@@ -12,7 +12,7 @@
             <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Meine Rechnungen</a>
+            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
@@ -84,7 +84,7 @@ function handleMenuClick(componentName) {
   }
   router.push({ name: componentName });
 }
-onMounted(async () => {
+/* onMounted(async () => {
   const session = supabase.auth.session();
   if (session) {
     user.value = {
@@ -92,7 +92,7 @@ onMounted(async () => {
       id: session.user.id,
     };
   }
-});
+}); */
 
 
 

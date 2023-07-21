@@ -3,8 +3,8 @@
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-8 order-md-2">
-        <img src="" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+      <div class="col-md-4 order-md-2">
+        <img src="src/assets/hero/form.png" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
         <div class="product-device shadow-sm d-md-none"></div>
         <div class="product-device product-device-2 shadow-sm d-md-none"></div>
       </div>
@@ -13,8 +13,31 @@
         <h3 class="fw-normal text-muted mb-3">Erstelle deine Rechnung</h3>
         <h3 class="fw-normal text-muted mb-3">zu einem PDF</h3>
         <div class="d-flex gap-3 justify-content-center lead fw-normal">
-
         </div>
+      </div>
+            <div class="col-md-4 order-md-1">
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="src/assets/hero/company.png" class="d-block w-100" alt="companyForm">
+    </div>
+    <div class="carousel-item">
+      <img src="src/assets/hero/customer.png" class="d-block w-100" alt="customerform">
+    </div>
+    <div class="carousel-item">
+      <img src="src/assets/hero/number.png" class="d-block w-100" alt="invoicenumber">
+      <img src="src/assets/hero/order.png" class="d-block w-100" alt="order">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
       </div>
     </div>
   </div>

@@ -1,6 +1,8 @@
 <template>
     <Header v-if="user" />
-
+      <div class="container">
+    <component :is="activeComponent" v-if="user" />
+  </div>
 <Hero v-if="user" />
 <Discription v-if="user" />
 <!-- <editInvoice v-if="user" /> -->
@@ -22,7 +24,7 @@ import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
 import InvoiceForm from './InvoiceForm.vue';
-
+import MyInvoice from './MyInvoice.vue';
 /* import editInvoice from './editInvoice.vue'; */
 // Your Supabase configuration
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -39,13 +41,14 @@ export default {
     Discription,
     Footer,
     InvoiceForm,
-
+    MyInvoice,
 /*     editInvoice, */
   },
 
   setup(_, { emit }) {
     const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
     const selectedTable = ref('');
+     const activeComponent = ref("");
     provide('user', user);
 
     // After login
@@ -62,7 +65,7 @@ export default {
     return {
       user,
       handleLoginSuccess,
-
+  activeComponent,
     };
   },
 };
