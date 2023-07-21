@@ -12,7 +12,7 @@
             <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Rechnung Erstellen</a>
+            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('createInvoice')">Meine Rechnungen</a>
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>

@@ -1,160 +1,86 @@
 <template>
+  <Header />
   <!--Titel und Aushwal-->
-  <div>
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <h1 class="fs-5">Firma:</h1>
-        <select v-model="selectedCompany" class="col-sm-12 form-select mt-4 custom-select"
-          aria-label="Wählen Sie die Frima">
-          <option disabled value="">Wähle Firma</option>
-          <option v-for="company in companies" :key="company.id" :value="company">
-            {{ company.profession }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3 col-sm-6 d-flex justify-content-center">
-        <h1 class="fs-5">Kunde:</h1>
-        <select v-model="selectedCustomer" class="col-sm-12 form-select mt-5 custom-select"
-          aria-label="Wählen Sie denn Kunden">
-          <option disabled value="">Wähle Kunde</option>
-          <option v-for="customer in customers" :key="customer.id" :value="customer">
-            {{ customer.name }}
-          </option>
-        </select>
-      </div>
-      <!-- Rechnugs nummer wählen oder generieren-->
-      <div class="col-md-3  col-sm-12 ms-5 d-flex text-center justify-content-end">
-        <h1 class="fs-5">Rechnungsnummer:</h1>
-        <select v-model="selectedInvoiceNumber" class="form-select col-sm-12 mt-5 custom-select col-7"
-          v-if="selectedCustomer && !isGeneratingInvoice && !invoiceNumber" aria-label="Wählen Sie die Rechnungsnummer">
-          <option disabled value="">Wähle eine Rechnungsnummer</option>
-          <option value="" selected>Alles zeigen</option>
-          <option v-for="invoice in filteredInvoiceNumbers" :value="invoice" :key="invoice">
-            {{ invoice }}
-          </option>
-        </select>
-      </div>
-    </div>
     <div class="row">
       <hr class="mt-3">
-      <div class="col-sm-3 col-sm-12 mt-3">
-        <div v-if="selectedCustomer && !selectedInvoiceNumber">
-          <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
-          <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
-        </div>
-      </div>
       <!--Kunden Daten-->
       <div class="cols-sm-12 col-md-9text-secondary">
-        <div class="my-1">Kunden Nummer:<br>
-          {{ selectedCustomer && selectedCustomer.id }}
-        </div>
-        <div class="my-1">
-          {{ selectedCustomer && selectedCustomer.name }}, {{ selectedCustomer && selectedCustomer.surname }}
-        </div>
-        <div class="my-1">
-          {{ selectedCustomer && selectedCustomer.street }}, {{ selectedCustomer && selectedCustomer.streetnumber }}
-        </div>
-        <div class="my-1">
-          {{ selectedCustomer && selectedCustomer.postcode }}, {{ selectedCustomer && selectedCustomer.place }}
-        </div>
-        <div class="my-1">
-          {{ selectedCustomer && selectedCustomer.email }}
+        <div class="my-1">Meine Angaben:<br>
+
         </div>
       </div>
     </div>
     <!--Bestellformular-->
     <div class="table-responsive">
-      <table class="col-sm-12 table table-borderless border-0 border-b-2"
-        v-if="selectedInvoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
+<table class="col-sm-12 table table-borderless border-0 border-b-2" v-if="invoiceRows.length > 0" aria-label="">
+  <thead>
+    <tr>
+      <th class="text-dark bg-light"></th>
+      <th class="text-dark bg-light">Pos.</th>
+      <th class="text-dark bg-light">Rechnungsnummer</th>
+      <th class="text-dark bg-light">Bezeichnung</th>
+      <th class="text-dark bg-light">Menge</th>
+      <th class="text-dark bg-light">Preis/Stück</th>
+      <th class="width=140 text-dark bg-light">Positionspreis</th>
+    </tr>
+  </thead>
+  <tbody class="text-95 text-secondary-d3">
+    <tr v-for="(row, index) in invoiceRows" :key="row.id">
+      <td>
+        <input type="checkbox" v-model="row.checked" />
+      </td>
+      <td class="text-center">
+        <!-- No need for edit button -->
+      </td>
+      <td class="text-center">
+        <!-- No need for delete button -->
+      </td>
+      <td>{{ companies.find(company => company.id === row.company_id)?.company_name }}</td>
+      <td>{{ customers.find(customer => customer.id === row.customer_id)?.name }}</td>
+      <td>{{ row.invoice_number }}</td>
+      <td>{{ row.invoice_date }}</td>
+      <td class="text-secondary-d2">{{ row.total }}</td>
+    </tr>
+  </tbody>
+</table>
 
-        <thead>
-          <tr>
-            <th class="text-dark bg-light"></th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
-            <th class="text-dark bg-light">Pos.</th>
-
-            <th class="text-dark bg-light">Rechnungsnummer</th>
-            <th class="text-dark bg-light">Bezeichnung</th>
-            <th class="text-dark bg-light">Menge</th>
-            <th class="text-dark bg-light">Preis/Stück</th>
-            <th class="width=140 text-dark bg-light">Positionspreis</th>
-          </tr>
-        </thead>
-        <tbody class="text-95 text-secondary-d3">
-          <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
-            <td>
-              <input type="checkbox" v-model="row.checked" />
-            </td>
-            <td class="text-center">
-              <button class="btn btn-warning m-1" @click="editRow(index)">
-                <i class="bi bi-pencil"></i>
-              </button>
-            </td>
-            <td class="text-center">
-              <button class="btn btn-warning m-1" @click="deleteRow(index)">
-                <i class="bi bi-trash3"></i>
-              </button>
-
-            </td>
-            <td>{{ row.position }}</td>
-            <td>{{ row.invoice_number }}</td>
-            <td>
-              <template v-if="isEditing[index]">
-                <input v-model="row.description" />
-              </template>
-              <template v-else>
-                {{ row.description }}
-              </template>
-            </td>
-            <td>
-              <template v-if="isEditing[index]">
-                <input v-model="row.quantity" type="number" />
-              </template>
-              <template v-else>
-                {{ row.quantity }}
-              </template>
-            </td>
-            <td class="text-95">
-              <template v-if="isEditing[index]">
-                <input v-model="row.price_per_unit" type="number" />
-              </template>
-              <template v-else>
-                {{ row.price_per_unit }}
-              </template>
-            </td>
-            <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    <button class="btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
-    <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Zur Rechnung</button>
-  </div>
+  <Footer />
 </template>
 
 <script>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'vue-router';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
+import Header from "./Header.vue";
+import Footer from "./footer.vue";
 //Funktionangaben
 export default {
-  setup() {
+    components: {
+    Header,
+    Footer,
+  },
+
+    props: {
+    userUid: {
+      type: String,
+      required: true,
+    },
+  },
+
+setup() {
+    const userUid = ref('');
+
     const router = useRouter();
     const customers = ref([]);
-    const selectedCustomer = ref(null);
-    const selectedInvoiceNumber = ref('');
-    const selectedCompany = ref(null);
     const companies = ref([]);
     const invoiceRows = ref([]);
-    const isEditing = ref([]);
-    const invoiceNumber = ref('');
-    //FirmenDaten Laden
+
     const fetchCompanies = async () => {
       try {
         const { data, error } = await supabase.from('company').select('*');
@@ -171,7 +97,7 @@ export default {
         console.error('Failed to fetch companies:', error);
       }
     };
-    //KundenDatenLaden
+
     const fetchCustomers = async () => {
       try {
         const { data, error } = await supabase.from('customer').select('*');
@@ -188,231 +114,29 @@ export default {
         console.error('Failed to fetch customers:', error);
       }
     };
-    // RechnugsDaten Laden
+
     const fetchInvoiceData = async () => {
       try {
-        const { data, error } = await supabase.from('invoice').select('*');
-        if (error) {
-          console.error('Failed to fetch invoice data:', error);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          invoiceRows.value = data.map((invoice) => ({
-            ...invoice,
-            isEditing: false,
-          }));
-        } else {
-          console.error('No invoice data found.');
-        }
+        const { data, error } = await supabase
+          .from('invoice')
+          .select('*')
+          .eq('user_id', userUid);
+        // ... (rest of the function implementation)
       } catch (error) {
         console.error('Failed to fetch invoice data:', error);
       }
     };
-    //Rechnungsnummern Fltern
-    const filteredInvoiceNumber = computed(() => {
-      if (!selectedInvoiceNumber.value || selectedInvoiceNumber.value === '') {
-        return '';
-      }
-      return selectedInvoiceNumber.value;
-    });
-    const filteredInvoiceNumbers = computed(() => {
-      if (!selectedCustomer.value) {
-        return [];
-      }
-      const invoiceNumbers = new Set();
-      for (const row of invoiceRows.value) {
-        if (row.customer_id === selectedCustomer.value.id && row.company_id === selectedCompany.value.id) {
-          invoiceNumbers.add(row.invoice_number);
-        }
-      }
-      return ['', ...Array.from(invoiceNumbers)];
-    });
-    // Bestell Rechnungen angaben Filtern
-    const filteredInvoiceRows = computed(() => {
-      if (!selectedCustomer.value) {
-        return [];
-      }
-      if (selectedInvoiceNumber.value === '' && generateInvoiceNumber.value === '') {
-        return [];
-      }
-      if (selectedInvoiceNumber.value === '') {
-        return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === generateInvoiceNumber.value);
-      }
-      return invoiceRows.value.filter((row) => row.customer_id === selectedCustomer.value.id && row.invoice_number === selectedInvoiceNumber.value);
-    });
-    // Bestellung eintragen
-    const editRow = (index) => {
-      isEditing.value[index] = true;
-    };
-    // Bestellung löschen
-    const deleteRow = async (index) => {
-      const invoice = filteredInvoiceRows.value[index];
-      if (!invoice.id) {
-        invoiceRows.value.splice(index, 1);
-        return;
-      }
-      try {
-        await supabase.from('invoice').delete().match({ id: invoice.id });
-        invoiceRows.value.splice(index, 1);
-      } catch (error) {
-        console.error('Failed to delete row:', error);
-      }
-    };
-    // Eingabe Sichern
-    const saveChanges = async () => {
-      try {
-        const companyData = selectedCompany.value;
-        if (!companyData) {
-          console.error('No company selected.');
-          return;
-        }
-        const { logo, company_name, proffesion, name, surname, street, street_number, postal_code, place, uid_number, account, iban_number, phone_number, webpage, email, MwSt, bank } = companyData;
-        for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
-          const invoice = filteredInvoiceRows.value[i];
-          if (!invoice) continue;
-          const { description, price_per_unit, quantity } = invoice;
-          const total = quantity * price_per_unit;
-          if (invoice.id) {
-            await supabase
-              .from('invoice')
-              .update({ description, price_per_unit, quantity, total })
-              .match({ id: invoice.id });
-            isEditing.value[invoice.id] = false;
-          } else {
-            const newRow = {
-              description,
-              price_per_unit,
-              quantity,
-              total,
-              company_id: selectedCompany.value.id,
-              customer_id: selectedCustomer.value.id,
-              invoice_number: invoice.invoice_number || invoiceNumber.value,
-            };
-            const { data, error } = await supabase.from('invoice').insert([newRow]);
-            if (error) {
-              console.error('Failed to insert new row:', error);
-              return;
-            }
-            if (data && data.length > 0) {
-              invoice.id = data[0].id;
-              isEditing.value[invoice.id] = false;
-            } else {
-              console.error('No invoice data returned after insert.');
-            }
-          }
-        }
-        navigateToInvoice();
-      } catch (error) {
-        console.error('Failed to update data:', error);
-      }
-    };
-    //Neue Bestellung position
-    const addNewRow = () => {
-      const newRow = {
-        description: '',
-        quantity: 0,
-        price_per_unit: 0,
-        company_id: selectedCompany.value,
-        customer_id: selectedCustomer.value.id,
-        invoice_number: selectedInvoiceNumber.value || generateInvoiceNumber.value,
-      };
-      invoiceRows.value.push(newRow);
-    };
-    // Rechnungsnummer Generieren
-    const generateInvoiceNumber = () => {
-      // Generate a new invoice number logic goes here
-      // You can use a random number generator or any other logic you prefer
-      invoiceNumber.value = 'INV-' + Math.floor(Math.random() * 100000);
-    };
-    // Ausgewählte daten Laden
-    const fetchSelectedData = async () => {
-      try {
-        if (selectedCompany.value && selectedCustomer.value && selectedInvoiceNumber.value) {
-          // Query for the selected customer
-          const { data: customerData, error: customerError } = await supabase
-            .from('customer')
-            .select('*')
-            .eq('id', selectedCustomer.value.id)
-            .single();
-          if (customerError) {
-            console.error('Failed to fetch customer data:', customerError);
-            return;
-          }
-          const { data: companyData, error: companyError } = await supabase
-            .from('company')
-            .select('*')
-            .eq('id', selectedCompany.value.id)
-            .single();
-          if (companyError) {
-            console.error('Failed to fetch customer data:', companyError);
-            return;
-          }
-          const { data: invoiceData, error: invoiceError } = await supabase
-            .from('invoice')
-            .select('*')
-            .eq('invoice_number', selectedInvoiceNumber.value)
-            .eq('customer_id', customerData.id)
-            .eq('company_id', companyData.id)
-            .single();
-          if (invoiceError) {
-            console.error('Failed to fetch invoice data:', invoiceError);
-            return;
-          }
-          const { data: selectedData, error: selectedDataError } = await supabase
-            .from('invoice')
-            .select('*')
-            .eq('invoice_number', invoiceData.id)
-            .eq('customer_id', customerData.id)
-            .eq('company_id', companyData.id)
-            .single();
-          if (selectedDataError) {
-            console.error('Failed to fetch selected data:', selectedDataError);
-            return;
-          }
-          console.log('Selected customer data:', customerData);
-          console.log('Selected invoice data:', invoiceData);
-          console.log('Selected data:', selectedData);
-        }
-      } catch (error) {
-        console.error('Failed to fetch selected data:', error);
-      }
-    };
-    // Zur Rechnung umleiten
-    const navigateToInvoice = () => {
-      router.push({ name: 'Invoices', params: { invoiceNumber: selectedInvoiceNumber.value || invoiceNumber.value } });
-    };
 
-    onMounted(async () => {
+   onMounted(async () => {
+      fetchInvoiceData();
       await fetchCustomers();
-      fetchSelectedData();
-      fetchInvoiceData();
       await fetchCompanies();
-    });
-
-    watch(selectedInvoiceNumber, () => {
-      fetchInvoiceData();
     });
 
     return {
       customers,
       companies,
-      selectedCompany,
-      selectedCustomer,
-      selectedInvoiceNumber,
       invoiceRows,
-      isEditing,
-      invoiceNumber,
-      filteredInvoiceNumber,
-      filteredInvoiceNumbers,
-      filteredInvoiceRows,
-      editRow,
-      deleteRow,
-      saveChanges,
-      addNewRow,
-      generateInvoiceNumber,
-      fetchSelectedData,
-      navigateToInvoice,
     };
   },
 };
