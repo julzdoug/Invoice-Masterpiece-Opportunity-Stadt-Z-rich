@@ -116,7 +116,11 @@
   </div>
       </section>
   </div>
+        <div class="scroll-back-to-top" @click="scrollToTop" v-if="!user" ref="scrollButton">
+    <button class="btn btn-primary btn-sm">Nach Oben</button>
+  </div>
     <Footer />
+
 </template>
 
 <script>
@@ -141,6 +145,44 @@ Footer,
     toggleLogin() {
       this.showLandingPage = !this.showLandingPage;
     },
+        scrollToTop() {
+      const scrollButton = this.$refs.scrollButton;
+      if (scrollButton) {
+        scrollButton.style.display = "none"; // Initially hide the button
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
+      // Add a scroll event listener to show/hide the button after scrolling
+      const handleScroll = () => {
+        if (scrollButton) {
+          if (window.scrollY > 40) { // Adjust the value as needed
+            scrollButton.style.display = "block";
+          } else {
+            scrollButton.style.display = "none";
+          }
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      // Remove the scroll event listener after scrolling to top
+      const handleScrollEnd = () => {
+        if (scrollButton) {
+          if (window.scrollY === 0) {
+            scrollButton.style.display = "block";
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScrollEnd);
+          }
+        }
+      };
+
+      window.addEventListener('scroll', handleScrollEnd);
+    },
+  
   },
 
 
@@ -239,6 +281,20 @@ Footer,
   
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
+
+.scroll-back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+}
+.scroll-back-to-top button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .button {
   height: auto;
   width: auto;

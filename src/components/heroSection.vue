@@ -13,6 +13,7 @@
         <h3 class="fw-normal text-muted mb-3">Erstelle deine Rechnung</h3>
         <h3 class="fw-normal text-muted mb-3">zu einem PDF</h3>
         <div class="d-flex gap-3 justify-content-center lead fw-normal">
+        <button class="btn btn-primary btn-block" @click="jumpToSection('form')">Start</button>
         </div>
       </div>
             <div class="col-md-4 order-md-1">
@@ -45,3 +46,16 @@
 </section>
 </template>
 
+<script>
+export default {
+    methods: {
+    // Jump to a specific section when the button is clicked
+    jumpToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+  }
+}
+</script>

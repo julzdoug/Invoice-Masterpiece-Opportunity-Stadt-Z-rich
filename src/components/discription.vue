@@ -11,10 +11,26 @@
         <h1 class="display-3 fw-bold">Wie funktionert es</h1>
         <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellung<br>mit einem Knopfdruck zur fertigen PDF Rechung</h3>
         <div class="d-flex gap-3 justify-content-center lead fw-normal">
-
+<button class="btn btn-primary btn-block" @click="jumpToSection('form')">Start</button>
         </div>
       </div>
     </div>
   </div>
 </section>
 </template>
+
+
+
+<script>
+export default {
+    methods: {
+    // Jump to a specific section when the button is clicked
+    jumpToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+  }
+}
+</script>

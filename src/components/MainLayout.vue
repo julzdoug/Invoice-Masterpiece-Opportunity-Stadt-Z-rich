@@ -5,12 +5,12 @@
   </div>
 <Hero v-if="user" />
   <div class="button-section-jumper" v-if="user">
-    <button @click="jumpToSection('form')">Start</button>
+    
   </div>
 <Discription v-if="user" />
 <!-- <editInvoice v-if="user" /> -->
   <div class="button-section-jumper" v-if="user">
-    <button @click="jumpToSection('form')">Start</button>
+
   </div>
 
 <div id="form" class="fit">
@@ -19,8 +19,9 @@
     <Login v-if="!user" @login-success="handleLoginSuccess" />
 </div>
   <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
-    <button class="btn btn-primary">Scroll To Top</button>
+    <button class="btn btn-primary btn-sm">Scroll To Top</button>
   </div>
+  
 </template>
 
 <script>
@@ -55,14 +56,8 @@ export default {
 /*     editInvoice, */
   },
     methods: {
-    // Jump to a specific section when the button is clicked
-    jumpToSection(sectionId) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    },
-   scrollToTop() {
+ // Scroll to top when the button is clicked
+    scrollToTop() {
       const scrollButton = this.$refs.scrollButton;
       if (scrollButton) {
         scrollButton.style.display = "none"; // Initially hide the button
@@ -76,7 +71,7 @@ export default {
       // Add a scroll event listener to show/hide the button after scrolling
       const handleScroll = () => {
         if (scrollButton) {
-          if (window.scrollY > 50) { // Adjust the value as needed
+          if (window.scrollY > 40) { // Adjust the value as needed
             scrollButton.style.display = "block";
           } else {
             scrollButton.style.display = "none";
@@ -89,9 +84,11 @@ export default {
       // Remove the scroll event listener after scrolling to top
       const handleScrollEnd = () => {
         if (scrollButton) {
-          scrollButton.style.display = "block";
-          window.removeEventListener('scroll', handleScroll);
-          window.removeEventListener('scroll', handleScrollEnd);
+          if (window.scrollY === 0) {
+            scrollButton.style.display = "block";
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScrollEnd);
+          }
         }
       };
 
@@ -114,8 +111,6 @@ export default {
       isAuthenticated.value = !!localStorage.getItem('user');
     });
 
-
-
     return {
       user,
       handleLoginSuccess,
@@ -135,7 +130,7 @@ export default {
 }
 .scroll-back-to-top {
   position: fixed;
-  bottom: 20px;
+  bottom: 100px;
   right: 20px;
 }
 .scroll-back-to-top button {
