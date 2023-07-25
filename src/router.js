@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
 import Login from '../src/components/Login.vue';
 import HelloWorld from '../src/components/HelloWorld.vue';
 import MyInvoice from '../src/components/MyInvoice.vue';
 import Invoices from '../src/components/Invoices.vue';
 import Firma_Kunde from '../src/components/Firma_Kunde.vue';
 import MainLayout from '../src/components/MainLayout.vue';
-
+import editInvoice from '../src/components/editInvoice.vue';
 import { isAuthenticated } from '../src/auth.js';
 
 const routes = [
@@ -20,8 +19,6 @@ const routes = [
         component: HelloWorld,
         meta: { requiresAuth: true },
       },
-
-
       {
         path: '/Firma_Kunde',
         name: 'Firma_Kunde',
@@ -30,21 +27,29 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/MyInvoice',
+    name: 'MyInvoice',
+    component: MyInvoice,
+    meta: { requiresAuth: true },
+    children: [
         {
-        path: '/MyInvoice',
-        name: 'MyInvoice',
-        component: MyInvoice,
-        meta: { requiresAuth: true },
-      },
-        {
-        path: '/Invoices/:invoiceNumber',
-        name: 'Invoices',
-        component: Invoices,
-        props: true,
-        meta: { requiresAuth: true },
-      },
+    path: '/edit-invoice',
+    name: 'editInvoice',
+    component: editInvoice,
+props: true,
+    // Do not include props: true here
+  },
+    ]
+  },
 
-
+  {
+    path: '/Invoices/:invoiceNumber',
+    name: 'Invoices',
+    component: Invoices,
+    props: true,
+    meta: { requiresAuth: true },
+  },
   {
     path: '/login',
     name: 'Login',
@@ -66,6 +71,7 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+
 
 
 

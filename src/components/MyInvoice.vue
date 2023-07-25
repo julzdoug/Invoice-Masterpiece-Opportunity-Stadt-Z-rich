@@ -1,55 +1,67 @@
 <template>
   <Header />
   <!--Titel und Aushwal-->
+  <section>
     <div class="row">
       <hr class="mt-3">
       <!--Kunden Daten-->
       <div class="cols-sm-12 col-md-9text-secondary">
         <div class="my-1">Meine Angaben:<br>
-
         </div>
       </div>
     </div>
-    <!--Bestellformular-->
     <div class="table-responsive d-flex justify-content-center align-items-center">
-    <table class=" table table-striped text-center" v-if="invoiceRows.length > 0" aria-label="">
-      <thead>
-        <tr>
-          <th class="text-dark bg-light"></th>
-          <th class="text-dark bg-light">Kunde.</th>
-          <th class="text-dark bg-light">Rechnungsteller</th>
-          <th class="text-dark bg-light">Rechnungsnummer</th>
-          <th class="text-dark bg-light">Rechnungs Datum</th>
-          <th class="text-dark bg-light">Betrag</th>
-          <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
-          <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
-        </tr>
-      </thead>
-      <tbody class=" table text-95 text-secondary-d3 text-start">
+      <table class=" table table-striped text-center" v-if="invoiceRows.length > 0" aria-label="">
+        <thead>
+          <tr>
+            <th class="text-dark bg-light"></th>
+            <th class="text-dark bg-light">Kunde.</th>
+            <th class="text-dark bg-light">Rechnungsteller</th>
+            <th class="text-dark bg-light">Rechnungsnummer</th>
+            <th class="text-dark bg-light">Rechnungs Datum</th>
+            <th class="text-dark bg-light">Betrag</th>
+            <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
+            <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
+          </tr>
+        </thead>
+        <tbody class=" table text-95 text-secondary-d3 text-start">
           <tr v-for="(row, index) in invoiceRows" :key="row.id">
-                          <td>
-                <input type="checkbox" v-model="row.checked" />
-              </td>
+            <td>
+              <input type="checkbox" v-model="row.checked" />
+            </td>
             <td class="text-center">{{ getCustomerName(row.customer_id) }}</td>
             <td class="text-center">{{ getCompanyName(row.company_id) }}</td>
             <td class="text-center">{{ row.invoice_number }}</td>
             <td class="text-center">{{ row.invoice_date }}</td>
             <td class="text-center">{{ row.total }}</td>
-                          <td class="text-center">
-                <button class="btn btn-warning m-1" @click="editRow(index)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-warning m-1" @click="deleteRow(index)">
-                  <i class="bi bi-trash3"></i>
-                </button>
-              </td>
+            <td class="text-center">
+              <button class="btn btn-warning m-1" @click="toggleEditMode(row)">
+                <i class="bi bi-pencil"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-warning m-1" @click="deleteRow(index)">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </td>
           </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
     </div>
-    <Footer />
+  </section>
+  <section>
+<div v-if="isEditingInvoice">
+      <editInvoice
+      :selectedInvoice="selectedInvoice"
+      :invoiceData="invoiceData"
+      :companyData="companyData"
+      :customerData="customerData"
+      :isEditingInvoice="isEditingInvoice"
+    />
+</div>
+
+  </section>
+  <Footer />
 </template>
 
 <script>
@@ -59,7 +71,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 import { isAuthenticated } from '../auth.js';
-
+import editInvoice from './editInvoice.vue';
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
 
@@ -67,13 +79,33 @@ export default {
   components: {
     Header,
     Footer,
+    editInvoice,
+  },
+  data() {
+    return {
+      // Your data properties
+      invoiceData: {},
+      isEditingInvoice: false, // Set the initial value of isEditingInvoice
+    };
   },
 
+
+
+  
   setup() {
+    const isEditing = ref(false);
     const invoiceRows = ref([]);
     const customerData = ref([]);
     const companyData = ref([]);
+    const invoiceData = ref({});
+    const isEditingInvoice = ref(false);
+    const selectedInvoice = ref(null);
+    
 
+    const editRow = (invoiceNumber) => {
+      selectedInvoice.value = invoiceRows.value.find((row) => row.invoice_number === invoiceNumber);
+      isEditingInvoice.value = true;
+    };
     // Fetch invoice data from the 'invoice' table
     const fetchInvoiceData = async () => {
       try {
@@ -92,7 +124,7 @@ export default {
         console.error('Failed to fetch invoice data:', error);
       }
     };
-  // Fetch customer data from the 'customer' table
+    // Fetch customer data from the 'customer' table
     const fetchCustomerData = async () => {
       try {
         const { data, error } = await supabase.from('customer').select('*');
@@ -101,7 +133,7 @@ export default {
           return;
         }
 
-        if (data && data.length > 0) {
+        if (data) {
           customerData.value = data;
         } else {
           console.error('No customer data found.');
@@ -113,21 +145,48 @@ export default {
 
     // Fetch company data from the 'company' table
     const fetchCompanyData = async () => {
+
       try {
-        const { data, error } = await supabase.from('company').select('*');
+        const { data, error } = await supabase
+          .from('company')
+          .select('*')
+
+
         if (error) {
           console.error('Failed to fetch company data:', error);
           return;
         }
 
-        if (data && data.length > 0) {
+        if (data) {
           companyData.value = data;
-        } else {
-          console.error('No company data found.');
+
+          if (data.logo_name && data.bucket_id) {
+            // Fetch the company logo from the storage bucket and set the logo URL
+            const logoResponse = await supabase.storage.from(data.bucket_id).download(data.logo_name);
+
+            if (logoResponse.error) {
+              console.error('Error fetching company logo:', logoResponse.error.message);
+              return;
+            }
+
+            const logoBlob = logoResponse.data;
+            const logoUrl = URL.createObjectURL(new Blob([logoBlob]));
+
+            companyData.value.logo = logoUrl;
+          }
         }
       } catch (error) {
         console.error('Failed to fetch company data:', error);
       }
+    };
+
+    function byteaToBase64(bytea) {
+      const byteArray = new Uint8Array(bytea.data);
+      let binary = '';
+      for (let i = 0; i < byteArray.byteLength; i++) {
+        binary += String.fromCharCode(byteArray[i]);
+      }
+      return 'data:image/png;base64,' + window.btoa(binary);
     };
 
     // Fetch the data when the component is mounted
@@ -159,13 +218,28 @@ export default {
       });
       return Array.from(invoiceMap.values());
     });
-
+    const showFormComponent = () => {
+      isEditing.value = true; // Set isEditing to true when the button is clicked
+    };
+        const toggleEditMode = (row) => {
+      if (row) {
+        selectedInvoice.value = row;
+      }
+      isEditingInvoice.value = !isEditingInvoice.value;
+    };
 
 
     return {
-      invoiceRows: uniqueInvoices, 
+      invoiceRows: uniqueInvoices,
       getCustomerName,
       getCompanyName,
+      invoiceData,
+           selectedInvoice,
+      toggleEditMode,
+      editRow,
+      isEditing,
+      isEditingInvoice,
+      showFormComponent,
     };
   },
 };
@@ -194,5 +268,4 @@ export default {
   padding: 10px 0;
   margin-top: 1%;
 } */
-
 </style>
