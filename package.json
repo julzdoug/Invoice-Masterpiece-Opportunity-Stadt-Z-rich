@@ -19,7 +19,8 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.29",
     "pdfmake": "^0.2.7",
-    "vue": "^3.2.47",
+    "vue": "^3.3.4",
+    "vue-bs-modal": "^0.7.9",
     "vue-html2pdf": "^1.8.0",
     "vue-router": "^4.2.2",
     "vuex": "^4.1.0"

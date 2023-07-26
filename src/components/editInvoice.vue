@@ -1,14 +1,586 @@
 <template>
+  
+  <div class="modal fade" id="exampleModalToggle3" aria-hidden="false" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Modal 1</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="container mt-5 smaller-form" novalidate @submit.prevent="toggleEditModeCompany">
+                <div class="row">
+                  <div class="form-group col-md-6 col-sm-12 mb-3">
+                    <div class="row">
+                      <div class="col-8 d-flex justify-content-start">
+                      </div>
+                      <div class="col-8 d-flex ms-3 justify-content-center">
+                        <button class="btn btn-primary btn-md" v-if="companyData" @click="showCompanyModal">{{
+                          isEditing ? 'Cancel' : 'Ändern' }}</button>
+                      </div>
+                      <div class="col-8 d-flex justify-content-end">
+                      </div>
+                    </div>
+                    <label for="logoInput">Company Logo</label>
+                    <div class="text-center col-4">
+                      <div class="input-with-image">
+                        <template v-if="isEditing">
+                          <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
+                          <div class="image-preview" v-if="companyData && companyData.logo">
+                            <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div class="image-preview" v-if="companyData && companyData.logo">
+                            <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Unternehmen:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control text-start" placeholder="Unternehmen" required
+                          v-model="companyData.profession">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.profession">{{ companyData.profession }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Unternehmen Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Firma:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control text-start" placeholder="Firma" required
+                          v-model="companyData.company_name">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.company_name">{{ companyData.company_name }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Firma Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Vorname:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Vorname" required v-model="companyData.name">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.name">{{ companyData.name }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Vorname Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Name:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Name" required v-model="companyData.surname">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.surname">{{ companyData.surname }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Name Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Strasse:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Strasse" required
+                          v-model="companyData.street">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.street">{{ companyData.street }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Strasse Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Nummer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
+                          v-model="companyData.street_number">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.street_number">{{ companyData.street_number }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Nummer Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Postleitzahl:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
+                          v-model="companyData.postal_code">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.postal_code">{{ companyData.postal_code }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Postleitzahl Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Ort:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Ort" required v-model="companyData.place">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.place">{{ companyData.place }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Ort Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Email:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.email">{{ companyData.email }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Email Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Webpage:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control"
+                          pattern="^(https?:\/\/)?([\w\d]+\.)?[\w-]+(\.[\w-]+)+([/?#]\S*)?$" placeholder="Webpage"
+                          v-model="companyData.webpage">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.webpage">{{ companyData.webpage }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Webpage Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Telefon Nummer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Telefon Nummer"
+                          v-model="companyData.phone_number">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.phone_number">{{ companyData.phone_number }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Telefon Nummer Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">UiD Nummer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="UiD Nummer" required
+                          v-model="companyData.uid_number">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.uid_number">{{ companyData.uid_number }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      UiD Nummer Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">IBAN:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.iban_number">{{ companyData.iban_number }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      IBAN Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Mehrwertsteuer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.mwst">{{ companyData.mwst }}</div>
+                      </template>
+                    </div>
+                    <class class="invalid-feedback">
+                      Mehrwertsteuer Bitte eintragen.
+                    </class>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Bank:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Bank" v-model="companyData.bank">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.bank">{{ companyData.bank }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Bank Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Konto Nummer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Konto Nummer"
+                          v-model="companyData.account">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="companyData.account">{{ companyData.account }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Konto Nummer Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-8 d-flex ms-3 justify-content-center">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                @close="closeEditModal">invoice</button>
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle"
+                data-bs-toggle="modal">customer</button>
+              <button  @close="closeEditModal" type="submit" class="btn btn-success">Speichern</button>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3"
+        tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="container mt-5" @submit.prevent="updateCustomerDataInDatabase">
+                <div class="row">
+                  <div class="col-8 d-flex justify-content-start">
+                  </div>
+                  <div class="col-8 d-flex justify-content-center">
+                    <button class="btn btn-primary btn-md" v-if="customerData" @click="toggleEditModeCustomer">{{
+                      isEditing ? 'Cancel' :
+                      'Ändern'
+                    }}</button>
+                  </div>
+                  <div class="col-8 d-flex justify-content-end">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Vorname:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Vorname" required
+                          v-model="customerData.name">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.name }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Vorname Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Name:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Name" required
+                          v-model="customerData.surname">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData && customerData.surname">{{
+                          customerData.surname }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Name Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Strasse:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Strasse" required
+                          v-model="customerData.street">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData.street">{{ customerData.street }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Strasse Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Nummer:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
+                          v-model="customerData.streetnumber">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData.streetnumber">{{ customerData.streetnumber }}
+                        </div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Nummer Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Postleitzahl:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
+                          v-model="customerData.postcode">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData && customerData.postcode">{{
+                          customerData.postcode }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Postleitzahl Bitte eintragen.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Ort:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="text" class="form-control" placeholder="Ort" required v-model="customerData.place">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData && customerData.place">{{ customerData.place
+                        }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Ort Bitte eintragen.
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3 col-sm-12">
+                    <label for="validation3">Email:</label>
+                    <div class="input-container">
+                      <template v-if="isEditing">
+                        <input type="email" class="form-control" placeholder="Email" required
+                          v-model="customerData.email">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="customerData">{{ customerData.email }}</div>
+                      </template>
+                    </div>
+                    <div class="invalid-feedback">
+                      Email Bitte eingeben.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-8 d-flex justify-content-center">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+                @close="closeEditModal">Company</button>
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2"
+                data-bs-toggle="modal">Invoice</button>
+<button  @close="closeEditModal" type="submit" class="btn btn-success">Speichern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form @submit.prevent="updateInvoiceData">
+                <div class="container mt-5 col-md-8 text-center d-flex justify-content-center align-items-center">
+                  <div class="row">
+                    <div class="col-8 d-flex justify-content-center">
+                    </div>
+                                      <div class="col-8 d-flex justify-content-center">
+                    <button class="btn btn-primary btn-md" v-if="invoiceData" @click="toggleEditModeInvoice">{{
+                      isEditing ? 'Cancel' :
+                      'Ändern'
+                    }}</button>
+                  </div>
+                    <h1 class="fs-5">3. Rechnungsnummer:</h1>
+                                          <template v-if="isEditing">
+                        <input type="text" class="form-control mt-3" placeholder="Rechnungsnummer" required
+                          v-model="invoiceData.invoice_number">
+                      </template>
+                      <template v-else>
+                        <div class="form-control-static" v-if="invoiceData.invoice_number">{{ invoiceData.invoice_number }}</div>
+                      </template>
 
-    <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
+                    <hr class="mt-3">
+                    <table class="col-sm-12 table table-borderless border-0 border-b-2" aria-label="">
+                      <thead>
+                        <tr>
+                          <th class="text-dark bg-light"></th>
+                          <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
+                          <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
+                          <th class="text-dark bg-light">Pos.</th>
+                          <th class="text-dark bg-light">Rechnungsnummer</th>
+                          <th class="text-dark bg-light">Bezeichnung</th>
+                          <th class="text-dark bg-light">Menge</th>
+                          <th class="text-dark bg-light">Preis/Stück</th>
+                          <th class="width=140 text-dark bg-light">Positionspreis</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-95 text-secondary-d3">
+                        <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
+                          <td>
+                            <input type="checkbox" v-model="row.checked" />
+                          </td>
+                          <td class="text-center">
+                            <button class="btn btn-warning m-1" v-if="invoiceData" @click="editRow(index)">
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                          </td>
+                          <td class="text-center">
+                            <button class="btn btn-warning m-1" v-if="invoiceData" @click="deleteRow(index)">
+                              <i class="bi bi-trash3"></i>
+                            </button>
+                          </td>
+                          <td>{{ row.position }}</td>
+                          <td>{{ row.invoice_number }}</td>
+                          <td>
+                            <template v-if="isEditing[index]">
+                              <input v-model="row.description" />
+                            </template>
+                            <template v-else>
+                              {{ row.description }}
+                            </template>
+                          </td>
+                          <td>
+                            <template v-if="isEditing[index]">
+                              <input v-model="row.quantity" type="number" />
+                            </template>
+                            <template v-else>
+                              {{ row.quantity }}
+                            </template>
+                          </td>
+                          <td class="text-95">
+                            <template v-if="isEditing[index]">
+                              <input v-model="row.price_per_unit" type="number" />
+                            </template>
+                            <template v-else>
+                              {{ row.price_per_unit }}
+                            </template>
+                          </td>
+                          <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="col-8 d-flex justify-content-center">
+                      <button class="col btn btn-success mt-3" @click="addNewRow">Hinzufügen</button>
+                    </div>
+                    <button  @close="closeEditModal" class="col btn btn-success mt-3" type="submit">{{
+                      isEditing ? 'Cancel' : 'Speichern' }}</button>
+                     
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+               >company</button>
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Customer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<button ref="modalButton" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Invoice</button> 
+ 
+
+<!--     <form class="container mt-5 smaller-form" novalidate @submit.prevent="updateCompanyDataInDatabase">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
           <div class="row">
             <div class="col-8 d-flex justify-content-start">
             </div>
             <div class="col-8 d-flex ms-3 justify-content-center">
-              <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditModeForm">{{
-                isEditingInvoice ? 'Cancel' : 'Ändern' }}</button>
+              <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditMode">{{
+                isEditing ? 'Cancel' : 'Ändern' }}</button>
             </div>
             <div class="col-8 d-flex justify-content-end">
             </div>
@@ -17,14 +589,14 @@
 
 <div class="text-center col-4">
   <div class="input-with-image">
-    <template v-if="isEditingInvoice">
+    <template v-if="isEditing">
       <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
-      <div class="image-preview" v-if="companyData.logo">
+      <div class="image-preview" v-if="companyData && companyData.logo">
         <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
       </div>
     </template>
     <template v-else>
-      <div class="image-preview" v-if="companyData.logo">
+      <div class="image-preview" v-if="companyData && companyData.logo">
         <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
       </div>
     </template>
@@ -36,7 +608,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Unternehmen:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control text-start" placeholder="Unternehmen" required
                 v-model="companyData.profession">
             </template>
@@ -51,7 +623,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Firma:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control text-start" placeholder="Firma" required
                 v-model="companyData.company_name">
             </template>
@@ -68,7 +640,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Vorname" required v-model="companyData.name">
             </template>
             <template v-else>
@@ -82,7 +654,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Name:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Name" required v-model="companyData.surname">
             </template>
             <template v-else>
@@ -98,7 +670,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Strasse:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Strasse" required v-model="companyData.street">
             </template>
             <template v-else>
@@ -112,7 +684,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Nummer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
                 v-model="companyData.street_number">
             </template>
@@ -129,7 +701,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Postleitzahl:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
                 v-model="companyData.postal_code">
             </template>
@@ -144,7 +716,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Ort:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Ort" required v-model="companyData.place">
             </template>
             <template v-else>
@@ -160,7 +732,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Email:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
             </template>
             <template v-else>
@@ -174,7 +746,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Webpage:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="^(https?:\/\/)?([\w\d]+\.)?[\w-]+(\.[\w-]+)+([/?#]\S*)?$"
                 placeholder="Webpage" v-model="companyData.webpage">
             </template>
@@ -191,7 +763,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Telefon Nummer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Telefon Nummer"
                 v-model="companyData.phone_number">
             </template>
@@ -206,7 +778,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">UiD Nummer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="UiD Nummer" required
                 v-model="companyData.uid_number">
             </template>
@@ -223,7 +795,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">IBAN:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
             </template>
             <template v-else>
@@ -237,7 +809,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
             </template>
             <template v-else>
@@ -253,7 +825,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Bank:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Bank" v-model="companyData.bank">
             </template>
             <template v-else>
@@ -267,7 +839,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Konto Nummer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Konto Nummer"
                 v-model="companyData.account">
             </template>
@@ -286,13 +858,13 @@
                 isEditing ? 'Cancel' : 'Speichern' }}</button>
             </div>
     </form>
-    <form class="container mt-5" @submit.prevent="submitCustomerForm">
+    <form class="container mt-5" @submit.prevent="updateCustomerDataInDatabase">
       <div class="row">
         <div class="col-8 d-flex justify-content-start">
         </div>
         <div class="col-8 d-flex justify-content-center">
-          <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditModeForm">{{
-            isEditingInvoice ? 'Cancel' :
+          <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditMode">{{
+            isEditing ? 'Cancel' :
             'Ändern'
           }}</button>
         </div>
@@ -303,7 +875,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Vorname" required v-model="customerData.name">
             </template>
             <template v-else>
@@ -317,7 +889,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Name:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Name" required v-model="customerData.surname">
             </template>
             <template v-else>
@@ -333,7 +905,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Strasse:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Strasse" required v-model="customerData.street">
             </template>
             <template v-else>
@@ -347,7 +919,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Nummer:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Nummer" required
                 v-model="customerData.streetnumber">
             </template>
@@ -364,7 +936,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Postleitzahl:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" pattern="[0-9]*" placeholder="Postleitzahl" required
                 v-model="customerData.postcode">
             </template>
@@ -379,7 +951,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Ort:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="text" class="form-control" placeholder="Ort" required v-model="customerData.place">
             </template>
             <template v-else>
@@ -395,7 +967,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Email:</label>
           <div class="input-container">
-            <template v-if="isEditingInvoice">
+            <template v-if="isEditing">
               <input type="email" class="form-control" placeholder="Email" required v-model="customerData.email">
             </template>
             <template v-else>
@@ -415,7 +987,7 @@
           }}</button>
           </div>
     </form>
-    <form>
+    <form @submit.prevent="updateInvoiceData">
   <div class="container mt-5 col-md-8 text-center d-flex justify-content-center align-items-center">
    <div class="row">
         <div class="col-8 d-flex justify-content-center"> 
@@ -423,15 +995,9 @@
 
         </div>
     <h1 class="fs-5">3. Rechnungsnummer:</h1>
-                <template v-if="isEditingInvoice">
-              <input type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
-            </template>
-            <template v-else>
-              <div class="form-control-static" v-if="invoiceData.invoice_number">{{ invoiceData.invoice_number }}</div>
-            </template>
-    
-      <button class="col btn btn-success mt-3" v-if="invoiceData" @click="toggleEditModeForm">{{
-                isEditingInvoice ? 'Cancel' : 'Speichern' }}</button>
+    <input type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
+      <button class="col btn btn-success mt-3" v-if="invoiceData" @click="updateInvoiceData">{{
+                isEditing ? 'Cancel' : 'Speichern' }}</button>
     <hr class="mt-3">
       <table class="col-sm-12 table table-borderless border-0 border-b-2" aria-label="">
 
@@ -505,13 +1071,13 @@
                 isEditing ? 'Cancel' : 'Speichern' }}</button>
             </div>
      </div>
-     </form>
+     </form> -->
 
 </template>
 
 <script>
 
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -527,6 +1093,8 @@ props: {
   isEditingInvoice: { type: Boolean, required: true },
 },
 
+
+
   setup(props) {
   const isEditingInvoice = ref(false);
     const invoiceData = ref({});
@@ -536,7 +1104,7 @@ props: {
     const customerId = ref(null);
 const companyId = ref(null);
 const isEditing = ref(false);
-
+const modalButton = ref(null);
         // Fetch invoice data from the 'invoice' table
 
 
@@ -833,6 +1401,21 @@ const logoUrl = ref(null);
       }
     };
 
+   const addNewRow = () => {
+      filteredInvoiceRows.value.push({
+        position: filteredInvoiceRows.value.length + 1,
+        invoice_number: '',
+        description: '',
+        quantity: 0,
+        price_per_unit: 0,
+      });
+    };
+
+   const deleteRow = (index) => {
+      filteredInvoiceRows.value.splice(index, 1);
+      // If you want to update the 'position' field in the remaining rows after deletion, you can do it here
+    };
+
     onMounted(async () => {
       await fetchInvoiceData();
       await fetchCustomerData();
@@ -906,8 +1489,32 @@ watch(companyData, (newValue, oldValue) => {
       }
     });
 
+    onMounted(() => {
+      if (modalButton.value) {
+        modalButton.value.click();
+      }
+    });
+
+
+    // Function to toggle editing mode for Invoice
+    function toggleEditModeInvoice() {
+     isEditing.value = !isEditing.value;
+    }
+
+    // Function to toggle editing mode for Customer
+    function toggleEditModeCustomer() {
+     isEditing.value = !isEditing.value;
+    }
+
+    // Function to toggle editing mode for Company
+    function toggleEditModeCompany() {
+      isEditing.value = !isEditing.value;
+    }
 
     return {
+            toggleEditModeInvoice,
+      toggleEditModeCustomer,
+      toggleEditModeCompany,
       companyData,
       customerData,
       isEditingInvoice,
@@ -926,6 +1533,9 @@ watch(companyData, (newValue, oldValue) => {
       selectedEntry,
       isEditing,
 filteredInvoiceRows,
+     addNewRow,
+     deleteRow,
+      modalButton,
     };
   },
 };

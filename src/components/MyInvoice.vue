@@ -35,7 +35,7 @@
             <td class="text-center">{{ row.invoice_date }}</td>
             <td class="text-center">{{ row.total }}</td>
             <td class="text-center">
-              <button class="btn btn-warning m-1" @click="toggleEditMode(row)">
+              <button class="btn btn-warning m-1"  @click="toggleEditMode(row)">
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
@@ -49,18 +49,22 @@
       </table>
     </div>
   </section>
-  <section>
+
+
+<section>
 <div v-if="isEditingInvoice">
+  
       <editInvoice
       :selectedInvoice="selectedInvoice"
       :invoiceData="invoiceData"
       :companyData="companyData"
       :customerData="customerData"
       :isEditingInvoice="isEditingInvoice"
+      
     />
 </div>
 
-  </section>
+  </section> 
   <Footer />
 </template>
 
@@ -71,7 +75,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 import { isAuthenticated } from '../auth.js';
-import editInvoice from './editInvoice.vue';
+import editInvoice from './editInvoice.vue'; 
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
 
@@ -79,7 +83,7 @@ export default {
   components: {
     Header,
     Footer,
-    editInvoice,
+editInvoice, 
   },
   data() {
     return {
@@ -90,17 +94,15 @@ export default {
   },
 
 
-
-  
   setup() {
     const isEditing = ref(false);
     const invoiceRows = ref([]);
-    const customerData = ref([]);
-    const companyData = ref([]);
     const invoiceData = ref({});
+    const companyData = ref({});
+    const customerData = ref({});
     const isEditingInvoice = ref(false);
     const selectedInvoice = ref(null);
-    
+
 
     const editRow = (invoiceNumber) => {
       selectedInvoice.value = invoiceRows.value.find((row) => row.invoice_number === invoiceNumber);
@@ -221,11 +223,12 @@ export default {
     const showFormComponent = () => {
       isEditing.value = true; // Set isEditing to true when the button is clicked
     };
-        const toggleEditMode = (row) => {
+    const toggleEditMode = (row) => {
       if (row) {
         selectedInvoice.value = row;
       }
       isEditingInvoice.value = !isEditingInvoice.value;
+      
     };
 
 
@@ -234,7 +237,7 @@ export default {
       getCustomerName,
       getCompanyName,
       invoiceData,
-           selectedInvoice,
+      selectedInvoice,
       toggleEditMode,
       editRow,
       isEditing,
@@ -246,8 +249,7 @@ export default {
 </script>
 
 
-<style scoped>
-.custom-select {
+<style scoped>.custom-select {
   height: 38px;
   width: 50%;
 }
@@ -267,5 +269,4 @@ export default {
   text-align: center;
   padding: 10px 0;
   margin-top: 1%;
-} */
-</style>
+} */</style>

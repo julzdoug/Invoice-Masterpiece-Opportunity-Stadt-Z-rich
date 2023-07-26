@@ -7,6 +7,8 @@ import Firma_Kunde from '../src/components/Firma_Kunde.vue';
 import MainLayout from '../src/components/MainLayout.vue';
 import editInvoice from '../src/components/editInvoice.vue';
 import { isAuthenticated } from '../src/auth.js';
+import customer from '../src/components/customer.vue';
+import company from '../src/components/company.vue';
 
 const routes = [
   {
@@ -37,6 +39,20 @@ const routes = [
     path: '/edit-invoice',
     name: 'editInvoice',
     component: editInvoice,
+props: true,
+    // Do not include props: true here
+  },
+          {
+    path: '/customer',
+    name: 'customer',
+    component: customer,
+props: true,
+    // Do not include props: true here
+  },
+          {
+    path: '/company',
+    name: 'company',
+    component: company,
 props: true,
     // Do not include props: true here
   },
