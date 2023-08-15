@@ -41,6 +41,7 @@
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
+            
 <td class="text-center">
   <button class="btn btn-warning m-1" @click="deleteRow(row)">
     <i class="bi bi-trash3"></i>
