@@ -3,12 +3,11 @@ import { supabase } from './supabase.js';
 
 // Supabase Angaben für die Authentiefierung
 export const isAuthenticated = ref(false);
-
 export const checkAuth = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user) {
+  const session = JSON.parse(localStorage.getItem('session'));
+  if (session && session.user) {
     isAuthenticated.value = true;
-    return user;
+    return session.user;
   } else {
     isAuthenticated.value = false;
     return null;
@@ -16,20 +15,26 @@ export const checkAuth = () => {
 };
 export const login = async (email, password) => {
   try {
-    const { error, data } = await supabase.auth.signIn({
+    const { error, session } = await supabase.auth.signIn({
       email,
       password,
     });
     if (error) throw error;
-    const user = data.user;
+
+    console.log('Stored Session:', session);
+
+    const user = session.user;
     isAuthenticated.value = true;
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('session', JSON.stringify(session));
     return user;
   } catch (error) {
     throw error.message;
   }
 };
+
+
 export const logout = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('session');
   isAuthenticated.value = false;
 };
+

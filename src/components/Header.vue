@@ -1,5 +1,38 @@
 <template>
-  <!--Navigation Balken-->
+ 
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
+          <li class="nav-item">
+            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
+          </li>
+        </ul>
+        <span class="navbar-text Zachnung me-3">Zachnung</span>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="user">
+    {{ user.email }}
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" @click="signOut">Logout</a></li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </nav>
+</template>
+
+
+
+<!-- <template>
+
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -16,24 +49,28 @@
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
+        <span class="navbar-text me-3" v-if="user">{{ user.email }}</span>
         <ul class="navbar-nav mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
+            
+
             <a class="logout nav-item me-2 bg-tertiary" @click="signOut">Logout</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-</template>
-
+</template> -->
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { supabase } from '../supabase';
-
+import { isAuthenticated } from '../auth.js';
 const route = useRoute();
 const router = useRouter();
+const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
+
 
 async function signOut() {
   await supabase.auth.signOut();
@@ -47,8 +84,20 @@ function handleMenuClick(componentName) {
   }
   router.push({ name: componentName });
 }
+/* onMounted(async () => {
+  const session = supabase.auth.session();
+  if (session) {
+    user.value = {
+      email: session.user.email,
+      id: session.user.id,
+    };
+  }
+}); */
+
+
 
 </script>
+
 
 <style scoped>
 nav {
