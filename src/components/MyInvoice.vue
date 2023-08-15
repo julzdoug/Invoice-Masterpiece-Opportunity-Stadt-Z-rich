@@ -14,7 +14,7 @@
       <table class=" table table-striped text-center" v-if="invoiceRows.length > 0" aria-label="">
         <thead>
           <tr>
-            <th class="text-dark bg-light"></th>
+            <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
             <th class="text-dark bg-light">Kunde.</th>
             <th class="text-dark bg-light">Rechnungsteller</th>
             <th class="text-dark bg-light">Rechnungsnummer</th>
@@ -26,9 +26,11 @@
         </thead>
         <tbody class=" table text-95 text-secondary-d3 text-start">
           <tr v-for="(row, index) in invoiceRows" :key="row.id">
-            <td>
-              <input type="checkbox" v-model="row.checked" />
-            </td>
+<td class="text-center">
+  <button class="btn btn-warning m-1" @click="deleteRow(row.invoice_number)">
+    <i class="bi bi-trash3"></i>
+  </button>
+</td>
             <td class="text-center">{{ getCustomerName(row.customer_id) }}</td>
             <td class="text-center">{{ getCompanyName(row.company_id) }}</td>
             <td class="text-center">{{ row.invoice_number }}</td>
@@ -39,11 +41,12 @@
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
-            <td class="text-center">
-              <button class="btn btn-warning m-1" @click="deleteRow(index)">
-                <i class="bi bi-trash3"></i>
-              </button>
-            </td>
+<td class="text-center">
+  <button class="btn btn-warning m-1" @click="deleteRow(row)">
+    <i class="bi bi-trash3"></i>
+  </button>
+</td>
+
           </tr>
         </tbody>
       </table>
@@ -210,16 +213,23 @@ editInvoice,
       return company ? company.company_name : 'Unknown Company';
     };
 
-    // Computed property to filter out unique invoices based on invoice_number
-    const uniqueInvoices = computed(() => {
-      const invoiceMap = new Map();
-      invoiceRows.value.forEach((invoice) => {
-        if (!invoiceMap.has(invoice.invoice_number)) {
-          invoiceMap.set(invoice.invoice_number, invoice);
-        }
-      });
-      return Array.from(invoiceMap.values());
+    
+  // Computed property to calculate the total for each unique invoice number
+  const uniqueInvoices = computed(() => {
+    const invoiceMap = new Map();
+    invoiceRows.value.forEach((invoice) => {
+      if (!invoiceMap.has(invoice.invoice_number)) {
+        invoiceMap.set(invoice.invoice_number, {
+          ...invoice,
+          total: invoiceRows.value
+            .filter((row) => row.invoice_number === invoice.invoice_number)
+            .reduce((total, row) => total + row.total, 0),
+        });
+      }
     });
+    return Array.from(invoiceMap.values());
+  });
+
     const showFormComponent = () => {
       isEditing.value = true; // Set isEditing to true when the button is clicked
     };
@@ -230,6 +240,24 @@ editInvoice,
       isEditingInvoice.value = !isEditingInvoice.value;
       
     };
+ 
+    const deleteRow = async (row) => {
+  try {
+    const { data, error } = await supabase
+      .from('invoice')
+      .delete()
+      .eq('invoice_number', invoiceNumber);
+    if (error) {
+      console.error('Failed to delete invoices:', error);
+      return;
+    }
+    // Remove the deleted rows from the invoiceRows array
+    invoiceRows.value = invoiceRows.value.filter((r) => r.invoice_number !== invoiceNumber);
+  } catch (error) {
+    console.error('Failed to delete invoices:', error);
+  }
+};
+
 
 
     return {
@@ -243,6 +271,8 @@ editInvoice,
       isEditing,
       isEditingInvoice,
       showFormComponent,
+      deleteRow,
+
     };
   },
 };

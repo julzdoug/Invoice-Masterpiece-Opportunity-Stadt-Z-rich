@@ -4,9 +4,17 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Modal 1</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Rechnungsteller</h1>
+          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
+    data-bs-toggle="modal"></button>
         </div>
+<div class="row ms-3">
+              <div class="col-8 d-flex justify-content-start m-2">
+                  <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+            @close="closeEditModal">Rechnungen</button>
+          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Empfänger</button>
+          </div>
+          </div>
         <div class="modal-body">
           <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
             <div class="row">
@@ -14,7 +22,7 @@
                 <div class="row">
                   <div class="col-8 d-flex justify-content-start">
                   </div>
-                  <div class="col-8 d-flex ms-3 justify-content-center">
+                  <div class="col-8 d-flex ms-2 justify-content-start">
                     <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditModeCompany">{{
                       isEditing ? 'Cancel' : 'Ändern' }}</button>
                   </div>
@@ -298,11 +306,9 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
-            @close="closeEditModal">invoice</button>
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">customer</button>
+
           <button type="submit" @click="updateCompanyDataInDatabase(companyData.value)"
-            class="btn btn-primary">Save</button>
+            class="btn btn-primary">Speichern</button>
         </div>
       </div>
     </div>
@@ -312,15 +318,24 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Empfänger</h1>
+                    <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
+    data-bs-toggle="modal"></button>
         </div>
+<div class="row ms-3">
+              <div class="col-8 d-flex justify-content-start m-2">
+                  <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Rechnungen</button>
+          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+            @close="closeEditModal">Rechnungsteller</button>
+          
+          </div>
+          </div>
         <div class="modal-body">
-          <form class="container mt-5" @submit.prevent="submitCustomerForm">
+          <form class="container mt-2" @submit.prevent="submitCustomerForm">
             <div class="row">
               <div class="col-8 d-flex justify-content-start">
               </div>
-              <div class="col-8 d-flex justify-content-center">
+              <div class="col-8 d-flex justify-content-start m-2">
                 <button class="btn btn-primary btn-md" v-if="customerData" @click="toggleEditModeCustomer">{{
                   isEditing ? 'Cancel' :
                   'Ändern'
@@ -448,9 +463,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
-            @close="closeEditModal">Company</button>
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Invoice</button>
+
           <button type="submit" @click="updateCustomerDataInDatabase(customerData.value)"
             class="btn btn-primary">Save</button>
         </div>
@@ -462,33 +475,24 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechung</h1>
+                   <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
+    data-bs-toggle="modal"></button>
         </div>
+        <div class="row ms-3">
+              <div class="col-8 d-flex justify-content-start m-2">
+<button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">Rechnungsteller</button>
+          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Empfänger</button>
+          </div>
+          </div>
         <div class="modal-body">
-  <form @submit.prevent="submitInvoiceForm">
+          <form @submit.prevent="submitInvoiceForm">
             <div class="container mt-5 col-md-8 text-center d-flex justify-content-center align-items-center">
               <div class="row">
-                <div class="col-8 d-flex justify-content-center">
-                </div>
-                <div class="col-8 d-flex justify-content-center">
-                  <button class="btn btn-primary btn-md" v-if="invoiceData" @click="toggleEditModeInvoice">{{
-                    isEditing ? 'Cancel' :
-                    'Ändern'
-                  }}</button>
-                </div>
-                <h1 class="fs-5">3. Rechnungsnummer:</h1>
-                <template v-if="isEditing">
-                  <input type="text" class="form-control mt-3" placeholder="Rechnungsnummer" required
-                    v-model="invoiceData.invoice_number">
-                </template>
-                <template v-else>
-                  <div class="form-control-static" v-if="invoiceData.invoice_number">{{ invoiceData.invoice_number }}
-                  </div>
-                </template>
 
                 <hr class="mt-3">
-                <table class="col-sm-12 table table-borderless border-0 border-b-2" aria-label="" v-if="selectedInvoice !== ''" >
+                <table class="col-sm-12 table table-borderless border-0 border-b-2" aria-label=""
+                  v-if="selectedInvoice !== ''">
                   <thead>
                     <tr>
                       <th class="text-dark bg-light"></th>
@@ -508,11 +512,11 @@
                         <input type="checkbox" v-model="row.checked" />
                       </td>
                       <td class="text-center">
-                   
-                          <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                     
+
+                        <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+
                       </td>
                       <td class="text-center">
                         <button class="btn btn-warning m-1" @click="deleteRow(index)">
@@ -549,25 +553,24 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="col-8 d-flex justify-content-center">
-<button class="col btn btn-success mt-3" @click="addNewRow">Hinzufügen</button>
-  <button class="col btn btn-success mt-3" type="button" @click="updateRows">Save</button>
-  <button class="col btn btn-success mt-3" @click="saveNewRow">New</button>
+                <div class="col-8 d-flex justify-content-start">
+<button class="btn btn-success mt-3" @click="addNewRow">Hinzufügen</button>
+
                 </div>
               </div>
             </div>
           </form>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">company</button>
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Customer</button>
-          <button type="submit" @click="updateInvoiceData(invoiceData.value)" class="btn btn-primary">Save</button>
+     <div class="modal-footer">
+                                    <div class="col-8 d-flex justify-content-end">
+<button class="btn btn-success mt-3" v-if="isEditingCurrentRow" @click="saveNewRow">Speichern</button>
+<button class="btn btn-success mt-3" v-else @click="updateRows">Speichern</button>
+                </div>
         </div>
       </div>
     </div>
   </div>
-  <button ref="modalButton" class="btn btn-primary" data-bs-target="#exampleModalToggle"
-    data-bs-toggle="modal">Invoice</button>
+
 </template>
 
 <script>
@@ -587,19 +590,26 @@ export default {
   },
 
   setup(props) {
+
+    const customerId = ref(null);
+    const companyId = ref(null);
+    const isEditing = ref(false);
+    const invoiceRows = ref([]);
     const isEditingInvoice = ref(false);
     const invoiceData = ref({});
     const filteredInvoiceRows = ref([]);
     const companyData = ref({});
     const customerData = ref({});
-    const selectedEntry = ref(null);
-    const customerId = ref(null);
-    const companyId = ref(null);
-    const isEditing = ref(false);
+    const isEditingRow = ref([]);
     const modalButton = ref(null);
     const logoUrl = ref(null);
-    const invoiceRows = ref([]);
-    const isEditingRow = ref(filteredInvoiceRows.value.map(() => false));
+    const selectedEntry = ref(null);
+const isEditingCurrentRow = ref(false);
+
+    // Initialize reactive variables
+    for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
+      isEditingRow[i] = false;
+    }
 
 
     async function updateInvoiceData(invoiceDataToUpdate) {
@@ -619,7 +629,7 @@ export default {
           console.log('Invoice data updated successfully:', data);
         }
 
-        
+
       } catch (error) {
         console.error('Failed to update invoice data:', error);
       }
@@ -713,7 +723,7 @@ export default {
       if (isEditingInvoice.value) {
         // If editing mode is on, save the updated invoice data
         await updateInvoiceData();
-        
+
       }
       // Toggle editing mode to exit it after saving/canceling changes
       toggleEditModeInvoice();
@@ -875,90 +885,92 @@ export default {
       isEditing.value = true;
     };
 
-async function updateRows() {
-  try {
-    for (const [index, row] of filteredInvoiceRows.value.entries()) {
-      if (row.id) {
-        // Recalculate the total before updating
-        row.total = row.quantity * row.price_per_unit;
+    async function updateRows() {
+      try {
+        for (const [index, row] of filteredInvoiceRows.value.entries()) {
+          if (row.id) {
+            // Recalculate the total before updating
+            row.total = row.quantity * row.price_per_unit;
 
-        await supabase
-          .from('invoice')
-          .update(row)
-          .eq('id', row.id);
+            await supabase
+              .from('invoice')
+              .update(row)
+              .eq('id', row.id);
+          }
+        }
+        console.log('Rows updated successfully');
+      } catch (error) {
+        console.error('Failed to update rows:', error);
       }
-    }
-    console.log('Rows updated successfully');
-  } catch (error) {
-    console.error('Failed to update rows:', error);
-  }
-};
+    };
 
-const addNewRow = async () => {
-  const newRow = {
-    invoice_number: props.selectedInvoice.invoice_number,
-    company_id: props.selectedInvoice.company_id,
-    customer_id: props.selectedInvoice.customer_id,
-    description: '',
-    quantity: 0,
-    price_per_unit: 0,
-    total: 0, // Initialize total to 0
-  };
- filteredInvoiceRows.value.push(newRow);
+    const addNewRow = async () => {
+      const newRow = {
+        invoice_number: props.selectedInvoice.invoice_number,
+        company_id: props.selectedInvoice.company_id,
+        customer_id: props.selectedInvoice.customer_id,
+        description: '',
+        quantity: 0,
+        price_per_unit: 0,
+        total: 0, // Initialize total to 0
+      };
+      filteredInvoiceRows.value.push(newRow);
 
-  // Start editing the newly added row
-  const newIndex = filteredInvoiceRows.value.length - 1;
-  toggleEditRow(newIndex);
+      // Start editing the newly added row
+      const newIndex = filteredInvoiceRows.value.length - 1;
+      toggleEditRow(newIndex);
+ isEditingCurrentRow.value = true;
 
+    };
 
-};
+    const saveRow = async (index) => {
+      const updatedRow = filteredInvoiceRows.value[index];
 
-const saveRow = async (index) => {
-  const updatedRow = filteredInvoiceRows.value[index];
+      // Calculate the total based on updated quantity and price_per_unit
+      updatedRow.total = updatedRow.quantity * updatedRow.price_per_unit;
 
-  // Calculate the total based on updated quantity and price_per_unit
-  updatedRow.total = updatedRow.quantity * updatedRow.price_per_unit;
+      // Perform update logic here, e.g., update the row in the database
+      try {
+        if (!updatedRow.id) {
+          const { data, error } = await supabase
+            .from('invoice')
+            .insert([updatedRow]);
 
-  // Perform update logic here, e.g., update the row in the database
-  try {
-    if (!updatedRow.id) {
-      const { data, error } = await supabase
-        .from('invoice')
-        .insert([updatedRow]);
+          if (error) {
+            console.error('Failed to insert new row:', error);
+            return;
+          }
 
-      if (error) {
-        console.error('Failed to insert new row:', error);
-        return;
+          if (data) {
+            console.log('New row inserted successfully:', data);
+            // Update the new row's id from the inserted data
+            updatedRow.id = data[0].id;
+          }
+        } else {
+          await supabase
+            .from('invoice')
+            .update(updatedRow)
+            .eq('id', updatedRow.id);
+          console.log('Row updated successfully');
+        }
+      } catch (error) {
+        console.error('Failed to update row:', error);
       }
 
-      if (data) {
-        console.log('New row inserted successfully:', data);
-        // Update the new row's id from the inserted data
-        updatedRow.id = data[0].id;
-      }
-    } else {
-      await supabase
-        .from('invoice')
-        .update(updatedRow)
-        .eq('id', updatedRow.id);
-      console.log('Row updated successfully');
-    }
-  } catch (error) {
-    console.error('Failed to update row:', error);
-  }
-
-  isEditingRow[index] = false;
-  isEditing.value = false;
-};
-
-const saveNewRow = async () => {
-  const newIndex = filteredInvoiceRows.value.length - 1;
-  await saveRow(newIndex);
-};
-
-   const cancelEdit = (index) => {
       isEditingRow[index] = false;
       isEditing.value = false;
+      isEditingCurrentRow.value = false; 
+    };
+
+    const saveNewRow = async () => {
+      const newIndex = filteredInvoiceRows.value.length - 1;
+      await saveRow(newIndex);
+    };
+
+    const cancelEdit = (index) => {
+      isEditingRow[index] = false;
+      isEditing.value = false;
+      isEditingCurrentRow.value = false;
     };
 
     const deleteRow = (index) => {
@@ -1023,7 +1035,7 @@ const saveNewRow = async () => {
         newValue.phone_number &&
         newValue.webpage &&
         newValue.email &&
-        newValue.MwSt &&
+        newValue.mwst &&
         newValue.bank &&
         newValue.logo; // Make sure the "logo" property is also present in the object
 
@@ -1041,7 +1053,7 @@ const saveNewRow = async () => {
         newValue.name &&
         newValue.surname &&
         newValue.street &&
-        newValue.postal_code &&
+        newValue.postcode &&
         newValue.place &&
         newValue.email &&
         newValue.streetnumber &&
@@ -1064,7 +1076,7 @@ const saveNewRow = async () => {
         newValue.quantity &&
         newValue.customer_id &&
         newValue.company_id; // Make sure the "customer_id" and "company_id" properties are also present in the object
-
+      
       if (hasNecessaryProperties) {
         // Render the template with the fetched invoiceData
         // You can update the template logic here if needed
@@ -1102,8 +1114,8 @@ const saveNewRow = async () => {
     };
 
     const toggleEditRow = (index) => {
-  isEditingRow.value[index] = !isEditingRow.value[index];
-};
+      isEditingRow.value[index] = !isEditingRow.value[index];
+    };
 
     return {
       toggleEditMode,
@@ -1139,10 +1151,14 @@ const saveNewRow = async () => {
       isEditingRow,
       toggleEditRow,
       saveNewRow,
+      isEditingCurrentRow,
     };
   },
 };
 </script>
 
 
-<style></style>
+<style>
+
+
+</style>
