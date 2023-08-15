@@ -15,39 +15,31 @@
         <thead>
           <tr>
             <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
+             <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
             <th class="text-dark bg-light">Kunde.</th>
             <th class="text-dark bg-light">Rechnungsteller</th>
             <th class="text-dark bg-light">Rechnungsnummer</th>
             <th class="text-dark bg-light">Rechnungs Datum</th>
             <th class="text-dark bg-light">Betrag</th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
           </tr>
         </thead>
         <tbody class=" table text-95 text-secondary-d3 text-start">
           <tr v-for="(row, index) in invoiceRows" :key="row.id">
 <td class="text-center">
-  <button class="btn btn-warning m-1" @click="deleteRow(row.invoice_number)">
+  <button class="btn btn-warning m-1" @click="deleteRow(row)">
     <i class="bi bi-trash3"></i>
   </button>
 </td>
-            <td class="text-center">{{ getCustomerName(row.customer_id) }}</td>
-            <td class="text-center">{{ getCompanyName(row.company_id) }}</td>
-            <td class="text-center">{{ row.invoice_number }}</td>
-            <td class="text-center">{{ row.invoice_date }}</td>
-            <td class="text-center">{{ row.total }}</td>
             <td class="text-center">
               <button class="btn btn-warning m-1"  @click="toggleEditMode(row)">
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
-            
-<td class="text-center">
-  <button class="btn btn-warning m-1" @click="deleteRow(row)">
-    <i class="bi bi-trash3"></i>
-  </button>
-</td>
-
+            <td class="text-center">{{ getCustomerName(row.customer_id) }}</td>
+            <td class="text-center">{{ getCompanyName(row.company_id) }}</td>
+            <td class="text-center">{{ row.invoice_number }}</td>
+            <td class="text-center">{{ row.invoice_date }}</td>
+            <td class="text-center">{{ row.total }}</td>
           </tr>
         </tbody>
       </table>
@@ -242,20 +234,24 @@ editInvoice,
       
     };
  
-    const deleteRow = async (row) => {
+const deleteRow = async (row) => {
   try {
     const { data, error } = await supabase
       .from('invoice')
       .delete()
-      .eq('invoice_number', invoiceNumber);
+      .eq('invoice_number', row.invoice_number);
+
     if (error) {
-      console.error('Failed to delete invoices:', error);
+      console.error('Failed to delete invoice:', error);
       return;
     }
-    // Remove the deleted rows from the invoiceRows array
-    invoiceRows.value = invoiceRows.value.filter((r) => r.invoice_number !== invoiceNumber);
+
+    // Remove the deleted row from the invoiceRows array
+    invoiceRows.value = invoiceRows.value.filter((r) => r.id !== row.id);
+
+     await fetchInvoiceData();
   } catch (error) {
-    console.error('Failed to delete invoices:', error);
+    console.error('Failed to delete invoice:', error);
   }
 };
 

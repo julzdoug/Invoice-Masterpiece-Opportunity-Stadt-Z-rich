@@ -1090,6 +1090,7 @@ const isEditingCurrentRow = ref(false);
     onMounted(() => {
       if (modalButton.value) {
         modalButton.value.click();
+        
       }
     });
 

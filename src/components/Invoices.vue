@@ -82,7 +82,7 @@
                 </div>
                 <div class="my-2 d-flex justify-content-between">
                   <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.MwSt : 'Loading...' }}
+                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
                   </div>
                 </div>
               </div>
