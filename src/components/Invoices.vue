@@ -17,16 +17,18 @@
       </div>
     </div>
     <!--Firmen Daten-->
-    <div class="first_head text-center text-150 print-text-100">
-      <span id="first_head" class="text-default-d3"></span>
-    </div>
-    <div id="invoice-section" class="container invoice-section px-0">
-      <div class="row mt-4">
+    <div id="invoice-section" class="container invoice-section px-0 mt-0">
+      <div class="row">
+
         <div class="col-12 col-lg-12">
           <div class="row">
             <div class="col-12">
-              <div class="text-center text-150 print-text-100 mb-5">
-                <span class="text-default-d3 fs-6">
+              <div class="text-center text-150 print-text-100">
+                <img  class="img" v-if="companyData && companyData.logo" :src="companyData.logo" alt="Company Logo" />
+                 <span v-else>Loading...</span>
+                 <br>
+                 <br>
+                <span class="text-default-d3 fs-6 mt-2">
                   {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name}
                                     ${companyData.surname},
                                     ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` :
@@ -36,24 +38,25 @@
             </div>
           </div>
 
-          <div class="row align-item d-flex ms-5">
+          <div id="invoice-section" class="row align-item d-flex ms-5">
             <div class="col-sm mt-4">
               <!-- Kunden Daten -->
               <div v-if="customerData">
                 <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
-                }}</span>
+                }}</span>&nbsp;
                 <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
                 }}</span>
-                <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }}, {{ customerData ?
+                <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }} {{ customerData ?
                   customerData.streetnumber : 'Loading...' }}</div>
-                <div class="my-1" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }}, {{
+                <div class="my-1" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }} {{
                   customerData ? customerData.place : 'Loading...' }}</div>
-                <div class="my-1 mt-5 pt-5" v-if="invoiceData">
+                <div class="my-1 mt-0 pt-5" v-if="invoiceData">
                   <div class="ansprechung"></div>
                   <b class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
                 </div>
                 <div class="col-sm-12">
-                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter Herr Name {{ customerData ? customerData.name :
+                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
+                    'Loading...' }} {{ customerData ? customerData.name :
                     'Loading...' }}</div>
                   <div class="my-1 mt-3">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
                     unterbreiten.</div>
@@ -103,7 +106,7 @@
                         <td class="text-dark col-2 col-sm-1">{{ index + 1 }}</td>
                         <td class="col-8 col-sm-5">{{ row.description }}</td>
                         <td class="d-none d-sm-block col-sm-2">{{ row.quantity }}</td>
-                        <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>
+                        <td class="d-none d-sm-block col-sm-2 text-95">{{ row.price_per_unit }}</td>          
                         <td class="col-2 col-sm-2 text-secondary-d2 text-end">{{ row.total }}.-CHF</td>
                       </tr>
                     </tbody>
@@ -147,6 +150,7 @@
                       </div>
                     </div>
                   </div>
+                  
 
                    <!-- Rechnungs end sätze -->
 
@@ -172,8 +176,10 @@
                     </div>
                   </div>
                   <br>
-                  <div id="footer" class="row col mt-5 align justify-content-start">
-                    <div class="col-sm adress mt-3 mb-2">
+                                  </div>
+                <div class="container">
+                  <div id="footer" class="row mt-5 align-items-end">
+                    <div class="col adress mt-3 mb-2 justify-content-start">
                       <!-- Firmen Angaben Fussnote -->
                       <div>
                         <span class="text-sm text-dark align-middle">{{ companyData ? companyData.company_name :
@@ -193,7 +199,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm  mt-3 adress mb-2 ps-5 justify-content-center">
+                    <div class="col mt-3 adress mb-2 justify-content-end">
                       <!-- Second column aligned at the center -->
                       <div class="row">
                         <div class="col-10 text-center">
@@ -215,7 +221,7 @@
                               <div class="text-sm ps-6 text-start text-dark">IBAN:</div>
                             </div>
                             <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.iban : 'Loading...' }}</div>
+                              <div class="text-sm text-dark">{{ companyData ? companyData.iban_number : 'Loading...' }}</div>
                             </div>
                           </div>
                           <div class="row">
@@ -223,32 +229,27 @@
                               <div class="text-sm ps-6 text-start text-dark">MwSt:</div>
                             </div>
                             <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.MwSt : 'Loading...' }}</div>
+                              <div class="text-sm text-dark">{{ companyData ? companyData.mwst : 'Loading...' }}</div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm mt-3 mb-2 adress justify-content-end">
+                    <div class="col mt-3 me-0 mb-4 adress justify-content-end">
                       <!-- Third column aligned at the end -->
                       <div class="row">
                         <div class="col-10">
                           <div class="row">
-                            <div class="col text-start">
-                              <div class="text-sm-3 text-dark-m2"></div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-4">
+                            <div class="col">
                               <div class="text-sm text-start text-dark">Telefon:</div>
                             </div>
-                            <div class="col-7 text-end">
+                            <div class="col-8 text-end">
                               <div class="text-sm text-dark">{{ companyData ? companyData.phone_number : 'Loading...' }}
                               </div>
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-4">
+                            <div class="col">
                               <div class="text-sm text-start text-dark">Website:</div>
                             </div>
                             <div class="col-7 text-end">
@@ -256,11 +257,19 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-4">
+                            <div class="col">
                               <div class="text-sm text-start text-dark">E-Mail:</div>
                             </div>
                             <div class="col-7 text-end">
                               <div class="text-sm text-dark">{{ companyData ? companyData.email : 'Loading...' }}</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="text-sm text-start text-dark"></div>
+                            </div>
+                            <div class="col-7 text-end">
+                              <div class="text-sm text-dark"></div>
                             </div>
                           </div>
                         </div>
@@ -275,6 +284,7 @@
       </div>
     </div>
   </div>
+
 </template> 
 
 <script>
@@ -288,51 +298,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default {
-  // PDF umwandlung
-  methods: {
-    async printInvoice() {
-      const invoiceSection = document.getElementById('invoice-section');
-      const headerSection = document.getElementById('first_head');
-      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-      const sectionHeight = invoiceSection.offsetHeight;
-      const contentHeight = 227;
-      const marginHeight = 30;
-      const totalPages = Math.ceil(sectionHeight / contentHeight);
-
-      let y = 0;
-      let currentPage = 1;
-
-      for (let i = 0; i < totalPages; i++) {
-
-        doc.setPageSize('a4');
-        doc.addPage();
-
-        if (i > 0) {
-          doc.setFontSize(12);
-          doc.text(`Page ${currentPage}`, 10, 10);
-          y = marginHeight;
-          currentPage++;
-          isFirstPage = false;
-        }
-        const clonedSection = invoiceSection.cloneNode(true);
-        const sectionContent = clonedSection.querySelector('.invoice-section-content');
-
-        sectionContent.style.height = `${contentHeight - marginHeight}px`;
-        clonedSection.style.position = 'absolute';
-        clonedSection.style.top = `${y}px`;
-
-        document.body.appendChild(clonedSection);
-
-        const canvas = await html2canvas(clonedSection, { useCORS: true });
-        const imgData = canvas.toDataURL('image/png');
-
-        doc.addImage(imgData, 'PNG', 0, 0);
-        document.body.removeChild(clonedSection);
-        currentPage++;
-      }
-      doc.save('invoice.pdf');
-    }
-  },
+  
   // Angaben der Zahlen und wie man sie Speichert 
   name: 'Invoices',
   props: ['invoiceNumber'],
@@ -345,6 +311,7 @@ export default {
     const companyData = ref(null);
     const customerData = ref(null);
     const showPageNumbers = ref(false);
+    const logoUrl = ref(null);
     // Rechnungsdaten Laden
     const fetchInvoiceData = async () => {
       try {
@@ -371,7 +338,7 @@ export default {
         console.error('Failed to fetch invoice data:', error);
       }
     };
-    // Firmen Daten Laden
+   // Firmen Daten Laden
     const fetchCompanyData = async () => {
       const companyId = invoiceData.value?.company_id;
 
@@ -391,13 +358,38 @@ export default {
           return;
         }
 
-        if (data) {
-          companyData.value = data;
+     if (data) {
+      companyData.value = data;
+
+      if (data.logo_name && data.bucket_id) {
+        // Fetch the company logo from the storage bucket and set the logo URL
+        const logoResponse = await supabase.storage.from(data.bucket_id).download(data.logo_name);
+
+        if (logoResponse.error) {
+          console.error('Error fetching company logo:', logoResponse.error.message);
+          return;
         }
-      } catch (error) {
-        console.error('Failed to fetch company data:', error);
+
+        const logoBlob = logoResponse.data;
+        const logoUrl = URL.createObjectURL(new Blob([logoBlob]));
+
+        companyData.value.logo = logoUrl;
       }
+    }
+  } catch (error) {
+    console.error('Failed to fetch company data:', error);
+  }
     };
+
+function byteaToBase64(bytea) {
+  const byteArray = new Uint8Array(bytea.data);
+  let binary = '';
+  for (let i = 0; i < byteArray.byteLength; i++) {
+    binary += String.fromCharCode(byteArray[i]);
+  }
+  return 'data:image/png;base64,' + window.btoa(binary);
+};
+
     // Kunden Daten Laden
     const fetchCustomerData = async () => {
       const customerId = invoiceData.value?.customer_id;
@@ -452,18 +444,40 @@ export default {
       return integerPart + '.' + parts[1] + '.-CHF';
     };
     // PDF Expotiern
-    const exportToPDF = async () => {
-      const invoiceSection = document.getElementById('invoice-section');
+const exportToPDF = async () => {
+  const logoImg = document.querySelector('.img');
 
-      const config = {
-        margin: [0, 0, 0, 0],
-        filename: 'invoice.pdf',
-        image: { type: 'png', quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      };
-      await html2pdf().set(config).from(invoiceSection).save();
-    };
+  if (!logoImg) {
+    console.error('Logo image element not found.');
+    return;
+  }
+
+  // Get the logoUrl from companyData
+  const logoUrl = companyData.value.logo;
+
+  // Set the src attribute of the logoImg
+  logoImg.src = logoUrl;
+
+  const config = {
+    margin: [10, 0, 10, 0],
+    filename: 'invoice.pdf',
+    image: { type: 'png', quality: 1 },
+    html2canvas: { scale: 3, useCORS: true }, // Add useCORS option
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  };
+ 
+  // Wait for the image to load before generating the PDF
+  await new Promise((resolve) => {
+    logoImg.onload = resolve;
+  });
+
+  await html2pdf().set(config).from(document.getElementById('invoice-section')).save();
+
+  // Reset the src attribute of the logoImg after generating the PDF
+  logoImg.src = '';
+};
+
+
 
     const printInvoice = () => {
       if (isReadyToPrint.value) {
@@ -515,6 +529,7 @@ export default {
       printInvoice,
       isReadyToPrint,
       showPageNumbers,
+      logoUrl,
     };
   },
 };
@@ -539,10 +554,17 @@ body {
   padding: 20px;
   border: 5px solid #ffffff;
   border-radius: 5px;
+  margin-bottom: 5%;
+  margin-top: 5%;
 }
 
+.img {
+  max-width: 20%;
+  height: 20%;
+}
 .adress {
   font-size: xx-small;
+  
 }
 
 .downpart {

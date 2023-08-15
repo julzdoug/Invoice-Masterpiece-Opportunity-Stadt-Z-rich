@@ -34,9 +34,34 @@ export async function fetchCompanyData() {
     return null;
   }
 }
+export async function fetchUserData() {
+  try {
+    const user = supabase.auth.user;
+    if (user) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .limit(1);
+      if (error) {
+        console.error('Failed to fetch data:', error);
+        return null;
+      }
+      if (data.length > 0) {
+        return data[0];
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    return null;
+  }
+}
 
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_IN') {
-    fetchCompanyData(); // Call fetchCompanyData when the user is signed in or authenticated
+    fetchCompanyData();
+    fetchUserData(); 
+     // Call fetchCompanyData when the user is signed in or authenticated
   }
 });

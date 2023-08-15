@@ -5,7 +5,7 @@ import { supabase } from './supabase.js';
 import { isAuthenticated } from './auth.js';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
-
+import Modal from "vue-bs-modal";
 const app = createApp(App);
 
 app.use(router);
@@ -24,5 +24,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-app.mount('#app');
+
+app.use(Modal).mount("#app");
+
 
