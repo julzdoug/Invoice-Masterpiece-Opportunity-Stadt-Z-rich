@@ -33,7 +33,6 @@
 
   .footer-copyright {
     font-size: 60%;
-    padding-top: 60%;
   }
 
 

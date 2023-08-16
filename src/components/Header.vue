@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Firma & Kunden</a>
+            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Startseite</a>
           </li>
           <li class="nav-item">
             <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
