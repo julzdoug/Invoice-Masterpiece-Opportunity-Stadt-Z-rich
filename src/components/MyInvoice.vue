@@ -3,8 +3,7 @@
   <Header />
   <!--Titel und Aushwal-->
   <section>
-    <div class="row">
-      <hr class="mt-3">
+    <div class="row back">
       <!--Kunden Daten-->
       <div class="col-sm-12 col-md-text-secondary fs-5 fw-5">
         <div class="my-1 ms-2">Meine Angaben:<br>
@@ -12,7 +11,7 @@
       </div>
     </div>
     <div class="justify-content-center align-items-center">
-      <table class="table table-striped text-center ms-1 me-1" v-if="invoiceRows.length > 0" aria-label="">
+      <table class="table table-hover text-center ms-1 me-1" v-if="invoiceRows.length > 0" aria-label="">
         <thead class="table-light">
           <tr>
         
@@ -306,6 +305,9 @@ export default {
   
 }
 
+.back {
+  background-color: rgb(192, 212, 249);
+}
 
 
 

@@ -351,6 +351,42 @@
               <div class="col-8 d-flex justify-content-end">
               </div>
             </div>
+            <div class="col-md-6 mb-3 col-sm-12">
+  <label>Gender:</label>
+  <div class="form-check" v-if="isEditing">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="mrRadio"
+      value="Herr"
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="mrRadio">Herr</label>
+  </div>
+  <div class="form-check" v-if="isEditing">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="mrsRadio"
+      value="Frau"
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="mrsRadio">Frau</label>
+  </div>
+  <div class="form-check" v-if="isEditing">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="noneRadio"
+      value=""
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="noneRadio">None</label>
+  </div>
+  <div v-else>
+    <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender }}</div>
+  </div>
+</div>
             <div class="row">
               <div class="col-md-6 mb-3 col-sm-12">
                 <label for="validation3">Vorname:</label>
@@ -621,6 +657,46 @@ export default {
       // Emit an event to notify the parent component to reload the page
       this.$emit('modal-closed-reload');
     },
+
+
+ async handleLogoChange(event) {
+      const file = event.target.files[0];
+      const fileName = file.name; // Use the original filename of the uploaded image
+
+      try {
+        // Upload the file to the "bucket" storage with the dynamic filename
+        const { data, error } = await supabase.storage.from('bucket').upload(fileName, file);
+
+        if (error) {
+          console.log('Error uploading logo:', error.message);
+          return;
+        }
+
+        console.log('Logo uploaded successfully:', data);
+
+        // Update the companyData.logo with the image URL
+        const logoUrl = URL.createObjectURL(file);
+        this.companyData.logo = logoUrl;
+        this.companyData.bucket_id = 'bucket';
+        this.companyData.logo_name = fileName;
+
+        // Save the logo information to the "company" table
+        const companyId = this.invoiceData.company_id; // Replace with the actual company ID
+        await supabase
+          .from('company')
+          .update({
+            logo: data,
+            bucket_id: 'bucket', // Replace 'bucket' with your actual bucket_id
+            logo_name: fileName,
+          })
+          .eq('id', companyId);
+
+        // Refresh the companyData to reflect the updated logo
+        await this.fetchCompanyData();
+      } catch (error) {
+        console.error('Error handling logo change:', error);
+      }
+},
   },
 
   setup(props) {

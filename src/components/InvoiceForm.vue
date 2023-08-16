@@ -214,10 +214,21 @@
     />
     <label class="form-check-label" for="mrsRadio">Frau</label>
   </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="noneRadio"
+      value="NULL"
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="noneRadio">None</label>
+  </div>
   <div class="invalid-feedback">
     Ansprache.
   </div>
 </div>
+
         <div class="col-md-6 mb-3 col-sm-12">
         </div>
       </div>
