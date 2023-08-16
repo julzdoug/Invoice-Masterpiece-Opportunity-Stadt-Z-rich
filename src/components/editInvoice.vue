@@ -5,14 +5,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Rechnungsteller</h1>
-          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
+          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
     data-bs-toggle="modal"></button>
         </div>
 <div class="row ms-3">
               <div class="col-8 d-flex justify-content-start m-2">
                   <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
             @close="closeEditModal">Rechnungen</button>
-          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Empfänger</button>
+          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"  @click="closeModalAndReloadParent">Empfänger</button>
           </div>
           </div>
         <div class="modal-body">
@@ -309,6 +309,14 @@
 
           <button type="submit" @click="updateCompanyDataInDatabase(companyData.value)"
             class="btn btn-primary">Speichern</button>
+                        <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      @click="closeModalAndReloadParent"
+    >
+      Schliessen
+    </button>
         </div>
       </div>
     </div>
@@ -327,7 +335,6 @@
                   <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Rechnungen</button>
           <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
             @close="closeEditModal">Rechnungsteller</button>
-          
           </div>
           </div>
         <div class="modal-body">
@@ -465,7 +472,15 @@
         <div class="modal-footer">
 
           <button type="submit" @click="updateCustomerDataInDatabase(customerData.value)"
-            class="btn btn-primary">Save</button>
+            class="btn btn-primary">Speichern</button>
+                       <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      @click="closeModalAndReloadParent"
+    >
+      Schliessen
+    </button>
         </div>
       </div>
     </div>
@@ -476,8 +491,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechung</h1>
-                   <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
-    data-bs-toggle="modal"></button>
+           <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      @click="closeModalAndReloadParent"
+    >
+    </button>
         </div>
         <div class="row ms-3">
               <div class="col-8 d-flex justify-content-start m-2">
@@ -556,16 +576,24 @@
                 <div class="col-8 d-flex justify-content-start">
 <button class="btn btn-success mt-3" @click="addNewRow">Hinzufügen</button>
 
+<button class="btn btn-success mt-3" v-if="isEditingCurrentRow" @click="saveNewRow">Speichern</button>
+<button class="btn btn-success mt-3" v-else @click="updateRows">Speichern</button>
+        
                 </div>
               </div>
             </div>
           </form>
         </div>
      <div class="modal-footer">
-                                    <div class="col-8 d-flex justify-content-end">
-<button class="btn btn-success mt-3" v-if="isEditingCurrentRow" @click="saveNewRow">Speichern</button>
-<button class="btn btn-success mt-3" v-else @click="updateRows">Speichern</button>
-                </div>
+           <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      @click="closeModalAndReloadParent"
+    >
+      Schliessen
+    </button>
+                                 
         </div>
       </div>
     </div>
@@ -587,6 +615,12 @@ export default {
     companyData: { type: Object, required: true },
     customerData: { type: Object, required: true },
     isEditingInvoice: { type: Boolean, required: true },
+  },
+    methods: {
+    closeModalAndReloadParent() {
+      // Emit an event to notify the parent component to reload the page
+      this.$emit('modal-closed-reload');
+    },
   },
 
   setup(props) {

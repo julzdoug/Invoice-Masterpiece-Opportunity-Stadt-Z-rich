@@ -60,8 +60,14 @@
   <section>
     <div v-if="isEditingInvoice">
 
-      <editInvoice :selectedInvoice="selectedInvoice" :invoiceData="invoiceData" :companyData="companyData"
-        :customerData="customerData" :isEditingInvoice="isEditingInvoice" />
+        <editInvoice
+          :selectedInvoice="selectedInvoice"
+          :invoiceData="invoiceData"
+          :companyData="companyData"
+          :customerData="customerData"
+          :isEditingInvoice="isEditingInvoice"
+          @modal-closed-reload="reloadPage"
+        />
     </div>
   </section>
 
@@ -102,7 +108,11 @@ export default {
         params: { invoiceNumber: row.invoice_number }
       });
     },
+      reloadPage() {
+      location.reload(); // Reload the page
+    },
   },
+
 
   setup() {
     const isEditing = ref(false);
@@ -217,7 +227,7 @@ export default {
     // Helper function to get company name from companyData
     const getCompanyName = (companyId) => {
       const company = companyData.value.find((c) => c.id === companyId);
-      return company ? company.company_name : 'Unknown Company';
+      return company ? company.profession : 'Unknown Company';
     };
 
 
