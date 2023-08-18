@@ -2,7 +2,7 @@
 
   <Header />
   <!--Titel und Aushwal-->
-  <section>
+   <section>
     <div class="row back">
       <!--Kunden Daten-->
       <div class="col-sm-12 col-md-text-secondary fs-5 fw-5">
@@ -13,8 +13,7 @@
     <div class="justify-content-center align-items-center">
       <table class="table table-hover text-center ms-1 me-1" v-if="invoiceRows.length > 0" aria-label="">
         <thead class="table-light">
-          <tr>
-        
+          <tr>        
             <th class="text-dark bg-light">Kunde.</th>
             <th class="text-dark bg-light">Rechnungsteller</th>
             <th class="text-dark bg-light">Rechnungsnummer</th>
@@ -25,9 +24,8 @@
             <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           </tr>
         </thead>
-        <tbody class="table align-middle text-95 text-secondary-d3 text-start">
-          <tr v-for="(row, index) in invoiceRows" :key="row.id">
-          
+        <tbody class="table text-95 text-secondary-d3 text-start">
+          <tr v-for="(row, index) in invoiceRows" :key="row.id">          
             <td class="text-center">{{ getCustomerName(row.customer_id) }}</td>
             <td class="text-center">{{ getCompanyName(row.company_id) }}</td>
             <td class="text-center">{{ row.invoice_number }}</td>
@@ -48,13 +46,13 @@
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
-
           </tr>
         </tbody>
       </table>
+      
     </div>
-  </section>
 
+  </section>
 
   <section>
     <div v-if="isEditingInvoice">
@@ -70,9 +68,9 @@
     </div>
   </section>
 
-  <div class="fixed-bottom">
+  <section>
 <Footer />
-</div>
+</section>
 
 </template>
 
@@ -87,17 +85,20 @@ import editInvoice from './editInvoice.vue';
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
 
+
 export default {
   components: {
     Header,
     Footer,
     editInvoice,
+
   },
   data() {
     return {
       // Your data properties
       invoiceData: {},
       isEditingInvoice: false, // Set the initial value of isEditingInvoice
+      showInvoiceForm: false, 
     };
   },
   methods: {
@@ -121,7 +122,7 @@ export default {
     const customerData = ref({});
     const isEditingInvoice = ref(false);
     const selectedInvoice = ref(null);
-
+const showInvoiceForm = ref(false);
 
     const editRow = (invoiceNumber) => {
       selectedInvoice.value = invoiceRows.value.find((row) => row.invoice_number === invoiceNumber);
@@ -291,7 +292,7 @@ export default {
       isEditingInvoice,
       showFormComponent,
       deleteRow,
-  
+      showInvoiceForm, 
     };
   },
 };

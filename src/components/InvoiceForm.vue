@@ -219,7 +219,7 @@
       class="form-check-input"
       type="radio"
       id="noneRadio"
-      value="NULL"
+      value=""
       v-model="customerData.gender"
     />
     <label class="form-check-label" for="noneRadio">None</label>

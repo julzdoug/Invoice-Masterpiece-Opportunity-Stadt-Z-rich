@@ -17,7 +17,10 @@
 
 </template>
 
-<style>
+<style lang="css">
+/* No need for custom styling here if you're using Bootstrap classes */
+</style>
+<!-- <style>
 @import 'bootstrap/dist/css/bootstrap.css';
 
   .footer-image {
@@ -54,4 +57,4 @@
   
 }
 
-</style>
+</style> -->
