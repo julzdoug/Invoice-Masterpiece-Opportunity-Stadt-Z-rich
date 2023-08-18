@@ -2,21 +2,26 @@
 <div v-if="step === 1" class="justify-content-center align-items-center">
   <h1 class="fs-5">Rechnungsteller wählen:</h1>
   <div>
-    <ul class="list-group">
-      <li class="list-group-item " :aria-current="selectedCompany === null">Rechnungsteller</li>
-      <li
-        class="list-group-item list-group-item-info "
-        v-for="company in companies"
-        :key="company.id"
-        :class="{ 'active': selectedCompany === company }"
-        @click="selectCompany(company)"
-      >
-        <button class="d-flex ms-5 btn btn-info" @click="nextStep()">{{ company.profession }}</button>
-      </li>
-    </ul>
-  </div>
-  <div class="justify-content-center mt-3">
-    <button class="ms-5 btn btn-primary" @click="nextStep()">Weiter</button>
+<ul class="list-group">
+  <li class="list-group-item active" :aria-current="selectedCompany === null">Rechnungsteller</li>
+  <li
+    class="list-group-item list-group-item-info"
+    v-for="company in companies"
+    :key="company.id"
+    :class="{ 'active': selectedCompany === company }"
+    @click="selectCompany(company)"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="ms-5">{{ company.profession }}</div>
+    </div>
+  </li>
+
+</ul>
+
+<div class="justify-content-center mt-3">
+
+</div>
+
   </div>
 </div>
 
@@ -25,22 +30,25 @@
   <div>
     <h1 class="fs-5">Empfänger wählen:</h1>
     <div>
-      <ul class="list-group">
-        <li class="list-group-item active" :aria-current="selectedCustomer === null">Empfänger</li>
-        <li
-          class="list-group-item"
-          v-for="customer in customers"
-          :key="customer.id"
-          :class="{ 'active': selectedCustomer === customer }"
-          @click="selectCustomer(customer)"
-        >
-          {{ customer.name }}
-        </li>
-      </ul>
+<ul class="list-group">
+  <li class="list-group-item active" :aria-current="selectedCustomer === null">Empfänger</li>
+  <li
+    class="list-group-item list-group-item-info"
+    v-for="customer in customers"
+    :key="customer.id"
+    :class="{ 'active': selectedCustomer === customer }"
+    @click="selectCustomer(customer)"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="ms-5">{{ customer.name }}</div>
+    </div>
+  </li>
+</ul>
+
     </div>
   </div>
   <div class="justify-content-center mt-3">
-    <button class="btn btn-primary" @click="nextStep()">Next</button>
+    <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
   </div>
 </div>
 
@@ -81,13 +89,17 @@
         </div>
       </div>
       </div>
-      <div class=" mt-3">
+      
         <div v-if="selectedCustomer && !selectedInvoiceNumber">
           <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
-          <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
+
         </div>
-      </div>
+        <div class="d-flex">
+                  <button @click="generateInvoiceNumber" class="btn btn-primary">Rechnungsnummer Generieren</button>
+              <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
 <button class="btn btn-primary" @click="nextStep()">Next</button>
+      </div>
+
 </div>
 
 
@@ -95,28 +107,24 @@
 
   <div v-if="step === 4" class="justify-content-center align-items-center">
     <div class="table-responsive">
-      <table class="table table-borderless border-0 border-b-2"
-        v-if="selectedInvoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
+      <table class="table table-borderless border-0 border-b-2" v-if="filteredInvoiceRows.length > 0">
+     
 
         <thead>
           <tr>
-            <th class="text-dark bg-light"></th>
+
             <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
             <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
-            <th class="text-dark bg-light">Pos.</th>
 
-            <th class="text-dark bg-light">Rechnungsnummer</th>
             <th class="text-dark bg-light">Bezeichnung</th>
             <th class="text-dark bg-light">Menge</th>
             <th class="text-dark bg-light">Preis/Stück</th>
             <th class="width=140 text-dark bg-light">Positionspreis</th>
           </tr>
         </thead>
-        <tbody class="text-95 text-secondary-d3">
+<tbody class="text-95 text-secondary-d3">
           <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
-            <td>
-              <input type="checkbox" v-model="row.checked" />
-            </td>
+ 
             <td class="text-center">
               <button class="btn btn-warning m-1" @click="editRow(index)">
                 <i class="bi bi-pencil"></i>
@@ -128,8 +136,7 @@
               </button>
 
             </td>
-            <td>{{ row.position }}</td>
-            <td>{{ row.invoice_number }}</td>
+         
             <td>
               <template v-if="isEditing[index]">
                 <input v-model="row.description" />
@@ -155,13 +162,18 @@
               </template>
             </td>
             <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
-          </tr>
+           </tr>
         </tbody>
       </table>
+      <p v-else>No invoice data available.</p>
     </div>
-    <button class="btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
-    <button class="btn btn-primary ms-5 mt-3" @click="saveChanges">Zur Rechnung</button>
+    <div class="row">
+    <button class="col btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
+    <button class="col btn btn-secondary mt-3 ms-3" @click="previousStep()">Zurück</button>
+    <button class="col btn btn-primary ms-3 mt-3" @click="saveChanges">Zur Rechnung</button>
+            </div>
   </div>
+
 </template>
 
 <script>
@@ -473,14 +485,36 @@ export default {
     };
   },
   methods: {
+  selectCompany(company) {
+    this.selectedCompany = company;
+    this.nextStep(); // Automatically move to the next step
+  },
+  selectCustomer(customer) {
+    this.selectedCustomer = customer;
+    this.nextStep(); // Automatically move to the next step
+  },
+
 
     nextStep() {
       this.step++;
     },
+  previousStep() {
+    this.step--;
+  },
 
   },
+    computed: {
+    // ... (other computed properties)
+    hasSelectedInvoice: function () {
+      return this.selectedInvoiceNumber !== '' || this.generateInvoiceNumber !== '';
+    }
+  }
 };
 </script>
 
 <style css>
+.list-group-item:hover {
+  background-color: #85d5f4; /* Change this color to your desired hover color */
+}
+
 </style>
