@@ -1,44 +1,21 @@
 <template>
   <div>
     <Header />
+  <div>
+        <button class="btn btn-primary" @click="toggleComponent">
+      {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
+    </button>
 
-<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Vorhandene Einträge</h1>
-        
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Neue Einträge Ertsellen</button>
-      <div class="modal-body">
-         <selectInvoiceForm />
-       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">Schliessen</button>
-      </div>
+    <div v-if="showVorhandeneComponent">
+      <h1 class="fs-5">Vorhandene Einträge</h1>
+      <selectInvoiceForm />
     </div>
-  </div>
-</div>
-<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Neue Einträge</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+
+    <div v-else>
+      <h1 class="fs-5">Neue Einträge Erstellen</h1>
       <InvoiceForm />
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Vorhandene</button>
-      </div>
     </div>
   </div>
-</div>
-<button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Rechnung Erstellen</button>
-
     <Footer />
   </div>
 </template>
@@ -58,14 +35,16 @@ export default {
     Footer,
   },
   
-  mounted() {
-    const myModal = document.getElementById('exampleModalToggle');
-    const myInput = document.getElementById('myInput');
-    
-    myModal.addEventListener('shown.bs.modal', () => {
-      myInput.focus();
-    });
-  }
+  data() {
+    return {
+      showVorhandeneComponent: true, // Show Vorhandene Einträge component by default
+    };
+  },
+  methods: {
+    toggleComponent() {
+      this.showVorhandeneComponent = !this.showVorhandeneComponent;
+    },
+  },
 
 }
 </script>

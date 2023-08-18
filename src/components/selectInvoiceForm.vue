@@ -1,37 +1,49 @@
-<template>
-  <div v-if="step === 1" class="justify-content-center align-items-center">
+<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+<div v-if="step === 1" class="justify-content-center align-items-center">
+  <h1 class="fs-5">Rechnungsteller wählen:</h1>
+  <div>
+    <ul class="list-group">
+      <li class="list-group-item " :aria-current="selectedCompany === null">Rechnungsteller</li>
+      <li
+        class="list-group-item list-group-item-info "
+        v-for="company in companies"
+        :key="company.id"
+        :class="{ 'active': selectedCompany === company }"
+        @click="selectCompany(company)"
+      >
+        <button class="d-flex ms-5 btn btn-info" @click="nextStep()">{{ company.profession }}</button>
+      </li>
+    </ul>
+  </div>
+  <div class="justify-content-center mt-3">
+    <button class="ms-5 btn btn-primary" @click="nextStep()">Weiter</button>
+  </div>
+</div>
 
-     
-        <h1 class="fs-5">Rechnungsteller wählen:</h1>
-        <select v-model="selectedCompany" class="form-select mt-4 custom-select"
-          aria-label="Wählen Sie die Frima">
-          <option disabled value="">Rechnungsteller</option>
-          <option v-for="company in companies" :key="company.id" :value="company">
-            {{ company.profession }}
-          </option>
-        </select>
-   
-      <div class="justify-content-center mt-3">
-        <button class="ms-5 btn btn-primary" @click="nextStep()">Weiter</button>
-      </div>
-  
-  </div>
   <!-- Step 3: Customer Form -->
-  <div v-if="step === 2" class="justify-content-center align-items-center">
-    <div class="">
-      <h1 class="fs-5">Empfänger wählen:</h1>
-      <select v-model="selectedCustomer" class="form-select mt-4 custom-select"
-        aria-label="Wählen Sie denn Kunden">
-        <option disabled value="">Empfänger</option>
-        <option v-for="customer in customers" :key="customer.id" :value="customer">
+<div v-if="step === 2" class="justify-content-center align-items-center">
+  <div>
+    <h1 class="fs-5">Empfänger wählen:</h1>
+    <div>
+      <ul class="list-group">
+        <li class="list-group-item active" :aria-current="selectedCustomer === null">Empfänger</li>
+        <li
+          class="list-group-item"
+          v-for="customer in customers"
+          :key="customer.id"
+          :class="{ 'active': selectedCustomer === customer }"
+          @click="selectCustomer(customer)"
+        >
           {{ customer.name }}
-        </option>
-      </select>
-    </div>
-    <div class="justify-content-center mt-3">
-      <button class="btn btn-primary" @click="nextStep()">Next</button>
+        </li>
+      </ul>
     </div>
   </div>
+  <div class="justify-content-center mt-3">
+    <button class="btn btn-primary" @click="nextStep()">Next</button>
+  </div>
+</div>
+
 
   <div v-if="step === 3" class="justify-content-center align-items-center">
      <div class="row">
@@ -174,13 +186,21 @@ export default {
   setup() {
     const router = useRouter();
     const customers = ref([]);
-    const selectedCustomer = ref(null);
     const selectedInvoiceNumber = ref('');
-    const selectedCompany = ref(null);
     const companies = ref([]);
     const invoiceRows = ref([]);
     const isEditing = ref([]);
     const invoiceNumber = ref('');
+      const selectedCompany = ref(null);
+  const selectedCustomer = ref(null);
+
+  const selectCompany = (company) => {
+    selectedCompany.value = company;
+  };
+
+  const selectCustomer = (customer) => {
+    selectedCustomer.value = customer;
+  };
     //FirmenDaten Laden
     const fetchCompanies = async () => {
       try {
@@ -424,8 +444,10 @@ export default {
     return {
       customers,
       companies,
-      selectedCompany,
-      selectedCustomer,
+  selectedCompany,
+    selectedCustomer,
+    selectCompany,
+    selectCustomer,
       selectedInvoiceNumber,
       invoiceRows,
       isEditing,
@@ -459,3 +481,6 @@ export default {
   },
 };
 </script>
+
+<style css>
+</style>
