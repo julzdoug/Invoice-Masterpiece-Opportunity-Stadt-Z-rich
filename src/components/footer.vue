@@ -1,7 +1,7 @@
 <template>
-<footer class="footer mt-5 py-2 bg-body-tertiary">
+<footer class="footer py-2 bg-body-tertiary">
   <div class="container-fluid text-start">
-    <div class="row align-items-center m-1">
+    <div class="row align-items-center">
       <div class="col">
         <img src="src/assets/vue.svg" alt="Logo" width="16" height="10" class="footer-image align-text-top">
       </div>

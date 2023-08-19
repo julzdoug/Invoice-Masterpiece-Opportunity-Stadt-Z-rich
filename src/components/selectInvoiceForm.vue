@@ -1,11 +1,11 @@
-<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
 <div v-if="step === 1" class="justify-content-center align-items-center">
-  <h1 class="fs-5">Rechnungsteller wählen:</h1>
+ 
   <div>
 <ul class="list-group">
-  <li class="list-group-item active" :aria-current="selectedCompany === null">Rechnungsteller</li>
+  <li class="list-group-item active bg-primary bg-opacity-25 fs-5 fw-3 text-center text-primary-emphasis" :aria-current="selectedCompany === null">Rechnungsteller</li>
   <li
-    class="list-group-item list-group-item-info"
+    class="list-group-item"
     v-for="company in companies"
     :key="company.id"
     :class="{ 'active': selectedCompany === company }"
@@ -28,12 +28,12 @@
   <!-- Step 3: Customer Form -->
 <div v-if="step === 2" class="justify-content-center align-items-center">
   <div>
-    <h1 class="fs-5">Empfänger wählen:</h1>
+    <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
     <div>
 <ul class="list-group">
-  <li class="list-group-item active" :aria-current="selectedCustomer === null">Empfänger</li>
+  <li class="list-group-item bg-primary bg-opacity-25 " :aria-current="selectedCustomer === null">Empfänger</li>
   <li
-    class="list-group-item list-group-item-info"
+    class="list-group-item"
     v-for="customer in customers"
     :key="customer.id"
     :class="{ 'active': selectedCustomer === customer }"
@@ -47,7 +47,7 @@
 
     </div>
   </div>
-  <div class="justify-content-center mt-3">
+  <div class="justify-content-center mt-3 bg-primary bg-opacity-25">
     <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
   </div>
 </div>
@@ -94,7 +94,7 @@
           <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
 
         </div>
-        <div class="d-flex">
+        <div class="d-flex bg-primary bg-opacity-25">
                   <button @click="generateInvoiceNumber" class="btn btn-primary">Rechnungsnummer Generieren</button>
               <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
 <button class="btn btn-primary" @click="nextStep()">Next</button>
@@ -110,7 +110,7 @@
       <table class="table table-borderless border-0 border-b-2" v-if="filteredInvoiceRows.length > 0">
      
 
-        <thead>
+        <thead class="bg-primary bg-opacity-25">
           <tr>
 
             <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
@@ -167,7 +167,7 @@
       </table>
       <p v-else>No invoice data available.</p>
     </div>
-    <div class="row">
+    <div class="row bg-primary bg-opacity-25">
     <button class="col btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
     <button class="col btn btn-secondary mt-3 ms-3" @click="previousStep()">Zurück</button>
     <button class="col btn btn-primary ms-3 mt-3" @click="saveChanges">Zur Rechnung</button>
@@ -516,5 +516,6 @@ export default {
 .list-group-item:hover {
   background-color: #85d5f4; /* Change this color to your desired hover color */
 }
+
 
 </style>

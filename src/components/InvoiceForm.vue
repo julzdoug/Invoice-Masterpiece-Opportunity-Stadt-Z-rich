@@ -183,6 +183,7 @@
     </form>
       <div class="d-flex justify-content-center mt-3">
     <button class="btn btn-primary" @click="submitCompanyForm">Next</button>
+
     </div>
   </div>
 </div>
@@ -312,6 +313,8 @@
     </form>
           <div class="d-flex justify-content-center mt-3">
     <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
+    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
+
     </div>
   </div>
   </div>
@@ -324,6 +327,8 @@
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
     <button class="btn btn-primary mt-3" @click="nextStep()">Next</button>
+    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
+
   </div>
   
 </div>
@@ -396,6 +401,8 @@
     </div>
     <button class="btn btn-primary d-block mx-auto my-3" @click="addNewRow">Add New Row</button>
     <button class="btn btn-primary d-block mx-auto my-3" @click="saveChanges">Save Invoice</button>
+    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
+
   </div>
 </div>
 
@@ -650,6 +657,41 @@ async submitInvoiceForm() {
 
   navigateToInvoice() {
       this.$router.push({ name: 'Invoices', params: { invoiceNumber: this.invoiceNumber } });
+    },
+
+     async previousStep() {
+      if (this.step === 3) {
+        // Delete the invoice number and clear invoiceRows data
+        this.invoiceNumber = '';
+        this.invoiceRows = [];
+        this.isEditing = [];
+
+        // Delete the invoice data
+        await supabase
+          .from('invoice')
+          .delete()
+          .eq('invoice_number', this.invoiceNumber);
+      } else if (this.step === 2) {
+        // Delete the customer and clear customerData
+        this.customerData = {};
+
+        // Delete the customer data
+        await supabase
+          .from('customer')
+          .delete()
+          .eq('id', this.customerId);
+      } else if (this.step === 1) {
+        // Delete the company and clear companyData
+        this.companyData = {};
+
+        // Delete the company data
+        await supabase
+          .from('company')
+          .delete()
+          .eq('id', this.companyId);
+      }
+
+      this.step--;
     },
 
   },

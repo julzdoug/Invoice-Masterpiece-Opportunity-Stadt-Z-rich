@@ -1,23 +1,24 @@
 <template>
-  <div>
+  <div class="">
     <Header />
-  <div>
-        <button class="btn btn-primary" @click="toggleComponent">
+  <div class="row">
+        <button class="btn btn-primary col m-2" @click="toggleComponent">
       {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
     </button>
 
-    <div v-if="showVorhandeneComponent">
-      <h1 class="fs-5">Vorhandene Einträge</h1>
+    <div class="" v-if="showVorhandeneComponent">
+      <h1 class="fs-5 mt-3 text-center ">Vorhandene Einträge</h1>
       <selectInvoiceForm />
     </div>
 
     <div v-else>
-      <h1 class="fs-5">Neue Einträge Erstellen</h1>
+      <h1 class="fs-5 text-center">Neue Einträge Erstellen</h1>
       <InvoiceForm />
     </div>
   </div>
+    </div>
     <Footer />
-  </div>
+
 </template>
 
 <script>
