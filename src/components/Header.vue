@@ -1,20 +1,20 @@
 <template> 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse bg-tertiary" id="navbarText">
+      <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="nav-link active bg-tertiary" @click="handleMenuClick('Firma_Kunde')">Startseite</a>
+            <a class="nav-link active" @click="handleMenuClick('Firma_Kunde')">Startseite</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
+            <a class="nav-link ms-5" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
           </li>
                     <li class="nav-item">
-            <a class="nav-link ms-5 bg-tertiary" @click="handleMenuClick('NewInvoice')">Neue Rechnung</a>
+            <a class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Neue Rechnung</a>
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
@@ -103,9 +103,9 @@ function handleMenuClick(componentName) {
 
 <style scoped>
 nav {
-  background-color: aqua;
+  background-color: rgb(174, 255, 255);
   color: white;
-  height: 20vh;
+  
 }
 
 .logout {
