@@ -1,5 +1,5 @@
 <template>
-<section class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+<section class="position-relative overflow-hidden p-3 p-md-5 m-md-3  bg-primary bg-opacity-50">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 order-md-2">

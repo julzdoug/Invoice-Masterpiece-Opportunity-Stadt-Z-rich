@@ -1,10 +1,9 @@
 <template>
   <section>
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
-  <div class="container-fluid">
-    <div class="row">
-
-      <div class="col-md-4 order-md-1">
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3  bg-primary bg-opacity-25 ">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4 order-md-1">
         <h1 class="display-3 fw-bold">Rechnungs Generator</h1>
         <h3 class="fw-normal text-muted mb-3">Erstelle deine Rechnung</h3>
         <h3 class="fw-normal text-muted mb-3">zu einem PDF</h3>
@@ -12,9 +11,21 @@
         <button class="btn btn-primary btn-block" @click="jumpToSection('form')">Start</button>
         </div>
       </div>
-            <div class="col-md-8 order-md-2">
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
+          <div class="col-md-8 order-md-2">
+            <div
+              id="carouselExampleAutoplaying"
+              class="carousel slide"
+              data-bs-ride="carousel"
+              style="height: 500px; overflow: hidden;"
+            >
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img
+                    src="src/assets/hero/company.png"
+                    class="d-block w-100 h-100 object-cover"
+                    alt="companyForm"
+                  />
+                </div>
     <div class="carousel-item active">
       <img src="src/assets/hero/company.png" class="d-block w-100" alt="companyForm">
     </div>

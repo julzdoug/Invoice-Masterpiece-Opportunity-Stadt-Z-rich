@@ -2,7 +2,7 @@
 
   <div v-if="step === 1" class="d-flex justify-content-center align-items-center">
     <div class="row">
-    <h1 class="justify-content-center">1. Rechnungsteller</h1>
+    <h1 class="justify-content-center">Rechnungsteller:</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
@@ -324,7 +324,7 @@
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
     <div>
     <button class="col btn btn-primary mt-3" @click="nextStep()">Next</button>
-    <button class="col btn btn-secondary me-3" @click="previousStep">Previous</button>
+    <button class="col btn btn-secondary mt-3 me-3" @click="previousStep">Previous</button>
 </div>
   </div>
   
@@ -398,8 +398,7 @@
     </div>
     <button class="btn btn-primary d-block mx-auto my-3" @click="addNewRow">Add New Row</button>
     <button class="btn btn-primary d-block mx-auto my-3" @click="saveChanges">Save Invoice</button>
-    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
-
+    <button class="btn btn-secondary ms-3" @click="previousStep">Previous</button>
   </div>
 </div>
 
