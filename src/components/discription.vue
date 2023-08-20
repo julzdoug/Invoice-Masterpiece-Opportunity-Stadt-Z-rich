@@ -1,5 +1,5 @@
 <template>
-<section class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+<section class="position-relative overflow-hidden p-3 p-md-5 m-md-3  bg-primary bg-opacity-50">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 order-md-2">
@@ -7,7 +7,7 @@
         <div class="product-device shadow-sm d-md-none"></div>
         <div class="product-device product-device-2 shadow-sm d-md-none"></div>
       </div>
-      <div class="col-md-4 order-md-1">
+      <div class="col-md-6 order-md-1">
         <h1 class="display-3 fw-bold">Wie funktionert es</h1>
         <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellung<br>mit einem Knopfdruck zur fertigen PDF Rechung</h3>
         <div class="d-flex gap-3 justify-content-center lead fw-normal">

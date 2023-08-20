@@ -3,32 +3,25 @@
     tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header back">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Rechnungsteller</h1>
-          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
-    data-bs-toggle="modal"></button>
+          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            data-bs-toggle="modal"></button>
         </div>
-<div class="row ms-3">
-              <div class="col-8 d-flex justify-content-start m-2">
-                  <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
-            @close="closeEditModal">Rechnungen</button>
-          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Empfänger</button>
+        <div class="row ms-3">
+          <div class="col-8 d-flex justify-content-start m-2">
+            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+              @close="closeEditModal">Rechnungen</button>
+            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+              >Empfänger</button>
+              <button class="btn btn-outline-primary btn-md ms-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i></span></button>   
           </div>
-          </div>
+        </div>
         <div class="modal-body">
           <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
             <div class="row">
-              <div class="form-group col-md-6 col-sm-12 mb-3">
-                <div class="row">
-                  <div class="col-8 d-flex justify-content-start">
-                  </div>
-                  <div class="col-8 d-flex ms-2 justify-content-start">
-                    <button class="btn btn-primary btn-md" v-if="companyData" @click="toggleEditModeCompany">{{
-                      isEditing ? 'Cancel' : 'Ändern' }}</button>
-                  </div>
-                  <div class="col-8 d-flex justify-content-end">
-                  </div>
-                </div>
+              <div class="form-group col-md-6 col-sm-12 mb-3">           
+                                
                 <label for="logoInput">Company Logo</label>
                 <div class="text-center col-4">
                   <div class="input-with-image">
@@ -301,14 +294,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-8 d-flex ms-3 justify-content-center">
-            </div>
           </form>
         </div>
-        <div class="modal-footer">
-
+        <div class="modal-footer  bg-primary bg-opacity-25">
           <button type="submit" @click="updateCompanyDataInDatabase(companyData.value)"
-            class="btn btn-primary">Speichern</button>
+            class="btn btn-outline-primary">Speichern</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
+            Schliessen
+          </button>
         </div>
       </div>
     </div>
@@ -317,31 +310,46 @@
     tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header  back">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Empfänger</h1>
-                    <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
-    data-bs-toggle="modal"></button>
+          <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            data-bs-target="#exampleModalToggle" data-bs-toggle="modal"></button>
         </div>
-<div class="row ms-3">
-              <div class="col-8 d-flex justify-content-start m-2">
-                  <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Rechnungen</button>
-          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
-            @close="closeEditModal">Rechnungsteller</button>
-          
+        <div class="row ms-3">
+          <div class="col-8 d-flex justify-content-start m-2">
+            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle2"
+              data-bs-toggle="modal">Rechnungen</button>
+            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+              @close="closeEditModal">Rechnungsteller</button>
+              <button class="btn btn-outline-primary btn-md ms-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil"></i></span></button> 
           </div>
-          </div>
+        </div>
         <div class="modal-body">
           <form class="container mt-2" @submit.prevent="submitCustomerForm">
             <div class="row">
               <div class="col-8 d-flex justify-content-start">
               </div>
               <div class="col-8 d-flex justify-content-start m-2">
-                <button class="btn btn-primary btn-md" v-if="customerData" @click="toggleEditModeCustomer">{{
-                  isEditing ? 'Cancel' :
-                  'Ändern'
-                }}</button>
               </div>
               <div class="col-8 d-flex justify-content-end">
+              </div>
+            </div>
+            <div class="col-md-6 mb-3 col-sm-12">
+              <label>Gender:</label>
+              <div class="form-check" v-if="isEditing">
+                <input class="form-check-input" type="radio" id="mrRadio" value="Herr" v-model="customerData.gender" />
+                <label class="form-check-label" for="mrRadio">Herr</label>
+              </div>
+              <div class="form-check" v-if="isEditing">
+                <input class="form-check-input" type="radio" id="mrsRadio" value="Frau" v-model="customerData.gender" />
+                <label class="form-check-label" for="mrsRadio">Frau</label>
+              </div>
+              <div class="form-check" v-if="isEditing">
+                <input class="form-check-input" type="radio" id="noneRadio" value="" v-model="customerData.gender" />
+                <label class="form-check-label" for="noneRadio">None</label>
+              </div>
+              <div v-else>
+                <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender }}</div>
               </div>
             </div>
             <div class="row">
@@ -462,10 +470,13 @@
 
           </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer  bg-primary bg-opacity-25">
 
           <button type="submit" @click="updateCustomerDataInDatabase(customerData.value)"
-            class="btn btn-primary">Save</button>
+            class="btn btn-outline-primary">Speichern</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
+            Schliessen
+          </button>
         </div>
       </div>
     </div>
@@ -474,103 +485,92 @@
     tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechung</h1>
-                   <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-target="#exampleModalToggle"
-    data-bs-toggle="modal"></button>
+        <div class="modal-header back">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechnung</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
+          </button>
         </div>
         <div class="row ms-3">
-              <div class="col-8 d-flex justify-content-start m-2">
-<button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">Rechnungsteller</button>
-          <button class="btn btn-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Empfänger</button>
+          <div class="col-8 d-flex justify-content-start m-2">
+            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle3"
+              data-bs-toggle="modal">Rechnungsteller</button>
+            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle"
+              data-bs-toggle="modal">Empfänger</button>
           </div>
-          </div>
+        </div>
         <div class="modal-body">
           <form @submit.prevent="submitInvoiceForm">
-            <div class="container mt-5 col-md-8 text-center d-flex justify-content-center align-items-center">
-              <div class="row">
 
-                <hr class="mt-3">
-                <table class="col-sm-12 table table-borderless border-0 border-b-2" aria-label=""
-                  v-if="selectedInvoice !== ''">
-                  <thead>
-                    <tr>
-                      <th class="text-dark bg-light"></th>
-                      <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
-                      <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
-                      <th class="text-dark bg-light">Pos.</th>
-                      <th class="text-dark bg-light">Rechnungsnummer</th>
-                      <th class="text-dark bg-light">Bezeichnung</th>
-                      <th class="text-dark bg-light">Menge</th>
-                      <th class="text-dark bg-light">Preis/Stück</th>
-                      <th class="width=140 text-dark bg-light">Positionspreis</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-95 text-secondary-d3">
-                    <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
-                      <td>
-                        <input type="checkbox" v-model="row.checked" />
-                      </td>
-                      <td class="text-center">
-
-                        <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-
-                      </td>
-                      <td class="text-center">
-                        <button class="btn btn-warning m-1" @click="deleteRow(index)">
-                          <i class="bi bi-trash3"></i>
-                        </button>
-                      </td>
-                      <td></td>
-                      <td>{{ row.invoice_number }}</td>
-                      <td>
-                        <template v-if="isEditingRow[index]">
-                          <input v-model="row.description" />
-                        </template>
-                        <template v-else>
-                          {{ row.description }}
-                        </template>
-                      </td>
-                      <td>
-                        <template v-if="isEditingRow[index]">
-                          <input v-model="row.quantity" type="number" />
-                        </template>
-                        <template v-else>
-                          {{ row.quantity }}
-                        </template>
-                      </td>
-                      <td class="text-95">
-                        <template v-if="isEditingRow[index]">
-                          <input v-model="row.price_per_unit" type="number" />
-                        </template>
-                        <template v-else>
-                          {{ row.price_per_unit }}
-                        </template>
-                      </td>
-                      <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="col-8 d-flex justify-content-start">
-<button class="btn btn-success mt-3" @click="addNewRow">Hinzufügen</button>
-
+            <div class="justify-content-center align-items-center ms-5 me-5">
+              <table class="table table-hover" aria-label="" v-if="selectedInvoice !== ''">
+                <thead>
+                  <tr>
+                    <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
+                    <th class="text-dark bg-light text-center"><span><i class="bi bi-wrench"></i></span></th>
+                    <th class="text-dark bg-light">Rechnungsnummer</th>
+                    <th class="text-dark bg-light">Bezeichnung</th>
+                    <th class="text-dark bg-light">Menge</th>
+                    <th class="text-dark bg-light">Preis/Stück</th>
+                    <th class="width=140 text-dark bg-light">Positionspreis</th>
+                  </tr>
+                </thead>
+                <tbody class="table align-middle text-95 text-secondary-d3">
+                  <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
+                    <td class="text-center">
+                      <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </td>
+                    <td class="text-center">
+                      <button class="btn btn-warning m-1" @click="deleteRow(index)">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                    <td>{{ row.invoice_number }}</td>
+                    <td>
+                      <template v-if="isEditingRow[index]">
+                        <input v-model="row.description" />
+                      </template>
+                      <template v-else>
+                        {{ row.description }}
+                      </template>
+                    </td>
+                    <td>
+                      <template v-if="isEditingRow[index]">
+                        <input v-model="row.quantity" type="number" />
+                      </template>
+                      <template v-else>
+                        {{ row.quantity }}
+                      </template>
+                    </td>
+                    <td class="text-95">
+                      <template v-if="isEditingRow[index]">
+                        <input v-model="row.price_per_unit" type="number" />
+                      </template>
+                      <template v-else>
+                        {{ row.price_per_unit }}
+                      </template>
+                    </td>
+                    <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
                 </div>
-              </div>
             </div>
           </form>
         </div>
-     <div class="modal-footer">
-                                    <div class="col-8 d-flex justify-content-end">
-<button class="btn btn-success mt-3" v-if="isEditingCurrentRow" @click="saveNewRow">Speichern</button>
-<button class="btn btn-success mt-3" v-else @click="updateRows">Speichern</button>
-                </div>
+        <div class="modal-footer bg-primary bg-opacity-25">
+          <button class="btn btn-outline-primary" v-if="isEditingCurrentRow" @click="saveNewRow">Speichern</button>
+          <button class="btn btn-outline-primary" v-else @click="updateRows">Speichern</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
+            Schliessen
+          </button>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -588,6 +588,51 @@ export default {
     customerData: { type: Object, required: true },
     isEditingInvoice: { type: Boolean, required: true },
   },
+  methods: {
+    closeModalAndReloadParent() {
+      // Emit an event to notify the parent component to reload the page
+      this.$emit('modal-closed-reload');
+    },
+
+    async handleLogoChange(event) {
+      const file = event.target.files[0];
+      const fileName = file.name; // Use the original filename of the uploaded image
+
+      try {
+        // Upload the file to the "bucket" storage with the dynamic filename
+        const { data, error } = await supabase.storage.from('bucket').upload(fileName, file);
+
+        if (error) {
+          console.log('Error uploading logo:', error.message);
+          return;
+        }
+
+        console.log('Logo uploaded successfully:', data);
+
+        // Update the companyData.logo with the image URL
+        const logoUrl = URL.createObjectURL(file);
+        this.companyData.logo = logoUrl;
+        this.companyData.bucket_id = 'bucket';
+        this.companyData.logo_name = fileName;
+
+        // Save the logo information to the "company" table
+        const companyId = this.invoiceData.company_id; // Replace with the actual company ID
+        await supabase
+          .from('company')
+          .update({
+            logo: data,
+            bucket_id: 'bucket', // Replace 'bucket' with your actual bucket_id
+            logo_name: fileName,
+          })
+          .eq('id', companyId);
+
+        // Refresh the companyData to reflect the updated logo
+        await this.fetchCompanyData();
+      } catch (error) {
+        console.error('Error handling logo change:', error);
+      }
+    },
+  },
 
   setup(props) {
 
@@ -604,7 +649,7 @@ export default {
     const modalButton = ref(null);
     const logoUrl = ref(null);
     const selectedEntry = ref(null);
-const isEditingCurrentRow = ref(false);
+    const isEditingCurrentRow = ref(false);
 
     // Initialize reactive variables
     for (let i = 0; i < filteredInvoiceRows.value.length; i++) {
@@ -633,6 +678,7 @@ const isEditingCurrentRow = ref(false);
       } catch (error) {
         console.error('Failed to update invoice data:', error);
       }
+
     }
 
     async function updateInvoiceNumber(newInvoiceNumber) {
@@ -677,6 +723,7 @@ const isEditingCurrentRow = ref(false);
       } catch (error) {
         console.error('Failed to update customer data:', error);
       }
+      toggleEditModeCustomer();
     }
 
     async function updateCompanyDataInDatabase(companyDataToUpdate) {
@@ -697,6 +744,8 @@ const isEditingCurrentRow = ref(false);
       } catch (error) {
         console.error('Failed to update company data:', error);
       }
+
+    toggleEditModeCompany();
     }
 
 
@@ -919,7 +968,7 @@ const isEditingCurrentRow = ref(false);
       // Start editing the newly added row
       const newIndex = filteredInvoiceRows.value.length - 1;
       toggleEditRow(newIndex);
- isEditingCurrentRow.value = true;
+      isEditingCurrentRow.value = true;
 
     };
 
@@ -959,7 +1008,7 @@ const isEditingCurrentRow = ref(false);
 
       isEditingRow[index] = false;
       isEditing.value = false;
-      isEditingCurrentRow.value = false; 
+      isEditingCurrentRow.value = false;
     };
 
     const saveNewRow = async () => {
@@ -1076,7 +1125,7 @@ const isEditingCurrentRow = ref(false);
         newValue.quantity &&
         newValue.customer_id &&
         newValue.company_id; // Make sure the "customer_id" and "company_id" properties are also present in the object
-      
+
       if (hasNecessaryProperties) {
         // Render the template with the fetched invoiceData
         // You can update the template logic here if needed
@@ -1090,6 +1139,7 @@ const isEditingCurrentRow = ref(false);
     onMounted(() => {
       if (modalButton.value) {
         modalButton.value.click();
+
       }
     });
 
@@ -1159,6 +1209,34 @@ const isEditingCurrentRow = ref(false);
 
 
 <style>
+.back {
+  background-color: rgb(192, 212, 249);
+}
 
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
 
+.table td,
+.table th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 576px) {
+
+  .table {
+
+    font-size: 12px;
+    /* Adjust font size for mobile devices */
+  }
+
+  th,
+  td {
+    min-width: 80px;
+    /* Adjust as needed to prevent squished content */
+  }
+}
 </style>

@@ -2,7 +2,7 @@
 
   <div v-if="step === 1" class="d-flex justify-content-center align-items-center">
     <div class="row">
-    <h1 class="justify-content-center">1. Rechnungsteller</h1>
+    <h1 class="justify-content-center">Rechnungsteller:</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
@@ -183,6 +183,7 @@
     </form>
       <div class="d-flex justify-content-center mt-3">
     <button class="btn btn-primary" @click="submitCompanyForm">Next</button>
+
     </div>
   </div>
 </div>
@@ -214,10 +215,21 @@
     />
     <label class="form-check-label" for="mrsRadio">Frau</label>
   </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="noneRadio"
+      value=""
+      v-model="customerData.gender"
+    />
+    <label class="form-check-label" for="noneRadio">None</label>
+  </div>
   <div class="invalid-feedback">
     Ansprache.
   </div>
 </div>
+
         <div class="col-md-6 mb-3 col-sm-12">
         </div>
       </div>
@@ -294,13 +306,11 @@
           </div>
         </div>
       </div>
-<!--       <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary" @click="showNextForm = false">Back</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div> -->
     </form>
           <div class="d-flex justify-content-center mt-3">
     <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
+    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
+
     </div>
   </div>
   </div>
@@ -312,7 +322,10 @@
     <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
-    <button class="btn btn-primary mt-3" @click="nextStep()">Next</button>
+    <div>
+    <button class="col btn btn-primary mt-3" @click="nextStep()">Next</button>
+    <button class="col btn btn-secondary mt-3 me-3" @click="previousStep">Previous</button>
+</div>
   </div>
   
 </div>
@@ -385,6 +398,7 @@
     </div>
     <button class="btn btn-primary d-block mx-auto my-3" @click="addNewRow">Add New Row</button>
     <button class="btn btn-primary d-block mx-auto my-3" @click="saveChanges">Save Invoice</button>
+    <button class="btn btn-secondary ms-3" @click="previousStep">Previous</button>
   </div>
 </div>
 
@@ -639,6 +653,75 @@ async submitInvoiceForm() {
 
   navigateToInvoice() {
       this.$router.push({ name: 'Invoices', params: { invoiceNumber: this.invoiceNumber } });
+    },
+
+
+async previousStep() {
+  if (this.step === 3) {
+
+    await this.deleteCustomer(); 
+  } else if (this.step === 2) {
+await this.deleteCompany();
+  }
+
+  if (this.step === 3 || this.step === 2 || this.step === 1) {
+    
+   
+  }
+ this.step--;
+  
+},
+
+        async deleteCompany() {
+      try {
+        if (this.companyId) {
+          const { data, error } = await supabase
+            .from('company')
+            .delete()
+            .eq('id', this.companyId);
+
+          if (error) {
+            console.error('Failed to delete company:', error);
+            return;
+          }
+
+          console.log('Company deleted:', data);
+          this.companyId = null; // Reset the company ID
+        }
+      } catch (error) {
+        console.error('Failed to delete company:', error);
+      }
+    },
+
+
+async deleteCustomer() {
+  try {
+    if (this.customerId) {
+      const { data, error } = await supabase
+        .from('customer')
+        .delete()
+        .eq('id', this.customerId);
+
+      if (error) {
+        console.error('Failed to delete customer:', error);
+        return;
+      }
+
+      console.log('Customer deleted:', data);
+      this.customerId = null; // Reset the customerId
+    }
+  } catch (error) {
+    console.error('Failed to delete customer:', error);
+  }
+},
+
+    async deleteInvoice() {
+      if (this.invoiceNumber) {
+        await supabase
+          .from('invoice')
+          .delete()
+          .eq('invoice_number', this.invoiceNumber);
+      }
     },
 
   },

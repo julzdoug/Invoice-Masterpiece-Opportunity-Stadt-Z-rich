@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <!--Seten Information-->
   <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
     <div class="page-header text-blue-d2">
@@ -12,7 +13,7 @@
       <div class="page-tools">
         <a class="btn bg-white btn-light mx-1px text-95" ref="content" data-title="PDF" @click="printInvoice">
           <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-          PDF
+          Drucken
         </a>
       </div>
     </div>
@@ -82,7 +83,7 @@
                 </div>
                 <div class="my-2 d-flex justify-content-between">
                   <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.MwSt : 'Loading...' }}
+                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
                   </div>
                 </div>
               </div>
@@ -284,7 +285,9 @@
       </div>
     </div>
   </div>
-
+  <div class="fixed-bottom">
+<Footer />
+</div>
 </template> 
 
 <script>
@@ -292,13 +295,17 @@ import { ref, onMounted, computed, watch } from 'vue';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { createClient } from '@supabase/supabase-js';
-
+import Header from './Header.vue';
+import Footer from './footer.vue';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default {
-  
+    components: {
+    Header,
+    Footer,
+  },
   // Angaben der Zahlen und wie man sie Speichert 
   name: 'Invoices',
   props: ['invoiceNumber'],
