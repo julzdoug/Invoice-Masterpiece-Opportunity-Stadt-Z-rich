@@ -306,10 +306,6 @@
           </div>
         </div>
       </div>
-<!--       <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary" @click="showNextForm = false">Back</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div> -->
     </form>
           <div class="d-flex justify-content-center mt-3">
     <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
@@ -326,9 +322,10 @@
     <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
-    <button class="btn btn-primary mt-3" @click="nextStep()">Next</button>
-    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
-
+    <div>
+    <button class="col btn btn-primary mt-3" @click="nextStep()">Next</button>
+    <button class="col btn btn-secondary me-3" @click="previousStep">Previous</button>
+</div>
   </div>
   
 </div>
@@ -659,39 +656,73 @@ async submitInvoiceForm() {
       this.$router.push({ name: 'Invoices', params: { invoiceNumber: this.invoiceNumber } });
     },
 
-     async previousStep() {
-      if (this.step === 3) {
-        // Delete the invoice number and clear invoiceRows data
-        this.invoiceNumber = '';
-        this.invoiceRows = [];
-        this.isEditing = [];
 
-        // Delete the invoice data
+async previousStep() {
+  if (this.step === 3) {
+    await this.deleteInvoice();
+
+  } else if (this.step === 2) {
+    await this.deleteCustomer();
+  }
+
+  if (this.step === 3 || this.step === 2 || this.step === 1) {
+    await this.deleteCompany();
+    this.step--;
+  }
+
+  
+},
+
+        async deleteCompany() {
+      try {
+        if (this.companyId) {
+          const { data, error } = await supabase
+            .from('company')
+            .delete()
+            .eq('id', this.companyId);
+
+          if (error) {
+            console.error('Failed to delete company:', error);
+            return;
+          }
+
+          console.log('Company deleted:', data);
+          this.companyId = null; // Reset the company ID
+        }
+      } catch (error) {
+        console.error('Failed to delete company:', error);
+      }
+    },
+
+
+async deleteCustomer() {
+  try {
+    if (this.customerId) {
+      const { data, error } = await supabase
+        .from('customer')
+        .delete()
+        .eq('id', this.customerId);
+
+      if (error) {
+        console.error('Failed to delete customer:', error);
+        return;
+      }
+
+      console.log('Customer deleted:', data);
+      this.customerId = null; // Reset the customerId
+    }
+  } catch (error) {
+    console.error('Failed to delete customer:', error);
+  }
+},
+
+    async deleteInvoice() {
+      if (this.invoiceNumber) {
         await supabase
           .from('invoice')
           .delete()
           .eq('invoice_number', this.invoiceNumber);
-      } else if (this.step === 2) {
-        // Delete the customer and clear customerData
-        this.customerData = {};
-
-        // Delete the customer data
-        await supabase
-          .from('customer')
-          .delete()
-          .eq('id', this.customerId);
-      } else if (this.step === 1) {
-        // Delete the company and clear companyData
-        this.companyData = {};
-
-        // Delete the company data
-        await supabase
-          .from('company')
-          .delete()
-          .eq('id', this.companyId);
       }
-
-      this.step--;
     },
 
   },
