@@ -659,17 +659,17 @@ async submitInvoiceForm() {
 
 async previousStep() {
   if (this.step === 3) {
-    await this.deleteInvoice();
 
+    await this.deleteCustomer(); 
   } else if (this.step === 2) {
-    await this.deleteCustomer();
+await this.deleteCompany();
   }
 
   if (this.step === 3 || this.step === 2 || this.step === 1) {
-    await this.deleteCompany();
-    this.step--;
+    
+   
   }
-
+ this.step--;
   
 },
 
