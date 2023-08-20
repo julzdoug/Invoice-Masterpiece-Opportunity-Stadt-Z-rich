@@ -31,8 +31,31 @@ export const login = async (email, password) => {
     throw error.message;
   }
 };
+export const googleSignIn = async () => {
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/userinfo.email',
+      },
+    });
+    if (error) throw error;
 
+    console.log('Google Sign-in Data:', data);
 
+    // Handle the signed-in user data or navigate to the appropriate page
+    if (data.user) {
+      // Set the authentication state
+      isAuthenticated.value = true;
+      // Store session in localStorage or use it as needed
+      localStorage.setItem('session', JSON.stringify(data.session));
+      return data.user;
+    }
+  } catch (error) {
+    console.error('Error during Google sign-in:', error.message);
+    throw error.message;
+  }
+};
 export const logout = () => {
   localStorage.removeItem('session');
   isAuthenticated.value = false;

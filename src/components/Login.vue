@@ -78,6 +78,7 @@
             <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control form-control-lg" />
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
+            <button class="btn btn-primary" @click="handleGoogleSignup">Sign Up with Google</button>
           </form>
         </div>
         <div class="form-container sign-in-container">
@@ -93,6 +94,7 @@
               class="form-control" />
             <a href="#">Passwort vergessen?</a>
             <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
+             <button class="btn btn-primary" @click="handleGoogleLogin">Login with Google</button>
           </form>
         </div>
       </div>
@@ -141,7 +143,54 @@ Footer,
       showLandingPage: true,
     };
   },
-  methods: {
+
+methods: {
+async handleGoogleSignup() {
+  try {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/userinfo.email'
+      }
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (user) {
+      // User is signed up with Google
+      // Handle user data or navigate to the appropriate page
+    }
+  } catch (error) {
+    console.error('Error during Google sign-up:', error.message);
+  }
+},
+
+
+  async handleGoogleSignIn() {
+  try {
+const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'google',
+ /*  clientId: '346537705984-kifm4ipl2v55goh0qukvr7vhh0gtll4f.apps.googleusercontent.com', */
+  options: {
+    scopes: 'https://www.googleapis.com/auth/userinfo.email'
+  }
+})
+if (error) {
+  throw error;
+}
+if (data.user) {
+  // User is signed in with Google
+  // Handle user data or navigate to the appropriate page
+}
+  } catch (error) {
+    console.error('Error during Google sign-in:', error.message);
+  }
+},
+
+
+
     toggleLogin() {
       this.showLandingPage = !this.showLandingPage;
     },
