@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 order-md-2">
-        <img src="" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+        <img src="../assets/sectionlogo.png" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
         <div class="product-device shadow-sm d-md-none"></div>
         <div class="product-device product-device-2 shadow-sm d-md-none"></div>
       </div>
