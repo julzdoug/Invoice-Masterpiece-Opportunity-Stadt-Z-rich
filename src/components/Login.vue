@@ -70,6 +70,9 @@
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
+                      <div class="social-container">
+<button class="btn" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
+        </div>
             </div>
             <span>Registriere dich mit E-mail</span>
             <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
@@ -78,7 +81,7 @@
             <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control form-control-lg" />
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
-            <button class="btn btn-primary" @click="handleGoogleSignup">Sign Up with Google</button>
+            <button class="btn btn-primary" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
           </form>
         </div>
         <div class="form-container sign-in-container">
@@ -86,6 +89,7 @@
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
+              <button class="btn" @click="handleGoogleSignIn"><i class="fab fa-google-plus-g"></i></button>
             </div>
             <span>Benutze dein Konto</span>
             <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
@@ -94,7 +98,7 @@
               class="form-control" />
             <a href="#">Passwort vergessen?</a>
             <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
-             <button class="btn btn-primary" @click="handleGoogleLogin">Login with Google</button>
+             
           </form>
         </div>
       </div>
@@ -172,7 +176,7 @@ async handleGoogleSignup() {
   try {
 const { data, error } = await supabase.auth.signInWithOAuth({
   provider: 'google',
- /*  clientId: '346537705984-kifm4ipl2v55goh0qukvr7vhh0gtll4f.apps.googleusercontent.com', */
+
   options: {
     scopes: 'https://www.googleapis.com/auth/userinfo.email'
   }
@@ -246,8 +250,128 @@ if (data.user) {
     const signinEmail = ref("");
     const signinPassword = ref("");
     const name = ref("");
+
+const handleSignup = async () => {
+  try {
+    // Sign up with email/password
+    const { user, error } = await supabase.auth.signUp({
+      email: signupEmail.value,
+      password: signupPassword.value,
+    });
+
+    if (error && error.message !== "The email address is already taken.") {
+      throw error;
+    }
+
+    // If email/password sign-up fails and it's not an "email already taken" error,
+    // attempt Google sign-up
+    if (error) {
+      await handleGoogleSignup();
+    }
+
+    console.log("User signed up successfully:", user);
+
+    // Send verification email
+    await supabase.auth.api.sendVerificationEmail(signupEmail.value);
+
+    // Alert the user to check their email for verification
+    alert("You have received an email for verification.");
+
+    // Redirect to login after successful signup
+    router.push("/");
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+// Handle Google sign up
+const handleGoogleSignup = async () => {
+  try {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        scopes: "https://www.googleapis.com/auth/userinfo.email",
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (user) {
+      // Handle user data or navigate to the appropriate page
+      // For example, you might want to redirect the user to a profile setup page
+    }
+  } catch (error) {
+    console.error("Error during Google sign-up:", error.message);
+  }
+};
+
+// Rest of your methods...
+
+
+const handleSignin = async () => {
+  try {
+    // Sign in with email/password
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email: signinEmail.value,
+      password: signinPassword.value,
+    });
+
+    if (error && error.message !== "Wrong credentials, try again.") {
+      throw error;
+    }
+
+    // If email/password sign-in fails and it's not a "wrong credentials" error,
+    // attempt Google sign-in
+    if (error) {
+      await handleGoogleSignIn();
+    }
+
+    const signedInUser = data.user;
+    console.log("User signed in successfully:", signedInUser);
+
+    isAuthenticated.value = true;
+    localStorage.setItem("user", JSON.stringify(signedInUser));
+    emit("login-success", signedInUser);
+
+    // Redirect after successful sign-in
+    router.push("/");
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+// Handle Google sign in
+const handleGoogleSignIn = async () => {
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        scopes: "https://www.googleapis.com/auth/userinfo.email",
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (data.user) {
+      // Handle user data or navigate to the appropriate page
+    }
+  } catch (error) {
+    console.error("Error during Google sign-in:", error.message);
+  }
+};
+
+// Rest of your methods...
+
+
+// Rest of your methods...
+
+
     //Neu Registrieren 
-    const handleSignup = async () => {
+/*     const handleSignup = async () => {
       try {
         const { user, error } = await supabase.auth.signUp({
           email: signupEmail.value,
@@ -282,7 +406,7 @@ if (data.user) {
       } catch (error) {
         alert(error.message);
       }
-    };
+    }; */
     //Anmelde Fläche
     const showSigninPanel = () => {
       const container = document.getElementById("containerf");
@@ -323,6 +447,8 @@ if (data.user) {
       showSignupPanel,
       user,
       isAuthenticated,
+      handleGoogleSignIn,
+      handleGoogleSignup,
     };
   },
 };
