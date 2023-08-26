@@ -35,6 +35,7 @@ export const login = async (email, password) => {
 };
 export const googleSignIn = async () => {
   try {
+
     console.log('handleGoogleSignIn function started');
     const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -110,3 +111,4 @@ supabase.auth.onAuthStateChange((event, session) => {
     isAuthenticated.value = false;
   }
 });
+
