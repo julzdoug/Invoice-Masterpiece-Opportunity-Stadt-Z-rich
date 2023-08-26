@@ -27,7 +27,6 @@ const routes = [
         meta: { requiresAuth: true },
       },
     ],
-    
   },
   {
     path: '/MyInvoice',

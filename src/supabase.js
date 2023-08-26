@@ -65,7 +65,3 @@ supabase.auth.onAuthStateChange((event, session) => {
      // Call fetchCompanyData when the user is signed in or authenticated
   }
 });
-
-export default function useSupabase() {
-  return { supabase };
-}
