@@ -70,9 +70,7 @@
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
-                      <div class="social-container">
-<button class="btn" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
-        </div>
+              <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button>
             </div>
             <span>Registriere dich mit E-mail</span>
             <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
@@ -81,7 +79,7 @@
             <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control form-control-lg" />
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
-            <button class="btn btn-primary" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
+            
           </form>
         </div>
         <div class="form-container sign-in-container">
@@ -89,7 +87,8 @@
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-              <button class="btn" @click="handleGoogleSignIn"><i class="fab fa-google-plus-g"></i></button>
+                           <button class="btn btn-google" @click="handleGoogleSignIn">Login with Google</button>
+
             </div>
             <span>Benutze dein Konto</span>
             <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
@@ -170,31 +169,6 @@ async handleGoogleSignup() {
     console.error('Error during Google sign-up:', error.message);
   }
 },
-
-
-  async handleGoogleSignIn() {
-  try {
-const { data, error } = await supabase.auth.signInWithOAuth({
-  provider: 'google',
-
-  options: {
-    scopes: 'https://www.googleapis.com/auth/userinfo.email'
-  }
-})
-if (error) {
-  throw error;
-}
-if (data.user) {
-  // User is signed in with Google
-  // Handle user data or navigate to the appropriate page
-}
-  } catch (error) {
-    console.error('Error during Google sign-in:', error.message);
-  }
-},
-
-
-
     toggleLogin() {
       this.showLandingPage = !this.showLandingPage;
     },
@@ -396,17 +370,82 @@ const handleGoogleSignIn = async () => {
         });
         if (error) throw error;
         const signedInUser = data.user;
-        console.log("User signed in successfully:", signedInUser);
-        isAuthenticated.value = true;
-        localStorage.setItem('user', JSON.stringify(signedInUser));
-        emit('login-success', signedInUser);
-        //Erfolgreiches login Umgan
-        router.push("/");
-        // Weiterleitung Zum Hauptmenu HelloWorld
-      } catch (error) {
-        alert(error.message);
+        console.log('User signed in successfully:', signedInUser);
+localStorage.setItem('user', JSON.stringify(signedInUser));
+        await fetchUser(); // Fetch user data after sign-in
+        router.push('/');
       }
-    }; */
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+    async function fetchUserDataFromSupabase(email, userId) {
+  try {
+    const { data: userData, error } = await supabase
+      .from('users')
+      .upsert([
+        {
+          email,
+          app_metadata: {
+            provider: 'google',
+            providers: [{ provider_id: userId }],
+          },
+        },
+      ]);
+
+    if (error) {
+      throw error;
+    }
+
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+}
+async function handleGoogleSignIn(user) {
+  try {
+    console.log('handleGoogleSignIn function started');
+    const { error: googleSignInError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/userinfo.email'
+      }
+    });
+
+    if (googleSignInError) {
+      throw googleSignInError;
+    }
+
+    // Fetch additional user data from Supabase and associate it with the Google user
+    const userData = await fetchUserDataFromSupabase(user.email, user.id);
+
+    if (userData) {
+      // Update the user data with Google user data
+      const updatedUserData = {
+        ...userData,
+        // ... update other necessary properties ...
+      };
+
+      // Update the user data in your application's state or storage
+      // For example, you can update the 'user' ref or 'localStorage'
+      // user.value = updatedUserData;
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+      // Redirect to the appropriate page
+      router.push('/');
+    } else {
+      console.error('User data not found.');
+    }
+  } catch (error) {
+    console.error('Error during Google sign-in:', error.message);
+  }
+}
+    // Benutzer Information Sammeln
+
+
+
     //Anmelde Fläche
     const showSigninPanel = () => {
       const container = document.getElementById("containerf");
