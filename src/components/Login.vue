@@ -129,13 +129,16 @@
 </template>
 
 <script>
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted, toRefs, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-import { isAuthenticated, fetchUser, fetchUserDataFromSupabase, googleSignIn } from '../auth.js';
+import { isAuthenticated } from '../auth.js';
+import Footer from './footer.vue';
 
 export default {
-
+    components: {
+Footer,
+  },
     data() {
     return {
       showLandingPage: true,
@@ -210,8 +213,7 @@ async handleGoogleSignup() {
   setup(_, { emit }) {
     //Eintellungen Allgemein 
     const router = useRouter();
-  const user = ref(null);
-const googleUser = ref({ session: { access_token: null } });
+    const user = toRefs(ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null));
 provide('user', user);
     const signupEmail = ref("");
     const signupPassword = ref("");
@@ -262,14 +264,13 @@ provide('user', user);
             throw googleSignInError;
           }
 
-          if (userData) {
+          if (user) {
             const userData = await fetchUserDataFromSupabase(user.email, user.id);
 
             if (userData) {
               isAuthenticated.value = true;
               localStorage.setItem('user', JSON.stringify(user));
               router.push('/');
-             
             } else {
               console.error('User data not found.');
             }
@@ -312,47 +313,69 @@ localStorage.setItem('user', JSON.stringify(signedInUser));
     throw error;
   }
 }
-async function handleGoogleSignIn(user) {
+async function handleGoogleSignIn() {
   try {
     console.log('handleGoogleSignIn function started');
-    const { error: googleSignInError } = await supabase.auth.signInWithOAuth({
+    const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         scopes: 'https://www.googleapis.com/auth/userinfo.email'
       }
     });
+    console.log('User data retrieved:', user); // Corrected logging
 
     if (googleSignInError) {
       throw googleSignInError;
     }
 
-    // Fetch additional user data from Supabase and associate it with the Google user
-    const userData = await fetchUserDataFromSupabase(user.email, user.id);
+if (user) {
+  const userToStore = {
+    id: user.id,
+    aud: user.aud,
+    role: user.role,
+    // ... add other necessary properties
+  };
 
-    if (userData) {
-      // Update the user data with Google user data
-      const updatedUserData = {
-        ...userData,
-        // ... update other necessary properties ...
-      };
+  localStorage.setItem('user', JSON.stringify(userToStore));
+  router.push('/');
+}
 
-      // Update the user data in your application's state or storage
-      // For example, you can update the 'user' ref or 'localStorage'
-      // user.value = updatedUserData;
-      localStorage.setItem('user', JSON.stringify(updatedUserData));
-
-      // Redirect to the appropriate page
-      router.push('/');
-    } else {
-      console.error('User data not found.');
-    }
   } catch (error) {
     console.error('Error during Google sign-in:', error.message);
   }
 }
     // Benutzer Information Sammeln
+const fetchUser = async () => {
+  try {
+    const session = await supabase.auth.getSession();
+    console.log('Session:', session); // Add this line
+    const authUser = session.user;
+    
+    // Rest of the code...
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
+  }
+};
 
 
+
+async function fetchUserDataFromSupabase(email, userId) {
+  try {
+    const { data: userData, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email) // Fetch user data by email
+      .single(); // Retrieve a single row
+
+    if (error) {
+      throw error;
+    }
+
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+}
 
     //Anmelde Fläche
     const showSigninPanel = () => {
@@ -365,21 +388,9 @@ async function handleGoogleSignIn(user) {
       container.classList.add("right-panel-active");
     };
 
-
-onMounted(async () => {
-  // Check if the user is authenticated
-  if (isAuthenticated.value) {
-    // Fetch the user's data from Supabase and update the user object
-    await fetchUser();
-    user.value = fetchUserFromSupabase(); // Replace this with the appropriate function
-
-    // Retrieve session data
-    const sessionData = JSON.parse(localStorage.getItem('session'));
-    if (sessionData && sessionData.user) {
-      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
-    }
-  }
-});
+    onMounted(async () => {
+      await fetchUser();
+    });
 
 
     return {
@@ -401,6 +412,7 @@ onMounted(async () => {
 };
 </script>
   
+ 
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
 

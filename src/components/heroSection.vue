@@ -21,23 +21,23 @@
               <div class="carousel-inner">
                 <div class="carousel-item active">
                   <img
-                    src="../assets/hero/company.png"
+                    src="src/assets/hero/company.png"
                     class="d-block w-100 h-100 object-cover"
                     alt="companyForm"
                   />
                 </div>
     <div class="carousel-item active">
-      <img src="../assets/hero/company.png" class="d-block w-100" alt="companyForm">
+      <img src="src/assets/hero/company.png" class="d-block w-100" alt="companyForm">
     </div>
     <div class="carousel-item">
-      <img src="../assets/hero/customer.png" class="d-block w-100" alt="customerform">
+      <img src="src/assets/hero/customer.png" class="d-block w-100" alt="customerform">
     </div>
     <div class="carousel-item">
-      <img src="../assets/hero/number.png" class="d-block w-100" alt="invoicenumber">
-      <img src="../assets/hero/order.png" class="d-block w-100" alt="order">
+      <img src="src/assets/hero/number.png" class="d-block w-100" alt="invoicenumber">
+      <img src="src/assets/hero/order.png" class="d-block w-100" alt="order">
     </div>
         <div class="carousel-item">
-      <img src="../assets/hero/form.png" class="d-block w-100" alt="order">
+      <img src="src/assets/hero/form.png" class="d-block w-100" alt="order">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">

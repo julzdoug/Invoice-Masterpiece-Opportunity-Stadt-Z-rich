@@ -1,7 +1,7 @@
 <template>
     <Header v-if="user" />
       <div class="container">
-    <component :is="activeComponent" v-if="user" />
+    <component :is="activeComponent" v-if="!user" />
   </div>
 <Hero v-if="user" />
   <div class="button-section-jumper" v-if="user">
@@ -14,8 +14,8 @@
   </div>
 
 <div id="form" class="fit">
-  <InvoiceForm v-if="user" />
-<Footer v-if="user" />
+  <InvoiceForm />
+<Footer />
     <Login v-if="!user" @login-success="handleLoginSuccess" />
 </div>
   <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { provide, ref, watch } from 'vue';
+import { provide, ref, onMounted } from 'vue';
 
 import { createClient } from '@supabase/supabase-js';
 import { isAuthenticated } from '../auth.js';
@@ -38,6 +38,9 @@ import InvoiceForm from './InvoiceForm.vue';
 import MyInvoice from './MyInvoice.vue';
 /* import editInvoice from './editInvoice.vue'; */
 // Your Supabase configuration
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
 
@@ -52,16 +55,6 @@ export default {
     MyInvoice,
 /*     editInvoice, */
   },
-
-    beforeRouteEnter(to, from, next) {
-    if (to.meta.requiresAuth && !isAuthenticated.value) {
-      next({ name: 'Login' }); // Redirect to Login page
-    } else {
-      next();
-     
-    }
-  },
-
     methods: {
  // Scroll to top when the button is clicked
     scrollToTop() {
@@ -102,7 +95,7 @@ export default {
       window.addEventListener('scroll', handleScrollEnd);
     },
   },
-
+  
 
   setup(_, { emit }) {
     const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
@@ -111,32 +104,22 @@ export default {
     provide('user', user);
 
     // After login
-     const handleLoginSuccess = (loggedInUser) => {
+    const handleLoginSuccess = (loggedInUser) => {
       user.value = loggedInUser;
-      /*  window.location.reload(); */
-    }; 
-        const handleLogout = () => {
-      user.value = null; // Clear user data
-      localStorage.removeItem('user'); // Clear user data from localStorage
-      // Perform any other logout logic you need
-
-      // Redirect to login page
-      router.push({ name: 'Login' });
     };
 
-     watch(isAuthenticated, (newValue) => {
-      if (newValue) {
-        // User is authenticated, update user state
-        user.value = JSON.parse(localStorage.getItem('user'));
-      } else {
-        // User is not authenticated, reset user state
-        user.value = null;
-      }
-    });
+    
+onMounted(() => {
+  isAuthenticated.value = !!localStorage.getItem('user');
+  if (isAuthenticated.value) {
+    user.value = JSON.parse(localStorage.getItem('user'));
+  }
+});
+
+
     return {
       user,
       handleLoginSuccess,
-      handleLogout,
   activeComponent,
     };
   },

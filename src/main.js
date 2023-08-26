@@ -8,7 +8,6 @@ import "bootstrap/dist/js/bootstrap.js";
 import Modal from "vue-bs-modal";
 const app = createApp(App);
 
-
 app.use(router);
 
 supabase.auth.onAuthStateChange((event, session) => {
@@ -18,7 +17,7 @@ supabase.auth.onAuthStateChange((event, session) => {
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && to.meta.requiresAuth && !isAuthenticated.value) {
     next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
-  } else if (to.name === 'Login' && to.meta.requiresAuth && isAuthenticated.value) {
+  } else if (to.name === 'Login' && !to.meta.requiresAuth && isAuthenticated.value) {
     next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
   } else {
     next(); // Weiter leiten zu nächste Route

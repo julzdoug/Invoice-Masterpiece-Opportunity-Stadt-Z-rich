@@ -35,7 +35,6 @@ export const login = async (email, password) => {
 };
 export const googleSignIn = async () => {
   try {
-
     console.log('handleGoogleSignIn function started');
     const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -55,7 +54,6 @@ if (user) {
     aud: user.aud,
     role: user.role,
     // ... add other necessary properties
-    
   };
 
   localStorage.setItem('user', JSON.stringify(userToStore));
@@ -101,9 +99,6 @@ export const fetchUserDataFromSupabase = async (email, userId) => {
     throw error;
   }
 };
-  localStorage.removeItem('session');
-
-
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_IN") {
     isAuthenticated.value = true;
@@ -111,4 +106,3 @@ supabase.auth.onAuthStateChange((event, session) => {
     isAuthenticated.value = false;
   }
 });
-
