@@ -1,9 +1,10 @@
 <template>
+  
   <div>
     <header>
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <row>
+  
     <div class="container-fluid text-start">
   <div class="row align-items-center">
     <div class="col">
@@ -14,7 +15,7 @@
     </div>
   </div>
     </div>
-</row>
+
   </div>
   
 </nav>
@@ -70,9 +71,9 @@
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
-                      <div class="social-container">
-<button class="btn" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
-        </div>
+
+              <button class="btn btn-google" @click="handleGoogleSignup"><i class="fab fa-google-plus-g">Sign Up with Google</i></button>
+
             </div>
             <span>Registriere dich mit E-mail</span>
             <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
@@ -81,7 +82,8 @@
             <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control form-control-lg" />
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
-            <button class="btn btn-primary" @click="handleGoogleSignup"><i class="fab fa-google-plus-g"></i></button>
+
+
           </form>
         </div>
         <div class="form-container sign-in-container">
@@ -89,7 +91,11 @@
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-              <button class="btn" @click="handleGoogleSignIn"><i class="fab fa-google-plus-g"></i></button>
+
+                           <button class="btn btn-google" @click="handleGoogleSignIn"><i class="fab fa-google-plus-g">Login with Google</i></button>
+
+
+
             </div>
             <span>Benutze dein Konto</span>
             <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
@@ -125,23 +131,18 @@
         <div class="scroll-back-to-top" @click="scrollToTop" v-if="!user" ref="scrollButton">
     <button class="btn btn-primary btn-sm">Nach Oben</button>
   </div>
-    <Footer />
+
 
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-import { isAuthenticated } from '../auth.js';
-import Footer from './footer.vue';
-
-
+import { isAuthenticated, fetchUser, fetchUserDataFromSupabase, googleSignIn } from '../auth.js';
 
 export default {
-    components: {
-Footer,
-  },
+
     data() {
     return {
       showLandingPage: true,
@@ -170,30 +171,6 @@ async handleGoogleSignup() {
     console.error('Error during Google sign-up:', error.message);
   }
 },
-
-
-  async handleGoogleSignIn() {
-  try {
-const { data, error } = await supabase.auth.signInWithOAuth({
-  provider: 'google',
-
-  options: {
-    scopes: 'https://www.googleapis.com/auth/userinfo.email'
-  }
-})
-if (error) {
-  throw error;
-}
-if (data.user) {
-  // User is signed in with Google
-  // Handle user data or navigate to the appropriate page
-}
-  } catch (error) {
-    console.error('Error during Google sign-in:', error.message);
-  }
-},
-
-
 
     toggleLogin() {
       this.showLandingPage = !this.showLandingPage;
@@ -234,17 +211,16 @@ if (data.user) {
       };
 
       window.addEventListener('scroll', handleScrollEnd);
-    },
-  
+    },  
   },
-
-
 
   emits: ['login-success'],
   setup(_, { emit }) {
     //Eintellungen Allgemein 
     const router = useRouter();
-    const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
+  const user = ref(null);
+const googleUser = ref({ session: { access_token: null } });
+provide('user', user);
     const signupEmail = ref("");
     const signupPassword = ref("");
     const signinEmail = ref("");
@@ -390,23 +366,124 @@ const handleGoogleSignIn = async () => {
     // Anmelde einstellung
     const handleSignin = async () => {
       try {
-        const { error, data } = await supabase.auth.signInWithPassword({
-          email: signinEmail.value,
-          password: signinPassword.value,
-        });
-        if (error) throw error;
+        let error = null;
+        let data = null;
+
+        // Sign in with email/password
+        if (signinEmail.value && signinPassword.value) {
+          ({ error, data } = await supabase.auth.signInWithPassword({
+            email: signinEmail.value,
+            password: signinPassword.value,
+          }));
+        }
+
+        // If there's an error with email/password sign-in, attempt Google sign-in
+        if (error) {
+          const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              scopes: 'https://www.googleapis.com/auth/userinfo.email'
+            }
+          });
+
+          if (googleSignInError) {
+            throw googleSignInError;
+          }
+
+          if (userData) {
+            const userData = await fetchUserDataFromSupabase(user.email, user.id);
+
+            if (userData) {
+              isAuthenticated.value = true;
+              localStorage.setItem('user', JSON.stringify(user));
+              router.push('/');
+             
+            } else {
+              console.error('User data not found.');
+            }
+          }
+        }  else {
+      
+      if (data) {
         const signedInUser = data.user;
-        console.log("User signed in successfully:", signedInUser);
-        isAuthenticated.value = true;
-        localStorage.setItem('user', JSON.stringify(signedInUser));
-        emit('login-success', signedInUser);
-        //Erfolgreiches login Umgan
-        router.push("/");
-        // Weiterleitung Zum Hauptmenu HelloWorld
-      } catch (error) {
-        alert(error.message);
+        console.log('User signed in successfully:', signedInUser);
+localStorage.setItem('user', JSON.stringify(signedInUser));
+        await fetchUser(); // Fetch user data after sign-in
+        router.push('/');
       }
-    }; */
+
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+    async function fetchUserDataFromSupabase(email, userId) {
+  try {
+    const { data: userData, error } = await supabase
+      .from('users')
+      .upsert([
+        {
+          email,
+          app_metadata: {
+            provider: 'google',
+            providers: [{ provider_id: userId }],
+          },
+        },
+      ]);
+
+    if (error) {
+      throw error;
+    }
+
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+}
+async function handleGoogleSignIn(user) {
+  try {
+    console.log('handleGoogleSignIn function started');
+    const { error: googleSignInError } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'https://www.googleapis.com/auth/userinfo.email'
+      }
+    });
+
+    if (googleSignInError) {
+      throw googleSignInError;
+    }
+
+    // Fetch additional user data from Supabase and associate it with the Google user
+    const userData = await fetchUserDataFromSupabase(user.email, user.id);
+
+    if (userData) {
+      // Update the user data with Google user data
+      const updatedUserData = {
+        ...userData,
+        // ... update other necessary properties ...
+      };
+
+      // Update the user data in your application's state or storage
+      // For example, you can update the 'user' ref or 'localStorage'
+      // user.value = updatedUserData;
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+      // Redirect to the appropriate page
+      router.push('/');
+    } else {
+      console.error('User data not found.');
+    }
+  } catch (error) {
+    console.error('Error during Google sign-in:', error.message);
+  }
+}
+    // Benutzer Information Sammeln
+
+
+
+
     //Anmelde Fläche
     const showSigninPanel = () => {
       const container = document.getElementById("containerf");
@@ -417,23 +494,23 @@ const handleGoogleSignIn = async () => {
       const container = document.getElementById("containerf");
       container.classList.add("right-panel-active");
     };
-    // Benutzer Information Sammeln
-    const fetchUser = async () => {
-      const { user: authUser } = await supabase.auth.getSession();
-       console.log('Stored User:', authUser);
-      user.value = authUser;
-    };
-    onMounted(async () => {
-      await fetchUser();
-    });
-    // Authoriesurng vorgang via SupaBase
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        user.value = null;
-      } else {
-        user.value = session?.user;
-      }
-    });
+
+
+onMounted(async () => {
+  // Check if the user is authenticated
+  if (isAuthenticated.value) {
+    // Fetch the user's data from Supabase and update the user object
+    await fetchUser();
+    user.value = fetchUserFromSupabase(); // Replace this with the appropriate function
+
+    // Retrieve session data
+    const sessionData = JSON.parse(localStorage.getItem('session'));
+    if (sessionData && sessionData.user) {
+      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
+    }
+  }
+});
+
 
     return {
       signupEmail,
@@ -448,7 +525,7 @@ const handleGoogleSignIn = async () => {
       user,
       isAuthenticated,
       handleGoogleSignIn,
-      handleGoogleSignup,
+
     };
   },
 };
@@ -456,6 +533,23 @@ const handleGoogleSignIn = async () => {
   
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
+
+
+.btn-google {
+  background-color: #ffffff; /* Google's button color */
+  color: #757575; /* Text color */
+  border: 1px solid #d3d3d3; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  padding: 8px 16px; /* Padding around the text */
+  font-size: 14px; /* Text size */
+  font-weight: bold; /* Text boldness */
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.btn-google:hover {
+  background-color: #f2f2f2; /* Lighten the background color on hover */
+}
+
 
 .scroll-back-to-top {
   position: fixed;
