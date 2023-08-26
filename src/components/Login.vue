@@ -129,13 +129,16 @@
 </template>
 
 <script>
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted, toRefs, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-import { isAuthenticated, fetchUser, fetchUserDataFromSupabase, googleSignIn } from '../auth.js';
+import { isAuthenticated } from '../auth.js';
+import Footer from './footer.vue';
 
 export default {
-
+    components: {
+Footer,
+  },
     data() {
     return {
       showLandingPage: true,
@@ -210,8 +213,7 @@ async handleGoogleSignup() {
   setup(_, { emit }) {
     //Eintellungen Allgemein 
     const router = useRouter();
-  const user = ref(null);
-const googleUser = ref({ session: { access_token: null } });
+    const user = toRefs(ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null));
 provide('user', user);
     const signupEmail = ref("");
     const signupPassword = ref("");
@@ -343,6 +345,17 @@ if (user) {
   }
 }
     // Benutzer Information Sammeln
+const fetchUser = async () => {
+  try {
+    const session = await supabase.auth.getSession();
+    console.log('Session:', session); // Add this line
+    const authUser = session.user;
+    
+    // Rest of the code...
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
+  }
+};
 
 
 
@@ -375,21 +388,9 @@ async function fetchUserDataFromSupabase(email, userId) {
       container.classList.add("right-panel-active");
     };
 
-
-onMounted(async () => {
-  // Check if the user is authenticated
-  if (isAuthenticated.value) {
-    // Fetch the user's data from Supabase and update the user object
-    await fetchUser();
-    user.value = fetchUserFromSupabase(); // Replace this with the appropriate function
-
-    // Retrieve session data
-    const sessionData = JSON.parse(localStorage.getItem('session'));
-    if (sessionData && sessionData.user) {
-      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
-    }
-  }
-});
+    onMounted(async () => {
+      await fetchUser();
+    });
 
 
     return {
@@ -411,6 +412,7 @@ onMounted(async () => {
 };
 </script>
   
+ 
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
 

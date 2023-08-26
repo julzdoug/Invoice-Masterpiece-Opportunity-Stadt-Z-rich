@@ -1,7 +1,7 @@
 <template>
     <Header v-if="user" />
       <div class="container">
-    <component :is="activeComponent" v-if="user" />
+    <component :is="activeComponent" v-if="!user" />
   </div>
 <Hero v-if="user" />
   <div class="button-section-jumper" v-if="user">
@@ -95,6 +95,7 @@ export default {
       window.addEventListener('scroll', handleScrollEnd);
     },
   },
+  
 
   setup(_, { emit }) {
     const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
@@ -107,9 +108,14 @@ export default {
       user.value = loggedInUser;
     };
 
-    onMounted(() => {
-      isAuthenticated.value = !!localStorage.getItem('user');
-    });
+    
+onMounted(() => {
+  isAuthenticated.value = !!localStorage.getItem('user');
+  if (isAuthenticated.value) {
+    user.value = JSON.parse(localStorage.getItem('user'));
+  }
+});
+
 
     return {
       user,
