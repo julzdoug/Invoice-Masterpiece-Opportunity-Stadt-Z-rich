@@ -1,7 +1,7 @@
 <template>
     <Header v-if="user" />
       <div class="container">
-    <component :is="activeComponent" v-if="!user" />
+    <component :is="activeComponent" v-if="user" />
   </div>
 <Hero v-if="user" />
   <div class="button-section-jumper" v-if="user">
@@ -14,8 +14,8 @@
   </div>
 
 <div id="form" class="fit">
-  <InvoiceForm />
-<Footer />
+  <InvoiceForm v-if="user" />
+<Footer v-if="user" />
     <Login v-if="!user" @login-success="handleLoginSuccess" />
 </div>
   <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
@@ -25,9 +25,8 @@
 </template>
 
 <script>
-import { provide, ref, onMounted } from 'vue';
+import { provide, ref,  onMounted  } from 'vue';
 
-import { createClient } from '@supabase/supabase-js';
 import { isAuthenticated } from '../auth.js';
 import Header from "./Header.vue";
 import Login from "./Login.vue";
@@ -38,9 +37,7 @@ import InvoiceForm from './InvoiceForm.vue';
 import MyInvoice from './MyInvoice.vue';
 /* import editInvoice from './editInvoice.vue'; */
 // Your Supabase configuration
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 
 
@@ -109,12 +106,14 @@ export default {
     };
 
     
-onMounted(() => {
-  isAuthenticated.value = !!localStorage.getItem('user');
+ onMounted(() => {
+    isAuthenticated.value = !!user.value;  
+  /*  isAuthenticated.value = !!localStorage.getItem('user');  */
   if (isAuthenticated.value) {
     user.value = JSON.parse(localStorage.getItem('user'));
+    
   }
-});
+});  
 
 
     return {

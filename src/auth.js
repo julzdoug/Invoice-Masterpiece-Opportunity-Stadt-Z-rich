@@ -99,6 +99,9 @@ export const fetchUserDataFromSupabase = async (email, userId) => {
     throw error;
   }
 };
+  localStorage.removeItem('session');
+
+
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_IN") {
     isAuthenticated.value = true;
