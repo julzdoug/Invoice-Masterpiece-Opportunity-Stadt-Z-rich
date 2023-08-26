@@ -60,7 +60,7 @@ export const googleSignIn = async () => {
 };
 export const logout = () => {
   localStorage.removeItem('session');
-
+}
 
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_IN") {
