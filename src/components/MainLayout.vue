@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import { provide, ref,  onMounted  } from 'vue';
-
+import { provide, ref, onMounted } from 'vue';
+import { supabase } from "../supabase.js";
+import { createClient } from '@supabase/supabase-js';
 import { isAuthenticated } from '../auth.js';
 import Header from "./Header.vue";
 import Login from "./Login.vue";
@@ -52,6 +53,15 @@ export default {
     MyInvoice,
 /*     editInvoice, */
   },
+
+    beforeRouteEnter(to, from, next) {
+    if (to.meta.requiresAuth && !isAuthenticated.value) {
+      next({ name: 'Login' }); // Redirect to Login page
+    } else {
+      next();
+    }
+  },
+
     methods: {
  // Scroll to top when the button is clicked
     scrollToTop() {

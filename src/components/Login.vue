@@ -128,7 +128,102 @@
 
 </template>
 
+
 <script>
+import { ref, onMounted, provide } from 'vue';
+import { useRouter } from 'vue-router';
+import { supabase } from '../supabase.js';
+import { isAuthenticated } from '../auth.js';
+
+export default {
+  setup() {
+    const router = useRouter();
+    const user = ref(null);
+    const signupEmail = ref('');
+    const signupPassword = ref('');
+    const signinEmail = ref('');
+    const signinPassword = ref('');
+    const name = ref('');
+    const showLandingPage = ref(true);
+
+    const toggleLogin = () => {
+      showLandingPage.value = !showLandingPage.value;
+    };
+
+    const handleSignup = async () => {
+      try {
+        const { user, error } = await supabase.auth.signUp({
+          email: signupEmail.value,
+          password: signupPassword.value,
+        });
+        if (error) throw error;
+        console.log('User signed up successfully:', user);
+        alert('Du hast eine E-Mail erhalten. Bestätige deine Registrierung.');
+        router.push('/');
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    const handleSignin = async () => {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: signinEmail.value,
+          password: signinPassword.value,
+        });
+        if (error) {
+console.log("User dont exist:", error);
+            }
+          
+      if (data) {
+        const signedInUser = data.user;
+        console.log('User signed in successfully:', signedInUser);
+localStorage.setItem('user', JSON.stringify(signedInUser));
+        router.push('/');
+      }
+    
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    const showSigninPanel = () => {
+      const container = document.getElementById('containerf');
+      container.classList.remove('right-panel-active');
+    };
+
+    const showSignupPanel = () => {
+      const container = document.getElementById('containerf');
+      container.classList.add('right-panel-active');
+    };
+
+    onMounted(async () => {
+      if (isAuthenticated.value) {
+        await fetchUser();
+      }
+    });
+
+    return {
+      signupEmail,
+      signupPassword,
+      signinEmail,
+      signinPassword,
+      name,
+      handleSignup,
+      handleSignin,
+      showSigninPanel,
+      showSignupPanel,
+      user,
+      isAuthenticated,
+      showLandingPage,
+      toggleLogin,
+    };
+  },
+};
+</script>
+
+
+<!-- <script>
 import { ref, onMounted, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
@@ -420,7 +515,7 @@ onMounted(async () => {
     };
   },
 };
-</script>
+</script> -->
   
  
 <style scoped>

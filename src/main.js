@@ -15,10 +15,10 @@ supabase.auth.onAuthStateChange((event, session) => {
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && to.meta.requiresAuth && !isAuthenticated.value) {
+  if (to.name !== 'Login' && !isAuthenticated.value) {
     next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
-  } else if (to.name === 'Login' && !to.meta.requiresAuth && isAuthenticated.value) {
-    next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
+  } else if (to.name === 'Login' && isAuthenticated.value) {
+    next({ name: 'HelloWorld' }); // Um leitung zum Hauptmenu HelloWorld
   } else {
     next(); // Weiter leiten zu nächste Route
   }

@@ -33,7 +33,7 @@ export const login = async (email, password) => {
     throw error.message;
   }
 };
-export const googleSignIn = async () => {
+/* export const googleSignIn = async () => {
   try {
     console.log('handleGoogleSignIn function started');
     const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
@@ -100,7 +100,7 @@ export const fetchUserDataFromSupabase = async (email, userId) => {
   }
 };
   localStorage.removeItem('session');
-
+ */
 
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_IN") {
