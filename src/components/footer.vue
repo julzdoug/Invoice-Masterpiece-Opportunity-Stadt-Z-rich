@@ -17,11 +17,15 @@
 
 </template>
 
-<style lang="css">
+<style>
 /* No need for custom styling here if you're using Bootstrap classes */
 </style>
-<!-- <style>
+<style>
 @import 'bootstrap/dist/css/bootstrap.css';
+
+.footer {
+  height:auto;
+}
 
   .footer-image {
     width: 20%;
@@ -57,4 +61,4 @@
   
 }
 
-</style> -->
+</style> 

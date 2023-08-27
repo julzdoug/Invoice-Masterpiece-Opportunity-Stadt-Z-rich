@@ -19,8 +19,8 @@
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
 <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="user">
-    Willkommen: {{ user.email }}
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="userEmail">
+    Willkommen: {{ userEmail }}
   </button>
 
 
@@ -37,7 +37,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { supabase } from '../supabase';
-import { isAuthenticated } from '../auth.js';
+import { isAuthenticated, fetchUser } from '../auth.js';
 
 const route = useRoute();
 const router = useRouter();

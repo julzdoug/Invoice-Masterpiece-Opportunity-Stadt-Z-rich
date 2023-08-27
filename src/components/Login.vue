@@ -67,11 +67,12 @@
     <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
         <div class="form-container sign-up-container">
+          <div class="row">
           <form @submit.prevent="handleSignup">
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
-              <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button>
+             <!--  <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button> -->
             </div>
             <span>Registriere dich mit E-mail</span>
             <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
@@ -82,15 +83,19 @@
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
             
           </form>
+          </div>
         </div>
         <div class="form-container sign-in-container">
-          <form @submit.prevent="handleSignin">
+           <div class="row">
+      <div class="col-md-4 col-lg-3 mx-auto">
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-                           <button class="btn btn-google" @click="handleGoogleSignIn">Login with Google</button>
+                           <button class="btn btn-google justify-content-center" @click="handleGoogleSignup">Login with Google</button>
 
             </div>
+            </div>
+            <form @submit.prevent="handleSignin">
             <span>Benutze dein Konto</span>
             <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
               class="form-control" />
@@ -99,6 +104,8 @@
             <a href="#">Passwort vergessen?</a>
             <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
           </form>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -133,7 +140,7 @@
 import { ref, onMounted, provide } from 'vue';
 import { useRouter } from 'vue-router';
 import { supabase } from '../supabase.js';
-import { isAuthenticated } from '../auth.js';
+import { isAuthenticated, googleSignIn } from '../auth.js';
 
 export default {
   setup() {
@@ -187,6 +194,27 @@ localStorage.setItem('user', JSON.stringify(signedInUser));
       }
     };
 
+
+const handleGoogleSignup = async () => {
+  try {
+    await googleSignIn(); // Wait for the Google Sign-In process
+
+    // After successful Google sign-in, you can use the user data
+    // stored in localStorage to trigger redirection or other actions
+    const signedInUser = JSON.parse(localStorage.getItem('user'));
+    if (signedInUser) {
+      console.log('User signed in successfully:', signedInUser);
+      router.push('/'); // Redirect to the desired route
+    }
+
+  } catch (error) {
+    // Handle error if needed
+    console.error('Error during Google sign-in:', error.message);
+  }
+};
+
+
+
     const showSigninPanel = () => {
       const container = document.getElementById('containerf');
       container.classList.remove('right-panel-active');
@@ -217,6 +245,7 @@ localStorage.setItem('user', JSON.stringify(signedInUser));
       isAuthenticated,
       showLandingPage,
       toggleLogin,
+      handleGoogleSignup, 
     };
   },
 };

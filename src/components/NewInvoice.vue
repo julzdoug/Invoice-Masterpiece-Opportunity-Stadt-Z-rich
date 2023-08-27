@@ -1,11 +1,12 @@
 <template>
   <div class="">
     <Header />
-  <div class="row">
-        <button class="btn btn-primary col m-2" @click="toggleComponent">
+<div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-primary m-2" @click="toggleComponent">
       {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
     </button>
-
+    </div>
+    <div class="row">
     <div class="" v-if="showVorhandeneComponent">
       <h1 class="fs-5 mt-3 text-center ">Vorhandene Einträge</h1>
       <selectInvoiceForm />
@@ -74,8 +75,5 @@ export default {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Style your buttons or any other elements if needed */
-button {
-  margin-right: 10px;
-}
+
 </style>

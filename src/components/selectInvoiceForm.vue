@@ -48,7 +48,9 @@
     </div>
   </div>
   <div class="justify-content-center mt-3 bg-primary bg-opacity-25">
-    <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
+    <div class="d-grid gap-2 mx-auto">
+    <button class="btn btn-danger ms-3 me-3" @click="previousStep()">Zurück</button>
+  </div>
   </div>
 </div>
 
