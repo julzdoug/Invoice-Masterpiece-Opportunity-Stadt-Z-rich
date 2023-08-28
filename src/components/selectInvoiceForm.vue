@@ -7,7 +7,7 @@
 <ul class="list-group">
   <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
-    class="list-group-item"
+    class="list-group-item list-group-item-action list-group-item-light"
     v-for="company in companies"
     :key="company.id"
     :class="{ 'active': selectedCompany === company }"
@@ -35,7 +35,7 @@
 <ul class="list-group">
   <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCustomer === null">Empfänger</li>
   <li
-    class="list-group-item"
+    class="list-group-item list-group-item-action list-group-item-light"
     v-for="customer in customers"
     :key="customer.id"
     :class="{ 'active': selectedCustomer === customer }"
@@ -132,7 +132,7 @@
             <th class="width=140 text-dark bg-light">Positionspreis</th>
           </tr>
         </thead>
-<tbody class="text-95 text-secondary-d3">
+<tbody class="text-secondary-d3">
           <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
  
             <td class="text-center">
@@ -148,7 +148,8 @@
             </td>
          
             <td>
-              <template v-if="isEditing[index]">
+              <!-- <template v-if="isEditing[index]"> -->
+                <template v-if="isEditing && editingIndex === index">
                 <input v-model="row.description" />
               </template>
               <template v-else>
@@ -156,7 +157,8 @@
               </template>
             </td>
             <td>
-              <template v-if="isEditing[index]">
+              <!-- <template v-if="isEditing[index]"> -->
+                <template v-if="isEditing && editingIndex === index">
                 <input v-model="row.quantity" type="number" />
               </template>
               <template v-else>
@@ -164,7 +166,8 @@
               </template>
             </td>
             <td class="text-95">
-              <template v-if="isEditing[index]">
+              <!-- <template v-if="isEditing[index]"> -->
+                <template v-if="isEditing && editingIndex === index">
                 <input v-model="row.price_per_unit" type="number" />
               </template>
               <template v-else>
@@ -203,6 +206,19 @@ export default {
     Header,
     Footer,
  
+      data() {
+    return {
+      isEditing: false,
+      editingIndex: -1
+    };
+  },
+  methods: {
+    editRow(index) {
+      this.isEditing = true;
+      this.editingIndex = index;
+    },
+    // ... your other methods ...
+  }
 
   },
   setup() {
@@ -313,6 +329,7 @@ export default {
     // Bestellung eintragen
     const editRow = (index) => {
       isEditing.value[index] = true;
+      
     };
     // Bestellung löschen
     const deleteRow = async (index) => {

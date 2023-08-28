@@ -501,7 +501,7 @@
         <div class="modal-body">
           <form @submit.prevent="submitInvoiceForm">
 
-            <div class="justify-content-center align-items-center ms-5 me-5">
+            <div class="table-responsive">
               <table class="table table-hover" aria-label="" v-if="selectedInvoice !== ''">
                 <thead>
                   <tr>
@@ -514,7 +514,7 @@
                     <th class="width=140 text-dark bg-light">Positionspreis</th>
                   </tr>
                 </thead>
-                <tbody class="table align-middle text-95 text-secondary-d3">
+                <tbody class="table align-middle">
                   <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
                     <td class="text-center">
                       <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
@@ -543,7 +543,7 @@
                         {{ row.quantity }}
                       </template>
                     </td>
-                    <td class="text-95">
+                    <td class="">
                       <template v-if="isEditingRow[index]">
                         <input v-model="row.price_per_unit" type="number" />
                       </template>
@@ -551,14 +551,19 @@
                         {{ row.price_per_unit }}
                       </template>
                     </td>
-                    <td class="text-secondary-d2">{{ row.quantity * row.price_per_unit }}</td>
+                    <td class="fw-bold">{{ row.quantity * row.price_per_unit }}</td>
                   </tr>
                 </tbody>
               </table>
+                  </div>
+       <div class="total-container"> <!-- Add a class to the container -->
+      <div class="total text-center">Total: {{ calculateTotal() }}</div>
+    </div>
+  
               <div class="d-grid gap-2 col-6 mx-auto">
                 <button class="btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
                 </div>
-            </div>
+            
           </form>
         </div>
         <div class="modal-footer bg-primary bg-opacity-25">
@@ -631,6 +636,13 @@ export default {
       } catch (error) {
         console.error('Error handling logo change:', error);
       }
+    },
+        calculateTotal() {
+      let total = 0;
+      for (const row of this.filteredInvoiceRows) {
+        total += row.quantity * row.price_per_unit;
+      }
+      return total;
     },
   },
 
@@ -1213,6 +1225,15 @@ export default {
   background-color: rgb(192, 212, 249);
 }
 
+.total-container {
+  margin-right: 15%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* 
 .table {
   table-layout: fixed;
   width: 100%;
@@ -1224,19 +1245,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+ */
 
-@media (max-width: 576px) {
-
-  .table {
-
-    font-size: 12px;
-    /* Adjust font size for mobile devices */
-  }
-
-  th,
-  td {
-    min-width: 80px;
-    /* Adjust as needed to prevent squished content */
-  }
-}
 </style>

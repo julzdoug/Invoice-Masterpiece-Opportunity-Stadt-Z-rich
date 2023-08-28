@@ -16,7 +16,7 @@
 <div id="form" class="fit">
   <InvoiceForm />
 <Footer />
-    <Login v-if="!user" @login-success="handleLoginSuccess" />
+  <!--   <Login v-if="!user" @login-success="handleLoginSuccess" /> -->
 </div>
   <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
     <button class="btn btn-primary btn-sm">Scroll To Top</button>
@@ -28,7 +28,7 @@
 import { ref, onMounted } from 'vue';
 import { isAuthenticated } from '../auth.js';
 import Header from "./Header.vue";
-import Login from "./Login.vue";
+/* import Login from "./Login.vue"; */
 import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
@@ -38,7 +38,7 @@ import MyInvoice from './MyInvoice.vue';
 export default {
   components: {
     Header,
-    Login,
+/*     Login, */
     Hero,
     Discription,
     Footer,
@@ -53,11 +53,11 @@ export default {
      // Control whether the Login component is visible
 /*   provide('user', user); */
     // After login
-    const handleLoginSuccess = (loggedInUser) => {
+/*     const handleLoginSuccess = (loggedInUser) => {
       user.value = loggedInUser;
       isLoginVisible.value = false; // Hide the login component
     };
-
+ */
     const scrollToTop = () => {
       // Scroll logic here
     };
@@ -69,7 +69,7 @@ export default {
 
     return {
       user,
-      handleLoginSuccess,
+  /*     handleLoginSuccess, */
       activeComponent,
       isLoginVisible,
       scrollToTop,
