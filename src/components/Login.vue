@@ -91,7 +91,7 @@
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-                  <!--          <button class="btn btn-google justify-content-center" @click="handleGoogleSignIn">Login with Google</button> -->
+                           <button class="btn btn-google justify-content-center" @click="handleGoogleSignIn">Login with Google</button>
 
             </div>
             </div>
