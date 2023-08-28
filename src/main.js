@@ -10,19 +10,54 @@ const app = createApp(App);
 
 app.use(router);
 
-supabase.auth.onAuthStateChange((event, session) => {
-  isAuthenticated.value = session !== null; // Update Auhtentiefierung von Session 
+supabase.auth.onAuthStateChange(async (event, session) => {
+  isAuthenticated.value = session !== null;
+
+  if (session && session.user_metadata) {
+    if (session.user_metadata.provider === 'google') {
+      const userData = await fetchUserDataFromSupabase(session.user.email, session.user.id);
+      if (userData) {
+        user.value = { ...session.user, ...userData };
+      } else {
+        user.value = session.user;
+      }
+    }
+  }
 });
 
+
+supabase.auth.onAuthStateChange((event, session) => {
+  isAuthenticated.value = session !== null;
+});
+
+export const fetchUserDataFromSupabase = async (email, userId) => {
+  try {
+    const { data: userData, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email) // Fetch user data by email
+      .single(); // Retrieve a single row
+
+    if (error) {
+      throw error;
+    }
+
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+};
+
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
-  } else if (to.name === 'Login' && !to.meta.requiresAuth && isAuthenticated.value) {
+  if (to.name !== 'Login' && !to.meta.requiresAuth && !isAuthenticated.value) {
+    next({ name: '/' }); // Umleitung wenn nicht angemeldet
+  } else if (to.name === 'Login' && to.meta.requiresAuth && isAuthenticated.value) {
     next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
   } else {
     next(); // Weiter leiten zu nächste Route
   }
 });
+
 
 
 app.use(Modal).mount("#app");

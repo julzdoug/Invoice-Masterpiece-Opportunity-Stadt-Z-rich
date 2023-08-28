@@ -13,6 +13,7 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
+    meta: { requiresAuth: true },
     children: [
       {
         path: '/HelloWorld',
@@ -70,13 +71,18 @@ const router = createRouter({
   routes,
 });
 
+
+
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'HelloWorld' });
+  if (to.name !== 'Login' && to.meta.requiresAuth && !isAuthenticated.value) {
+    next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
+  } else if (to.name === 'Login' && to.meta.requiresAuth && isAuthenticated.value) {
+    next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
   } else {
-    next();
+    next(); // Weiter leiten zu nächste Route
   }
 });
+
 
 export default router;
 

@@ -48,7 +48,9 @@
     </div>
   </div>
   <div class="justify-content-center mt-3 bg-primary bg-opacity-25">
-    <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
+    <div class="d-grid gap-2 mx-auto">
+    <button class="btn btn-outline-primary ms-3 me-3" @click="previousStep()">Zurück</button>
+  </div>
   </div>
 </div>
 
@@ -94,12 +96,14 @@
           <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
 
         </div>
-        <div class="d-flex bg-primary bg-opacity-25">
-                  <button @click="generateInvoiceNumber" class="btn btn-primary">Rechnungsnummer Generieren</button>
-              <button class="btn btn-secondary me-3" @click="previousStep()">Zurück</button>
-<button class="btn btn-primary" @click="nextStep()">Next</button>
+        <div class="row mt-3">
+        <div class="d-flex">
+           <button class="btn btn-outline-primary me-3 col" @click="previousStep()">Zurück</button>
+                  <button @click="generateInvoiceNumber" class="btn btn-outline-primary col me-3 ">Rechnungsnummer Generieren</button>
+             
+<button class="btn btn-outline-primary col" @click="nextStep()">Next</button>
       </div>
-
+</div>
 </div>
 
 

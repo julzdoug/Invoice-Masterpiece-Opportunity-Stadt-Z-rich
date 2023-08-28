@@ -323,4 +323,26 @@ const showInvoiceForm = ref(false);
     min-width: 80px; /* Adjust as needed to prevent squished content */
   }
 }
+
+#app {
+  height: 100vh;
+}
+.fit {
+  height:auto;
+}
+.scroll-back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+}
+.scroll-back-to-top button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 </style>
+

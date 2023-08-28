@@ -28,8 +28,7 @@
     "vue-bs-modal": "^0.7.9",
     "vue-html2pdf": "^1.8.0",
     "vue-router": "^4.2.2",
-    "vue3-modal": "^0.1.6",
-    "vuex": "^4.1.0"
+    "vue3-modal": "^0.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

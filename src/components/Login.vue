@@ -67,11 +67,12 @@
     <div class="row">
       <div class="col-md-6 col-lg-5 mx-auto">
         <div class="form-container sign-up-container">
+          <div class="row">
           <form @submit.prevent="handleSignup">
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
-              <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button>
+             <!--  <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button> -->
             </div>
             <span>Registriere dich mit E-mail</span>
             <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
@@ -82,15 +83,19 @@
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
             
           </form>
+          </div>
         </div>
         <div class="form-container sign-in-container">
-          <form @submit.prevent="handleSignin">
+           <div class="row">
+      <div class="col-md-4 col-lg-3 mx-auto">
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-                           <button class="btn btn-google" @click="handleGoogleSignIn">Login with Google</button>
+                           <button class="btn btn-google justify-content-center" @click="handleGoogleSignIn">Login with Google</button>
 
             </div>
+            </div>
+            <form @submit.prevent="handleSignin">
             <span>Benutze dein Konto</span>
             <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
               class="form-control" />
@@ -99,6 +104,8 @@
             <a href="#">Passwort vergessen?</a>
             <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
           </form>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -129,13 +136,16 @@
 </template>
 
 <script>
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted, toRefs, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-import { isAuthenticated, fetchUser, fetchUserDataFromSupabase, googleSignIn } from '../auth.js';
+import { isAuthenticated } from '../auth.js';
+import Footer from './footer.vue';
 
 export default {
-
+    components: {
+Footer,
+  },
     data() {
     return {
       showLandingPage: true,
@@ -210,8 +220,7 @@ async handleGoogleSignup() {
   setup(_, { emit }) {
     //Eintellungen Allgemein 
     const router = useRouter();
-  const user = ref(null);
-const googleUser = ref({ session: { access_token: null } });
+    const user = toRefs(ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null));
 provide('user', user);
     const signupEmail = ref("");
     const signupPassword = ref("");
@@ -238,55 +247,26 @@ provide('user', user);
     // Anmelde einstellung
     const handleSignin = async () => {
       try {
-        let error = null;
-        let data = null;
-
-        // Sign in with email/password
-        if (signinEmail.value && signinPassword.value) {
-          ({ error, data } = await supabase.auth.signInWithPassword({
-            email: signinEmail.value,
-            password: signinPassword.value,
-          }));
-        }
-
-        // If there's an error with email/password sign-in, attempt Google sign-in
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: signinEmail.value,
+          password: signinPassword.value,
+        });
         if (error) {
-          const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-              scopes: 'https://www.googleapis.com/auth/userinfo.email'
+console.log("User dont exist:", error);
             }
-          });
-
-          if (googleSignInError) {
-            throw googleSignInError;
-          }
-
-          if (user) {
-            const userData = await fetchUserDataFromSupabase(user.email, user.id);
-
-            if (userData) {
-              isAuthenticated.value = true;
-              localStorage.setItem('user', JSON.stringify(user));
-              router.push('/');
-            } else {
-              console.error('User data not found.');
-            }
-          }
-        }  else {
-      
+          
       if (data) {
         const signedInUser = data.user;
         console.log('User signed in successfully:', signedInUser);
 localStorage.setItem('user', JSON.stringify(signedInUser));
-        await fetchUser(); // Fetch user data after sign-in
         router.push('/');
       }
-    }
-  } catch (error) {
-    alert(error.message);
-  }
-};
+    
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
 
     async function fetchUserDataFromSupabase(email, userId) {
   try {
@@ -333,7 +313,7 @@ if (user) {
     role: user.role,
     // ... add other necessary properties
   };
-
+ isAuthenticated.value = true;
   localStorage.setItem('user', JSON.stringify(userToStore));
   router.push('/');
 }
@@ -354,8 +334,6 @@ const fetchUser = async () => {
     console.error('Error fetching user:', error.message);
   }
 };
-
-
 
 async function fetchUserDataFromSupabase(email, userId) {
   try {
@@ -386,21 +364,9 @@ async function fetchUserDataFromSupabase(email, userId) {
       container.classList.add("right-panel-active");
     };
 
-
-onMounted(async () => {
-  // Check if the user is authenticated
-  if (isAuthenticated.value) {
-    // Fetch the user's data from Supabase and update the user object
-    await fetchUser();
-    user.value = fetchUserFromSupabase(); // Replace this with the appropriate function
-
-    // Retrieve session data
-    const sessionData = JSON.parse(localStorage.getItem('session'));
-    if (sessionData && sessionData.user) {
-      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
-    }
-  }
-});
+    onMounted(async () => {
+      await fetchUser();
+    });
 
 
     return {
@@ -422,26 +388,14 @@ onMounted(async () => {
 };
 </script>
   
- 
+
+
+
+
+
+
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
-
-
-.btn-google {
-  background-color: #ffffff; /* Google's button color */
-  color: #757575; /* Text color */
-  border: 1px solid #d3d3d3; /* Border color */
-  border-radius: 4px; /* Rounded corners */
-  padding: 8px 16px; /* Padding around the text */
-  font-size: 14px; /* Text size */
-  font-weight: bold; /* Text boldness */
-  cursor: pointer; /* Show pointer cursor on hover */
-}
-
-.btn-google:hover {
-  background-color: #f2f2f2; /* Lighten the background color on hover */
-}
-
 
 .scroll-back-to-top {
   position: fixed;
