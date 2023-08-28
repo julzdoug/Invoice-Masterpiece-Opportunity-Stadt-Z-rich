@@ -20,8 +20,11 @@ supabase.auth.onAuthStateChange(async (event, session) => {
         user.value = { ...session.user, ...userData };
       } else {
         user.value = session.user;
+        
       }
+
     }
+    
   }
 });
 
@@ -43,20 +46,20 @@ export const fetchUserDataFromSupabase = async (email, userId) => {
     }
 
     return userData;
+    
   } catch (error) {
     throw error;
   }
 };
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: '/' }); // Umleitung wenn nicht angemeldet
-  } else if (to.name === 'Login' && to.meta.requiresAuth && isAuthenticated.value) {
-    next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
+  if (to.meta.requiresAuth && !isAuthenticated.value) {
+    next({ name: 'Login' }); // Redirect to Login if not authenticated
   } else {
-    next(); // Weiter leiten zu nächste Route
+    next(); // Continue to the requested route
   }
 });
+
 
 
 

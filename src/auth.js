@@ -152,7 +152,7 @@ if (user) {
 
 // Trigger events or navigation
 isAuthenticated.value = true;
-this.$router.push('/');
+router.push("/");
 }
 
   } catch (error) {

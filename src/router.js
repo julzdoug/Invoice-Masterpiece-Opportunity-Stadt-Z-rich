@@ -74,14 +74,13 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'Login' }); // Umleitung wenn nicht angemeldet
-  } else if (to.name === 'Login' && to.meta.requiresAuth && isAuthenticated.value) {
-    next({ name: '/' }); // Um leitung zum Hauptmenu HelloWorld
+  if (to.meta.requiresAuth && !isAuthenticated.value) {
+    next({ name: 'Login' }); // Redirect to Login if not authenticated
   } else {
-    next(); // Weiter leiten zu nächste Route
+    next(); // Continue to the requested route
   }
 });
+
 
 
 export default router;
