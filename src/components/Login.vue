@@ -91,7 +91,7 @@
             <!-- Anmelde Formular-->
             <h1>Anmelden</h1>
             <div class="social-container">
-                           <button class="btn btn-google justify-content-center" @click="handleGoogleSignup">Login with Google</button>
+                  <!--          <button class="btn btn-google justify-content-center" @click="handleGoogleSignIn">Login with Google</button> -->
 
             </div>
             </div>
@@ -135,131 +135,17 @@
 
 </template>
 
-
 <script>
-import { ref, onMounted, provide } from 'vue';
-import { useRouter } from 'vue-router';
-import { supabase } from '../supabase.js';
-import { isAuthenticated, googleSignIn } from '../auth.js';
-
-export default {
-  setup() {
-    const router = useRouter();
-    const user = ref(null);
-    const signupEmail = ref('');
-    const signupPassword = ref('');
-    const signinEmail = ref('');
-    const signinPassword = ref('');
-    const name = ref('');
-    const showLandingPage = ref(true);
-
-    const toggleLogin = () => {
-      showLandingPage.value = !showLandingPage.value;
-    };
-
-    const handleSignup = async () => {
-      try {
-        const { user, error } = await supabase.auth.signUp({
-          email: signupEmail.value,
-          password: signupPassword.value,
-        });
-        if (error) throw error;
-        console.log('User signed up successfully:', user);
-        alert('Du hast eine E-Mail erhalten. Bestätige deine Registrierung.');
-        router.push('/');
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-
-    const handleSignin = async () => {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: signinEmail.value,
-          password: signinPassword.value,
-        });
-        if (error) {
-console.log("User dont exist:", error);
-            }
-          
-      if (data) {
-        const signedInUser = data.user;
-        console.log('User signed in successfully:', signedInUser);
-localStorage.setItem('user', JSON.stringify(signedInUser));
-        router.push('/');
-      }
-    
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-
-
-const handleGoogleSignup = async () => {
-  try {
-    await googleSignIn(); // Wait for the Google Sign-In process
-
-    // After successful Google sign-in, you can use the user data
-    // stored in localStorage to trigger redirection or other actions
-    const signedInUser = JSON.parse(localStorage.getItem('user'));
-    if (signedInUser) {
-      console.log('User signed in successfully:', signedInUser);
-      router.push('/'); // Redirect to the desired route
-    }
-
-  } catch (error) {
-    // Handle error if needed
-    console.error('Error during Google sign-in:', error.message);
-  }
-};
-
-
-
-    const showSigninPanel = () => {
-      const container = document.getElementById('containerf');
-      container.classList.remove('right-panel-active');
-    };
-
-    const showSignupPanel = () => {
-      const container = document.getElementById('containerf');
-      container.classList.add('right-panel-active');
-    };
-
-    onMounted(async () => {
-      if (isAuthenticated.value) {
-        await fetchUser();
-      }
-    });
-
-    return {
-      signupEmail,
-      signupPassword,
-      signinEmail,
-      signinPassword,
-      name,
-      handleSignup,
-      handleSignin,
-      showSigninPanel,
-      showSignupPanel,
-      user,
-      isAuthenticated,
-      showLandingPage,
-      toggleLogin,
-      handleGoogleSignup, 
-    };
-  },
-};
-</script>
-
-
-<!-- <script>
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted, toRefs, provide } from 'vue';
 import { useRouter } from "vue-router";
 import { supabase } from "../supabase.js";
-import { isAuthenticated, fetchUser, fetchUserDataFromSupabase, googleSignIn } from '../auth.js';
+import { isAuthenticated } from '../auth.js';
+import Footer from './footer.vue';
 
 export default {
-
+    components: {
+Footer,
+  },
     data() {
     return {
       showLandingPage: true,
@@ -334,8 +220,7 @@ async handleGoogleSignup() {
   setup(_, { emit }) {
     //Eintellungen Allgemein 
     const router = useRouter();
-  const user = ref(null);
-const googleUser = ref({ session: { access_token: null } });
+    const user = toRefs(ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null));
 provide('user', user);
     const signupEmail = ref("");
     const signupPassword = ref("");
@@ -362,55 +247,26 @@ provide('user', user);
     // Anmelde einstellung
     const handleSignin = async () => {
       try {
-        let error = null;
-        let data = null;
-
-        // Sign in with email/password
-        if (signinEmail.value && signinPassword.value) {
-          ({ error, data } = await supabase.auth.signInWithPassword({
-            email: signinEmail.value,
-            password: signinPassword.value,
-          }));
-        }
-
-        // If there's an error with email/password sign-in, attempt Google sign-in
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: signinEmail.value,
+          password: signinPassword.value,
+        });
         if (error) {
-          const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-              scopes: 'https://www.googleapis.com/auth/userinfo.email'
+console.log("User dont exist:", error);
             }
-          });
-
-          if (googleSignInError) {
-            throw googleSignInError;
-          }
-
-          if (user) {
-            const userData = await fetchUserDataFromSupabase(user.email, user.id);
-
-            if (userData) {
-              isAuthenticated.value = true;
-              localStorage.setItem('user', JSON.stringify(user));
-              router.push('/');
-            } else {
-              console.error('User data not found.');
-            }
-          }
-        }  else {
-      
+          
       if (data) {
         const signedInUser = data.user;
         console.log('User signed in successfully:', signedInUser);
 localStorage.setItem('user', JSON.stringify(signedInUser));
-        await fetchUser(); // Fetch user data after sign-in
         router.push('/');
       }
-    }
-  } catch (error) {
-    alert(error.message);
-  }
-};
+    
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
 
     async function fetchUserDataFromSupabase(email, userId) {
   try {
@@ -457,7 +313,7 @@ if (user) {
     role: user.role,
     // ... add other necessary properties
   };
-
+ isAuthenticated.value = true;
   localStorage.setItem('user', JSON.stringify(userToStore));
   router.push('/');
 }
@@ -478,8 +334,6 @@ const fetchUser = async () => {
     console.error('Error fetching user:', error.message);
   }
 };
-
-
 
 async function fetchUserDataFromSupabase(email, userId) {
   try {
@@ -510,21 +364,9 @@ async function fetchUserDataFromSupabase(email, userId) {
       container.classList.add("right-panel-active");
     };
 
-
-onMounted(async () => {
-  // Check if the user is authenticated
-  if (isAuthenticated.value) {
-    // Fetch the user's data from Supabase and update the user object
-    await fetchUser();
-    user.value = fetchUserFromSupabase(); // Replace this with the appropriate function
-
-    // Retrieve session data
-    const sessionData = JSON.parse(localStorage.getItem('session'));
-    if (sessionData && sessionData.user) {
-      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
-    }
-  }
-});
+    onMounted(async () => {
+      await fetchUser();
+    });
 
 
     return {
@@ -544,28 +386,16 @@ onMounted(async () => {
     };
   },
 };
-</script> -->
+</script>
   
- 
+
+
+
+
+
+
 <style scoped>
 @import 'bootstrap/dist/css/bootstrap.css';
-
-
-.btn-google {
-  background-color: #ffffff; /* Google's button color */
-  color: #757575; /* Text color */
-  border: 1px solid #d3d3d3; /* Border color */
-  border-radius: 4px; /* Rounded corners */
-  padding: 8px 16px; /* Padding around the text */
-  font-size: 14px; /* Text size */
-  font-weight: bold; /* Text boldness */
-  cursor: pointer; /* Show pointer cursor on hover */
-}
-
-.btn-google:hover {
-  background-color: #f2f2f2; /* Lighten the background color on hover */
-}
-
 
 .scroll-back-to-top {
   position: fixed;
