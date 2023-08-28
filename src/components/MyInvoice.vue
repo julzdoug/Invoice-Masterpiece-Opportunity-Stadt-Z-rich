@@ -3,14 +3,12 @@
   <Header />
   <!--Titel und Aushwal-->
    <section>
-    <div class="row back">
       <!--Kunden Daten-->
-      <div class="col-sm-12 col-md-text-secondary fs-5 fw-5">
-        <div class="my-1 ms-2">Meine Angaben:<br>
-        </div>
-      </div>
-    </div>
+
+
     <div class="justify-content-center align-items-center">
+              <div class="my-1 ms-2 back">Meine Angaben:<br>       
+      </div>
       <table class="table table-hover text-center ms-1 me-1" v-if="invoiceRows.length > 0" aria-label="">
         <thead class="table-light">
           <tr>        
