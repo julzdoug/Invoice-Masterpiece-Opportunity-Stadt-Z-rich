@@ -2,13 +2,14 @@
   <div class="">
     <Header />
 <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary m-2" @click="toggleComponent">
+        <button class="btn btn-outline-primary m-2" @click="toggleComponent">
       {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
     </button>
     </div>
     <div class="row">
     <div class="" v-if="showVorhandeneComponent">
-      <h1 class="fs-5 mt-3 text-center ">Vorhandene Einträge</h1>
+      <hr>
+      <h1 class="fs-4 mt-3 text-center bg-light">Vorhandene Einträge</h1>
       <selectInvoiceForm />
     </div>
 

@@ -1,28 +1,27 @@
 <template>
-  <div>
-    <Header v-if="!isAuthenticated" />
-    <div class="container">
-      <component :is="activeComponent" v-if="!isAuthenticated" />
-    </div>
-    <Hero v-if="!isAuthenticated" />
-    <div class="button-section-jumper" v-if="!isAuthenticated">
-      <!-- Content specific to unauthenticated users -->
-    </div>
-    <Discription v-if="isAuthenticated" />
-    <div class="button-section-jumper" v-if="isAuthenticated">
-      <!-- Content specific to authenticated users -->
-    </div>
-
-    <div id="form" class="fit">
-      <InvoiceForm v-if="!isAuthenticated" />
-      <Footer v-if="!isAuthenticated" />
-      <Login v-if="isLoginVisible" @login-success="handleLoginSuccess" />
-      <MyInvoice v-if="isAuthenticated" :user="user" />
-    </div>
-    <div class="scroll-back-to-top" @click="scrollToTop" v-if="isAuthenticated" ref="scrollButton">
-      <button class="btn btn-primary btn-sm">Scroll To Top</button>
-    </div>
+    <Header v-if="user" />
+      <div class="container mt-2 ">
+    <component :is="activeComponent" v-if="user" />
   </div>
+<Hero v-if="user" />
+  <div class="button-section-jumper" v-if="user">
+    
+  </div>
+<Discription v-if="user" />
+<!-- <editInvoice v-if="user" /> -->
+  <div class="button-section-jumper" v-if="user">
+
+  </div>
+
+<div id="form" class="fit">
+  <InvoiceForm />
+<Footer />
+    <Login v-if="!user" @login-success="handleLoginSuccess" />
+</div>
+  <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
+    <button class="btn btn-primary btn-sm">Scroll To Top</button>
+  </div>
+  
 </template>
 
 <script>

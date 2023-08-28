@@ -1,9 +1,11 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
 <div v-if="step === 1" class="justify-content-center align-items-center">
- 
   <div>
+       
+    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
+    
 <ul class="list-group">
-  <li class="list-group-item active bg-primary bg-opacity-25 fs-5 fw-3 text-center text-primary-emphasis" :aria-current="selectedCompany === null">Rechnungsteller</li>
+  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
     class="list-group-item"
     v-for="company in companies"
@@ -31,7 +33,7 @@
     <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
     <div>
 <ul class="list-group">
-  <li class="list-group-item bg-primary bg-opacity-25 " :aria-current="selectedCustomer === null">Empfänger</li>
+  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCustomer === null">Empfänger</li>
   <li
     class="list-group-item"
     v-for="customer in customers"
@@ -55,14 +57,16 @@
 </div>
 
 
-  <div v-if="step === 3" class="justify-content-center align-items-center">
+  <div v-if="step === 3" class="m-3 justify-content-center align-items-center">
      <div class="row">
           <div class="col text-secondary">
-        <div class="my-1">Empfänger:<br>
-          {{ selectedCustomer && selectedCustomer.id }}
-        </div>
+            <p class="fw-bold">Empfänger:</p>
+
         <div class="my-1">
           {{ selectedCustomer && selectedCustomer.name }}, {{ selectedCustomer && selectedCustomer.surname }}
+        </div>
+                <div class="my-1">Kunden Nummer:<br>
+          {{ selectedCustomer && selectedCustomer.id }}
         </div>
         <div class="my-1">
           {{ selectedCustomer && selectedCustomer.street }}, {{ selectedCustomer && selectedCustomer.streetnumber }}
@@ -74,11 +78,13 @@
           {{ selectedCustomer && selectedCustomer.email }}
         </div>
       </div>      <div class="col text-secondary">
-        <div class="my-1">Rechnungsteller:<br>
-          {{ selectedCompany && selectedCompany.id }}
-        </div>
+        <p class="fw-bold">Rechnungsteller:</p>
+
         <div class="my-1">
           {{ selectedCompany && selectedCompany.company_name }}, {{ selectedCompany && selectedCompany.surname }}
+        </div>
+                <div class="my-1">Rechnungsteller Nummer<br>
+          {{ selectedCompany && selectedCompany.id }}
         </div>
         <div class="my-1">
           {{ selectedCompany && selectedCompany.street }}, {{ selectedCustomer && selectedCompany.street_number }}
@@ -518,7 +524,7 @@ export default {
 
 <style css>
 .list-group-item:hover {
-  background-color: #85d5f4; /* Change this color to your desired hover color */
+  background-color: #a7b7be; /* Change this color to your desired hover color */
 }
 
 

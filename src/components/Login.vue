@@ -315,6 +315,7 @@ if (user) {
   };
  isAuthenticated.value = true;
   localStorage.setItem('user', JSON.stringify(userToStore));
+  
   router.push('/');
 }
 
