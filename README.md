@@ -5,7 +5,7 @@ Version 1.0
 
 ## Rechnungs-App
 
-Erstellt von @julzdougJules <https://github.com/julzdougJules>
+Erstellt von @julzdoug <https://github.com/julzdougJules>
 Erstellt mit Vue3, Node, Bootstrap, API Supabase, jsPDFmake.
 
 ### Demo-Version
