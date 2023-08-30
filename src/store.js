@@ -4,4 +4,4 @@ export const store = {
   state: reactive({
     user: {},
   }),
-};
+}; 

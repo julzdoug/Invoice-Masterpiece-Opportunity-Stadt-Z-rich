@@ -68,17 +68,17 @@
       <div class="col-md-6 col-lg-5 mx-auto">
         <div class="form-container sign-up-container">
           <div class="row">
-          <form @submit.prevent="handleSignup">
+          <form @submit.prevent="handleSubmit">
             <!--Anmeldung-->
             <h1>Mach dein Konto</h1>
             <div class="social-container">
              <!--  <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button> -->
             </div>
             <span>Registriere dich mit E-mail</span>
-            <input type="text" v-model="name" placeholder="Name" class="form-control form-control-lg" />
-            <input type="email" v-model="signupEmail" placeholder="Email" autocomplete="username"
+            <input type="text" v-model="form.name" placeholder="Name" class="form-control form-control-lg" />
+            <input type="email" v-model="form.signupEmail" placeholder="Email" autocomplete="username"
               class="form-control form-control-lg" />
-            <input type="password" v-model="signupPassword" autocomplete="new-password" placeholder="Passwort"
+            <input type="password" v-model="form.signupPassword" autocomplete="new-password" placeholder="Passwort"
               class="form-control form-control-lg" />
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
             
@@ -87,24 +87,21 @@
         </div>
         <div class="form-container sign-in-container">
            <div class="row">
-      <div class="col-md-4 col-lg-3 mx-auto">
-            <!-- Anmelde Formular-->
-            <h1>Anmelden</h1>
-            <div class="social-container">
-                           <button class="btn btn-google justify-content-center" @click="handleGoogleSignIn">Login with Google</button>
-
-            </div>
-            </div>
-            <form @submit.prevent="handleSignin">
-            <span>Benutze dein Konto</span>
-            <input type="email" v-model="signinEmail" placeholder="Email" autocomplete="Benutzer Name"
-              class="form-control" />
-            <input type="password" v-model="signinPassword" autocomplete="new-password" placeholder="Passwort"
-              class="form-control" />
-            <a href="#">Passwort vergessen?</a>
-            <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
-          </form>
-          </div>
+ <div class="col-md-4 col-lg-3 mx-auto">
+    <!-- Anmelde Formular-->
+    <h1>Anmelden</h1>
+    <div class="social-container">
+      <button class="btn btn-google justify-content-center" @click.prevent="handleLogingoogle('google')">Login with Google</button>
+    </div>
+     </div>
+    <form @submit.prevent="handleLogin">
+      <span>Benutze dein Konto</span>
+      <input type="email" v-model="form.email" placeholder="Email" autocomplete="Benutzer Name" class="form-control" />
+      <input type="password" v-model="form.password" autocomplete="new-password" placeholder="Passwort" class="form-control" />
+      <router-link to="/forgotPassword">Forgot Password?</router-link>
+      <button class="btn btn-primary btn-block">Einloggen</button>
+    </form>
+  </div>
           
         </div>
       </div>
@@ -128,231 +125,69 @@
   </div>
       </section>
   </div>
-        <div class="scroll-back-to-top" @click="scrollToTop" v-if="!user" ref="scrollButton">
+        <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
     <button class="btn btn-primary btn-sm">Nach Oben</button>
   </div>
 
 
 </template>
 
-<script>
-import { ref, onMounted, toRefs, provide } from 'vue';
+<script setup>
+import { ref } from "vue";
+import useAuthUser from "../auth";
 import { useRouter } from "vue-router";
-import { supabase } from "../supabase.js";
-import { isAuthenticated } from '../auth.js';
-import Footer from './footer.vue';
 
-export default {
-    components: {
-Footer,
-  },
-    data() {
-    return {
-      showLandingPage: true,
-    };
-  },
 
-methods: {
-async handleGoogleSignup() {
+// Use necessary composables
+const router = useRouter();
+const { login, loginWithSocialProvider,register } = useAuthUser();
+const user = ref(null);
+// keep up with form data
+const form = ref({
+  email: "",
+  password: "",
+});
+
+// call the proper login method from the AuthUser composable
+// on the submit of the form
+const handleLogingoogle = async (provider) => {
   try {
-    const { user, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/userinfo.email'
-      }
-    });
-
-    if (error) {
-      throw error;
-    }
-
-    if (user) {
-      // User is signed up with Google
-      // Handle user data or navigate to the appropriate page
-    }
+    await loginWithSocialProvider(provider);
+    console.log("Redirecting...");
+   
   } catch (error) {
-    console.error('Error during Google sign-up:', error.message);
+    alert(error.message);
   }
-},
-    toggleLogin() {
-      this.showLandingPage = !this.showLandingPage;
-    },
-        scrollToTop() {
-      const scrollButton = this.$refs.scrollButton;
-      if (scrollButton) {
-        scrollButton.style.display = "none"; // Initially hide the button
-      }
 
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-
-      // Add a scroll event listener to show/hide the button after scrolling
-      const handleScroll = () => {
-        if (scrollButton) {
-          if (window.scrollY > 40) { // Adjust the value as needed
-            scrollButton.style.display = "block";
-          } else {
-            scrollButton.style.display = "none";
-          }
-        }
-      };
-
-      window.addEventListener('scroll', handleScroll);
-
-      // Remove the scroll event listener after scrolling to top
-      const handleScrollEnd = () => {
-        if (scrollButton) {
-          if (window.scrollY === 0) {
-            scrollButton.style.display = "block";
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('scroll', handleScrollEnd);
-          }
-        }
-      };
-
-      window.addEventListener('scroll', handleScrollEnd);
-    },  
-  },
-
-  emits: ['login-success'],
-  setup(_, { emit }) {
-    //Eintellungen Allgemein 
-    const router = useRouter();
-    const user = toRefs(ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null));
-provide('user', user);
-    const signupEmail = ref("");
-    const signupPassword = ref("");
-    const signinEmail = ref("");
-    const signinPassword = ref("");
-    const name = ref("");
-    //Neu Registrieren 
-    const handleSignup = async () => {
-      try {
-        const { user, error } = await supabase.auth.signUp({
-          email: signupEmail.value,
-          password: signupPassword.value,
-        });
-        if (error) throw error;
-        console.log("User signed up successfully:", user);
-        // Meldung 
-        alert("Du hast ein E-mail erhalten bestätigen.");
-        // Umleitung zum Login
-        router.push("/");
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-    // Anmelde einstellung
-    const handleSignin = async () => {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: signinEmail.value,
-          password: signinPassword.value,
-        });
-        if (error) {
-console.log("User dont exist:", error);
-            }
-          
-      if (data) {
-        const signedInUser = data.user;
-        console.log('User signed in successfully:', signedInUser);
-localStorage.setItem('user', JSON.stringify(signedInUser));
-        router.push('/');
-      }
-    
-      } catch (error) {
-        alert(error.message);
-      }
-    };
+};
 
 
-    async function fetchUserDataFromSupabase(email, userId) {
-  try {
-    const { data: userData, error } = await supabase
-      .from('users')
-      .upsert([
-        {
-          email,
-          app_metadata: {
-            provider: 'google',
-            providers: [{ provider_id: userId }],
-          },
-        },
-      ]);
-
-    if (error) {
-      throw error;
-    }
-
-    return userData;
+const handleLogin = async () => {
+  let user;
+  try {  
+      user = await login(form.value);
+    await router.push({ name: "Me" });
   } catch (error) {
-    throw error;
-  }
-}
-async function handleGoogleSignIn() {
-  try {
-    console.log('handleGoogleSignIn function started');
-    const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/userinfo.email'
-      }
-    });
-    console.log('User data retrieved:', user); // Corrected logging
-
-    if (googleSignInError) {
-      throw googleSignInError;
-    }
-
-if (user) {
-  const userToStore = {
-    id: user.id,
-    aud: user.aud,
-    role: user.role,
-    // ... add other necessary properties
-  };
- isAuthenticated.value = true;
-  localStorage.setItem('user', JSON.stringify(userToStore));
-  
-  router.push('/');
-}
-
-  } catch (error) {
-    console.error('Error during Google sign-in:', error.message);
-  }
-}
-    // Benutzer Information Sammeln
-const fetchUser = async () => {
-  try {
-    const session = await supabase.auth.getSession();
-    console.log('Session:', session); // Add this line
-    const authUser = session.user;
-    
-    // Rest of the code...
-  } catch (error) {
-    console.error('Error fetching user:', error.message);
+   
   }
 };
 
-async function fetchUserDataFromSupabase(email, userId) {
+// function to hand the form submit
+const handleSubmit = async () => {
   try {
-    const { data: userData, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email) // Fetch user data by email
-      .single(); // Retrieve a single row
+    // use the register method from the AuthUser composable
+    await register(form.value);
 
-    if (error) {
-      throw error;
-    }
-
-    return userData;
+    // and redirect to a EmailConfirmation page the will instruct
+    // the user to confirm they're email address
+    router.push({
+      name: "EmailConfirmation",
+      query: { email: form.value.email },
+    });
   } catch (error) {
-    throw error;
+    alert(error.message);
   }
-}
+};
 
     //Anmelde Fläche
     const showSigninPanel = () => {
@@ -365,30 +200,51 @@ async function fetchUserDataFromSupabase(email, userId) {
       container.classList.add("right-panel-active");
     };
 
-    onMounted(async () => {
-      await fetchUser();
-    });
+    
+// Original code from the first script
+const showLandingPage = ref(true);
 
-
-    return {
-      signupEmail,
-      signupPassword,
-      signinEmail,
-      signinPassword,
-      name,
-      handleSignup,
-      handleSignin,
-      showSigninPanel,
-      showSignupPanel,
-      user,
-      isAuthenticated,
-      handleGoogleSignIn,
-
-    };
-  },
+const toggleLogin = () => {
+  showLandingPage.value = !showLandingPage.value;
 };
+
+const scrollToTop = () => {
+  const scrollButton = this.$refs.scrollButton;
+  if (scrollButton) {
+    scrollButton.style.display = 'none'; // Initially hide the button
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+
+  const handleScroll = () => {
+    if (scrollButton) {
+      if (window.scrollY > 40) {
+        scrollButton.style.display = 'block';
+      } else {
+        scrollButton.style.display = 'none';
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+
+  const handleScrollEnd = () => {
+    if (scrollButton) {
+      if (window.scrollY === 0) {
+        scrollButton.style.display = 'block';
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('scroll', handleScrollEnd);
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScrollEnd);
+}
 </script>
-  
+
 
 
 

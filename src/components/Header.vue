@@ -18,9 +18,10 @@
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
+        <router-link :to="{ name: 'Logout' }">Logout</router-link>
 <div class="dropdown">
-  <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="userEmail">
-    {{ userEmail }}
+  <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="user">
+    {{ user.email }}
   </button>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item bg-light" @click="signOut">Logout</a></li>
@@ -39,13 +40,13 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { supabase } from '../supabase';
-import { isAuthenticated, fetchUser } from '../auth.js';
+import useAuthUser from "../auth";
 
 const route = useRoute();
 const router = useRouter();
 const userEmail = ref('');
 
-const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
+const user = ref(useAuthUser.value ? JSON.parse(localStorage.getItem('user')) : null);
 const googleUser = ref({ session: { access_token: null } });
 
 async function fetchSupabaseUser() {
@@ -63,15 +64,12 @@ async function signOut() {
 }
 
 function handleMenuClick(componentName) {
-  const helloWorldComponent = document.querySelector(".hello-world");
-  if (helloWorldComponent) {
-    helloWorldComponent.activeComponent = componentName;
-  }
+
   router.push({ name: componentName });
 }
 
 onMounted(async () => {
-  if (isAuthenticated.value) {
+  if (useAuthUser.value) {
     await fetchUser();
     const sessionData = JSON.parse(localStorage.getItem('session'));
     if (sessionData && sessionData.user) {

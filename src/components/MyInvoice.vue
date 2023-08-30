@@ -78,7 +78,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-import { isAuthenticated } from '../auth.js';
+import useAuthUser from "../auth";
 import editInvoice from './editInvoice.vue';
 import Header from "./Header.vue";
 import Footer from "./footer.vue";

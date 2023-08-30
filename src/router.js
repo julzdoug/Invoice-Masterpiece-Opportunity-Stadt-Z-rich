@@ -1,69 +1,47 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../src/components/Login.vue';
-import HelloWorld from '../src/components/HelloWorld.vue';
-import MyInvoice from '../src/components/MyInvoice.vue';
-import Invoices from '../src/components/Invoices.vue';
-import Firma_Kunde from '../src/components/Firma_Kunde.vue';
-import MainLayout from '../src/components/MainLayout.vue';
-import editInvoice from '../src/components/editInvoice.vue';
-import { isAuthenticated } from '../src/auth.js';
-import NewInvoice from '../src/components/NewInvoice.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import useAuthUser from "./auth";
+
 
 const routes = [
   {
-    path: '/',
-    component: MainLayout,
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: '/HelloWorld',
-        name: 'HelloWorld',
-        component: HelloWorld,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: '/Firma_Kunde',
-        name: 'Firma_Kunde',
-        component: Firma_Kunde,
-        meta: { requiresAuth: true },
-      },
-    ],
+    name: "EmailConfirmation",
+    path: "/email-confirmation",
+    component: () => import("./components/EmailConfirmation.vue"),
   },
   {
-    path: '/MyInvoice',
-    name: 'MyInvoice',
-    component: MyInvoice,
-    meta: { requiresAuth: true },
-    children: [
-        {
-    path: '/edit-invoice',
-    name: 'editInvoice',
-    component: editInvoice,
-props: true,
-    // Do not include props: true here
-  },
-
-    ]
+    name: "Home",
+    path: "/",
+    component: () => import("./components/Login.vue"), // Initial route is Login
   },
     {
-    path: '/NewInvoice',
-    name: 'NewInvoice',
-    component: NewInvoice,
-    meta: { requiresAuth: true },
+    name: "Me",
+    path: "/Me",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("./components/MainLayout.vue"),
   },
 
+/*    {
+    name: "Login",
+    path: "/Login",
+    component: () => import("./components/Login.vue"),
+  },  */
   {
-    path: '/Invoices/:invoiceNumber',
-    name: 'Invoices',
-    component: Invoices,
-    props: true,
-    meta: { requiresAuth: true },
+    name: "ForgotPassword",
+    path: "/forgotPassword",
+    component: () => import("./components/ForgotPassword.vue"),
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    name: "Logout",
+    path: "/logout",
+    beforeEnter: async () => {
+      const { logout } = useAuthUser();
+      await logout();
+      return { name: "Home" };
+    },
   },
+
 ];
 
 const router = createRouter({
@@ -72,24 +50,12 @@ const router = createRouter({
 });
 
 
-
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isAuthenticated.value) {
-    next({ name: 'Login' }); // Redirect to Login if not authenticated
+router.beforeEach(async (to, from, next) => {
+  const { isLoggedIn } = useAuthUser();
+  if (to.meta.requiresAuth && !isLoggedIn()) {
+    next({ name: "Home" });
   } else {
-    next(); // Continue to the requested route
+    next();
   }
 });
-
-
-
 export default router;
-
-
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
+import useAuthUser from "./auth";
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 console.log(supabase.auth);
@@ -59,12 +59,11 @@ export async function fetchUserData() {
 }
 
 supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN') {
-    fetchCompanyData();
-    fetchUserData(); 
-     // Call fetchCompanyData when the user is signed in or authenticated
-  }
+  const { user: authUser } = useAuthUser(); // Rename user to authUser
+
+  authUser.value = session?.user || null; // Use authUser.value
 });
+
 
 export default function useSupabase() {
   return { supabase };
