@@ -94,7 +94,8 @@ const logout = async () => {
    
   const register = async ({ email, password, ...meta }) => {
     const { user, error } = await supabase.auth.signUp(
-      { email, password },
+      email,
+    password,
       {
         //arbitrary meta data is passed as the second argument under a data key
         // to the Supabase signUp method

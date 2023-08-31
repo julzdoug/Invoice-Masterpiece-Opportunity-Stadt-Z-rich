@@ -1,160 +1,178 @@
 <template>
-  
   <div>
     <header>
-<nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-  
-    <div class="container-fluid text-start">
-  <div class="row align-items-center">
-    <div class="col">
-      <img src="../assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3">
-    </div>
-        <div class="col">
-<div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Rechnung Erstellen' : 'Zurück' }}</div>
-    </div>
-  </div>
-    </div>
-
-  </div>
-  
-</nav>
-    </header>
-    <section v-show="showLandingPage"> 
-<main>
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-8 order-md-2">
-        <img src="../assets/sectionlogo.png" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
-        <div class="product-device shadow-sm d-md-none"></div>
-        <div class="product-device product-device-2 shadow-sm d-md-none"></div>
-      </div>
-      <div class="col-md-4 order-md-1">
-        <h1 class="display-3 fw-bold">Zachnung</h1>
-        <h3 class="fw-normal text-muted mb-3">Mach deine Rechnung</h3>
-        <h3 class="fw-normal text-muted mb-3">danach zu einem PDF</h3>
-        <div class="d-flex gap-3 justify-content-center lead fw-normal">
-<button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Los gehts</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</main>
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-8 order-md-2">
-        <img src="../assets/5900_5_10.jpg" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
-        <div class="product-device shadow-sm d-md-none"></div>
-        <div class="product-device product-device-2 shadow-sm d-md-none"></div>
-      </div>
-      <div class="col-md-4 order-md-1">
-        <h1 class="display-3 fw-bold">In wenigen Schritte eine Rechnung machen</h1>
-        <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellungen<br>mit einem Knopfdruck zur fertigen PDF Rechnung</h3>
-
-        <div class="d-flex gap-3 justify-content-center lead fw-normal">
-<button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Start</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-    </section>
-    <section v-show="!showLandingPage">
-  <div class="container mt-3 mb-2" id="containerf">
-    <div class="row">
-      <div class="col-md-6 col-lg-5 mx-auto">
-        <div class="form-container sign-up-container">
-          <div class="row">
-          <form @submit.prevent="handleSubmit">
-            <!--Anmeldung-->
-            <h1>Mach dein Konto</h1>
-            <div class="social-container">
-             <!--  <button class="btn btn-google" @click="handleGoogleSignup">Sign Up with Google</button> -->
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <div class="container-fluid text-start">
+            <div class="row align-items-center">
+              <div class="col">
+                <img src="../assets/logo.svg" alt="Logo" width="30" height="24"
+                  class="d-inline-block align-text-top mb-3">
+              </div>
+              <div class="col">
+                <div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Rechnung Erstellen' :
+                  'Zurück' }}</div>
+              </div>
             </div>
-            <span>Registriere dich mit E-mail</span>
-            <input type="text" v-model="form.name" placeholder="Name" class="form-control form-control-lg" />
-            <input type="email" v-model="form.signupEmail" placeholder="Email" autocomplete="username"
-              class="form-control form-control-lg" />
-            <input type="password" v-model="form.signupPassword" autocomplete="new-password" placeholder="Passwort"
-              class="form-control form-control-lg" />
-            <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
-            
-          </form>
           </div>
         </div>
-        <div class="form-container sign-in-container">
-           <div class="row">
- <div class="col-md-4 col-lg-3 mx-auto">
-    <!-- Anmelde Formular-->
-    <h1>Anmelden</h1>
-    <div class="social-container">
-      <button class="btn btn-google justify-content-center" @click.prevent="handleLogingoogle('google')">Login with Google</button>
-    </div>
-     </div>
-    <form @submit.prevent="handleLogin">
-      <span>Benutze dein Konto</span>
-      <input type="email" v-model="form.email" placeholder="Email" autocomplete="Benutzer Name" class="form-control" />
-      <input type="password" v-model="form.password" autocomplete="new-password" placeholder="Passwort" class="form-control" />
-      <router-link to="/forgotPassword">Forgot Password?</router-link>
-      <button class="btn btn-primary btn-block">Einloggen</button>
-    </form>
-  </div>
-          
+      </nav>
+    </header>
+    <section v-show="showLandingPage">
+      <main>
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8 order-md-2">
+                <img src="../assets/sectionlogo.png" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+                <div class="product-device shadow-sm d-md-none"></div>
+                <div class="product-device product-device-2 shadow-sm d-md-none"></div>
+              </div>
+              <div class="col-md-4 order-md-1">
+                <h1 class="display-3 fw-bold">Zachnung</h1>
+                <h3 class="fw-normal text-muted mb-3">Mach deine Rechnung</h3>
+                <h3 class="fw-normal text-muted mb-3">danach zu einem PDF</h3>
+                <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                  <button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Los gehts</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <!-- Anmelde Fäche -->
-    <div class="overlay-container">
-      <div class="overlay">
-        <div class="overlay-panel overlay-left">
-          <h1>Wilkommen bei Zachnung!</h1>
-          <p>Bitte Anmelden</p>
-          <button class="btn btn-outline-primary btn-block ghost" @click="showSigninPanel">Anmelden</button>
-        </div>
-        <div class="overlay-panel overlay-right">
-          <h1>Hallo Freund</h1>
+      </main>
+      <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8 order-md-2">
+              <img src="../assets/5900_5_10.jpg" class="d-block w-100 h-auto mx-auto mb-4" alt="formToPdf" />
+              <div class="product-device shadow-sm d-md-none"></div>
+              <div class="product-device product-device-2 shadow-sm d-md-none"></div>
+            </div>
+            <div class="col-md-4 order-md-1">
+              <h1 class="display-3 fw-bold">In wenigen Schritte eine Rechnung machen</h1>
+              <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellungen<br>mit einem Knopfdruck zur
+                fertigen PDF Rechnung</h3>
 
-          <p>Neu</p>
-          <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
+              <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                <button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Start</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+    <section v-show="!showLandingPage">
+      <div class="container mt-3 mb-2" id="containerf">
+        <div class="row">
+          <div class="col-md-6 col-lg-5 mx-auto">
+<div class="form-container sign-up-container">
+  <div class="row">
+    <form @submit.prevent="handleSubmit">
+      <!-- Anmeldung -->
+      <h1>Mach dein Konto</h1>
+      <div class="social-container">
+                   <button class="btn btn-google justify-content-center btn-outline-secondary" @click.prevent="handleLogingoogle('google')">
+  <i class="bi bi-google"></i> Login with Google
+</button>
+
+                  </div>
+                  <span><h5>Registriere dich mit deine E-mail</h5></span>
+                  <span><h6>Los geht!!</h6></span>
+                  <i class="bi bi-arrow-down-square-fill"></i>
+                  <input type="email" v-model="form.signupEmail" placeholder="Email" autocomplete="username"
+                    class="form-control form-control-lg" />
+                  <input type="password" v-model="form.signupPassword" autocomplete="new-password" placeholder="Passwort"
+                    class="form-control form-control-lg" />
+                    <div class="row">
+                    <i class="col bi bi-star"></i>
+                    <i class="col bi bi-star"></i>
+                    <i class="col bi bi-star"></i>
+                    </div>
+                  <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
+                </form>
+                
+              </div>
+            </div>
+          
+          
+          <div class="row">
+            <div class="col-md-4 col-lg-3 mx-auto">
+              <div class="form-container sign-in-container">
+                <div class="row">
+                  <form @submit.prevent="handleLogin">
+                    <!-- Anmelde Formular-->
+                    <h1>Anmelden</h1>
+                    <div class="social-container">
+                       <button class="btn btn-google justify-content-center btn-outline-secondary"
+                        @click.prevent="handleLogingoogle('google')"><i class="bi bi-google">Login with Google</i></button>
+                    </div>
+                    <span>Benutze dein Konto</span>
+                    <input type="email" v-model="form.email" placeholder="Email" autocomplete="Benutzer Name"
+                      class="form-control" />
+                    <input type="password" v-model="form.password" autocomplete="new-password" placeholder="Passwort"
+                      class="form-control" />
+                    <div>
+                      <router-link to="/forgotPassword">Forgot Password?</router-link>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Einloggen</button>
+                  </form>
+                  
+                </div>
+              </div>
+          </div>
+          </div>
+          <!-- Anmelde Fäche -->
+          <div class="overlay-container">
+            <div class="overlay">
+              <div class="overlay-panel overlay-left">
+                <h1>Wilkommen bei Zachnung!</h1>
+                <p>Bitte Anmelden</p>
+                <button class="btn btn-outline-primary btn-block ghost" @click="showSigninPanel">Anmelden</button>
+              </div>
+              <div class="overlay-panel overlay-right">
+                <h1>Hallo Freund</h1>
+                <p>Neu</p>
+                <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
+              </div>
+            </div>
+          </div>
+                    </div>
+
+          </div>
+      </div>
+    </section>
   </div>
-      </section>
-  </div>
-        <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
+  <div class="scroll-back-to-top" @click="scrollToTop" ref="scrollButton">
     <button class="btn btn-primary btn-sm">Nach Oben</button>
   </div>
-
-
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import useAuthUser from "../auth";
 import { useRouter } from "vue-router";
-
+import useSupabase from "../supabase";
+const { supabase } = useSupabase();
 
 // Use necessary composables
 const router = useRouter();
-const { login, loginWithSocialProvider,register } = useAuthUser();
+const { login, loginWithSocialProvider, register } = useAuthUser();
 const user = ref(null);
 // keep up with form data
 const form = ref({
   email: "",
   password: "",
+  signupEmail: "",
+  signupPassword: "",
 });
-
+   
 // call the proper login method from the AuthUser composable
 // on the submit of the form
 const handleLogingoogle = async (provider) => {
   try {
     await loginWithSocialProvider(provider);
     console.log("Redirecting...");
-   
+
   } catch (error) {
     alert(error.message);
   }
@@ -164,43 +182,44 @@ const handleLogingoogle = async (provider) => {
 
 const handleLogin = async () => {
   let user;
-  try {  
-      user = await login(form.value);
-   
+  try {
+    user = await login(form.value);
+
   } catch (error) {
-   
+
   }
 };
 
 // function to hand the form submit
 const handleSubmit = async () => {
   try {
-    // use the register method from the AuthUser composable
-    await register(form.value);
-
-    // and redirect to a EmailConfirmation page the will instruct
-    // the user to confirm they're email address
-    router.push({
-      name: "EmailConfirmation",
-      query: { email: form.value.email },
+    const user = await register({
+      email: form.signupEmail,
+      password: form.signupPassword,
+      // You can pass additional meta data if needed
     });
+
+    console.log("User signed up successfully:", user);
+    alert("You've successfully signed up. Please check your email for confirmation.");
+    router.push("/EmailConfirmation");
   } catch (error) {
     alert(error.message);
   }
 };
 
-    //Anmelde Fläche
-    const showSigninPanel = () => {
-      const container = document.getElementById("containerf");
-      container.classList.remove("right-panel-active");
-    };
-    // Registrierung Fläche
-    const showSignupPanel = () => {
-      const container = document.getElementById("containerf");
-      container.classList.add("right-panel-active");
-    };
 
-    
+//Anmelde Fläche
+const showSigninPanel = () => {
+  const container = document.getElementById("containerf");
+  container.classList.remove("right-panel-active");
+};
+// Registrierung Fläche
+const showSignupPanel = () => {
+  const container = document.getElementById("containerf");
+  container.classList.add("right-panel-active");
+};
+
+
 // Original code from the first script
 const showLandingPage = ref(true);
 
@@ -251,7 +270,7 @@ const scrollToTop = () => {
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('scroll', handleScrollEnd);
   });
-  };
+};
 
 </script>
 
@@ -269,6 +288,7 @@ const scrollToTop = () => {
   bottom: 100px;
   right: 20px;
 }
+
 .scroll-back-to-top button {
   padding: 10px 15px;
   background-color: #007bff;
@@ -277,6 +297,7 @@ const scrollToTop = () => {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .button {
   height: auto;
   width: auto;
@@ -292,13 +313,14 @@ const scrollToTop = () => {
   -webkit-transition: all ease-in-out 300ms;
   transition: all ease-in-out 300ms;
 }
+
 .button:hover {
   box-shadow: 0px 37px 20px -20px rgba(0, 0, 0, 0.2);
   -webkit-transform: translate(0px, -10px) scale(1.2);
-          transform: translate(0px, -10px) scale(1.2);
+  transform: translate(0px, -10px) scale(1.2);
 }
 
-.header { 
+.header {
   background-color: aliceblue;
 }
 
@@ -366,7 +388,7 @@ form {
   justify-content: center;
   flex-direction: column;
   padding: 0 50px;
-  height:fit-content;
+  height: fit-content;
   text-align: center;
 }
 
@@ -515,5 +537,4 @@ input {
   margin: 0 5px;
   height: 40px;
   width: 40px;
-}
-</style>
+}</style>
