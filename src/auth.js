@@ -1,198 +1,167 @@
-import { ref } from 'vue';
-import { supabase } from './supabase.js';
-import router from './router';
+import useSupabase from "./supabase";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-// Supabase Angaben für die Authentiefierung
-export const isAuthenticated = ref(false);
-export const user = ref(JSON.parse(localStorage.getItem('user')) || null);
+// Use necessary composables
 
+// user is set outside of the useAuthUser function
+// so that it will act as global state and always refer to a single user
+const user = ref(null);
+  const { supabase } = useSupabase();
 
-/* supabase.auth.onAuthStateChange(async (event, session) => {
-  isAuthenticated.value = session !== null;
-  if (session && session.user_metadata) {
-    if (session.user_metadata.provider === 'google') {
-      const userData = await fetchUserDataFromSupabase(session.user.email, session.user.id);
-      if (userData) {
-        user.value = { ...session.user, ...userData };
-      } else {
-        user.value = session.user;
-      }
-    }
-  }
-});
-
-export const googleSignIn = async () => {
-try {
-    const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/userinfo.email'
-      }
-    });
-
-    if (googleSignInError) {
-      throw googleSignInError;
-    }
-
-    if (user) {
-      // Fetch user data from Supabase based on the email
-      const { data: userData, error: userDataError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', user.email)
-        .limit(1);
-
-      if (userDataError) {
-        throw userDataError;
-      }
-
-      if (userData && userData.length > 0) {
-        // User already exists in Supabase table
-        isAuthenticated.value = true;
-        localStorage.setItem('user', JSON.stringify(user));
-
-        // Emit the login-success event with the signed-in user
-        emit('login-success', user);
-
-        // Redirect after successful sign-in
-        router.push('/');
-      } else {
-        // User is signing in for the first time using Google
-        const { error: createUserError } = await supabase
-          .from('users')
-          .upsert([
-            {
-              email: user.email,
-              // You can set additional metadata here if needed
-              // For example, provider information
-              app_metadata: {
-                provider: 'google',
-                providers: [{ provider_id: user.id }],
-              },
-            },
-          ]);
-
-        if (createUserError) {
-          throw createUserError;
-        }
-
-        isAuthenticated.value = true;
-        localStorage.setItem('user', JSON.stringify(user));
-
-        // Redirect after successful sign-in
-        router.push('/');
-      }
-    }
-  } catch (error) {
-    console.error('Error during Google sign-in:', error.message);
-  }
-};
+export default function useAuthUser(router){
 
 
-export const fetchUserDataFromSupabase = async (email, userId) => {
+
+  /**
+   * Login with email and password
+   */
+const login = async ({ email, password }) => {
   try {
-    const { data: userData, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email) // Fetch user data by email
-      .single(); // Retrieve a single row
-
+    const { user, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       throw error;
     }
 
-    return userData;
+    // Store user data in localStorage
+    const userToStore = {
+      id: user.id,
+      email: user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+
+    return user;
   } catch (error) {
     throw error;
   }
-}; */
+};
 
 
-
-
- supabase.auth.onAuthStateChange((event, session) => {
-  isAuthenticated.value = session !== null;
-
-  if (session && session.user_metadata) {
-    const { provider } = session.user_metadata;
-    if (provider === 'google') {
-      // User signed in with Google
-      localStorage.setItem('user', JSON.stringify(session.user));
-      
-    }
-  }
-});
-
-
- export const googleSignIn = async () => {
+const loginWithRefreshToken = async (token) => {
   try {
-    console.log('handleGoogleSignIn function started');
-    const { user, error: googleSignInError } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        scopes: 'https://www.googleapis.com/auth/userinfo.email'
-      }
-    });
-    console.log('User data retrieved:', user); // Corrected logging
-
-    if (googleSignInError) {
-      throw googleSignInError;
+    const { user, error } = await supabase.auth.signInWithOtp({ refreshToken: token });
+    if (error) {
+      throw error;
     }
 
-if (user) {
-  const userToStore = {
-    id: user.id,
-    aud: user.aud,
-    role: user.role,
-    // ... add other necessary properties
+    // Store user data in localStorage
+    const userToStore = {
+      id: user.id,
+      email: user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+// auth.js
+// ...
+
+const loginWithSocialProvider = async (provider) => {
+  console.log(`Logging in with ${provider}...`);
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider });
+    if (error) {
+      throw error;
+    }
+
+    // Store user data in localStorage
+    const userToStore = {
+      id: data.user.id,
+      email: data.user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+   /* Logout
+   */
+const logout = async () => {
+  const { error } = supabase.auth.signOut();
+  if (error) {
+    throw error;
+  }
+
+  // Clear user data from localStorage
+  localStorage.removeItem('user');
+};
+   /* Check if the user is logged in or not
+   */
+  const isLoggedIn = () => {
+    return !!user.value;
   };
 
-  localStorage.setItem('user', JSON.stringify(userToStore));
-   user.value = userToStore; // Update the ref
-
-// Trigger events or navigation
-isAuthenticated.value = true;
-router.push("/");
-}
-
-  } catch (error) {
-    console.error('Error during Google sign-in:', error.message);
-  }
-};
-
-export const fetchUser = async () => {
-  try {
-    const { user: authUser } = await supabase.auth.getSession();
-    console.log('Stored User:', authUser);
-    localStorage.setItem('session', JSON.stringify({ user: authUser }));
-    user.value = authUser; // Update the user state
-
-    // Fetch additional user data from Supabase and update the user state
-    const userData = await fetchUserDataFromSupabase(authUser.email, authUser.id);
-    if (userData) {
-      user.value = { ...authUser, ...userData }; // Merge authUser and userData
-    }
-  } catch (error) {
-    console.error('Error fetching user:', error.message);
-  }
-};
-
-export const fetchUserDataFromSupabase = async (email, userId) => {
-  try {
-    const { data: userData, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email) // Fetch user data by email
-      .single(); // Retrieve a single row
-
-    if (error) {
-      throw error;
-    }
-
-    return userData;
-  } catch (error) {
-    throw error;
-  }
-};
-  localStorage.removeItem('session');
+  /**
+   * Register*/
+   
+  const register = async ({ email, password, ...meta }) => {
+    const { user, error } = await supabase.auth.signUp(
+      { email, password },
+      {
+        //arbitrary meta data is passed as the second argument under a data key
+        // to the Supabase signUp method
+        data: meta,
+        // the to redirect to after the user confirms their email
+        redirectTo: `${window.location.origin}/me?fromEmail=registrationConfirmation"`,
+      }
+    );
+    if (error) throw error;
+    return user;
+  };
  
+  /**
+   * Update user email, password, or meta data
+   */
+  const update = async (data) => {
+    const { user, error } = await supabase.auth.updateUser(data);
+    if (error) throw error;
+    return user;
+  };
+
+  /**
+   * Send user an email to reset their password
+   * (ie. support "Forgot Password?")
+   */
+  const sendPasswordRestEmail = async (email) => {
+    const { user, error } = await supabase.auth.resetPasswordForEmail(
+      email
+    );
+    if (error) throw error;
+    return user;
+  };
+
+  /**
+   * Will be useful for informing the application what to do
+   * when Supabase redirects a user back to app
+   * after confirming email address
+   */
+  const maybeHandleEmailConfirmation = async (route) => {};
+  
+    supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') {
+      // User successfully signed in
+      user.value = session.user;
+      router.push({ name: 'Me' }); // Navigate to the 'Me' page
+    }
+  });
+
+  return {
+    user,
+    login,
+    loginWithSocialProvider,
+    loginWithRefreshToken,
+    isLoggedIn,
+    logout,
+    register,
+    update,
+    sendPasswordRestEmail,
+    maybeHandleEmailConfirmation,
+  };
+}

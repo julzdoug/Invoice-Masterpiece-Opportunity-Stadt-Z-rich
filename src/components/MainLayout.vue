@@ -1,15 +1,15 @@
 <template>
-    <Header v-if="user" />
+     <Header /> 
       <div class="container mt-2 ">
-    <component :is="activeComponent" v-if="user" />
-  </div>
-<Hero v-if="user" />
-  <div class="button-section-jumper" v-if="user">
     
   </div>
-<Discription v-if="user" />
+<Hero  />
+  <div class="button-section-jumper" >
+    
+  </div>
+<Discription  />
 <!-- <editInvoice v-if="user" /> -->
-  <div class="button-section-jumper" v-if="user">
+  <div class="button-section-jumper" >
 
   </div>
 
@@ -18,16 +18,15 @@
 <Footer />
   <!--   <Login v-if="!user" @login-success="handleLoginSuccess" /> -->
 </div>
-  <div class="scroll-back-to-top" @click="scrollToTop" v-if="user" ref="scrollButton">
+  <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
     <button class="btn btn-primary btn-sm">Scroll To Top</button>
   </div>
-  
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { isAuthenticated } from '../auth.js';
-import Header from "./Header.vue";
+import { ref } from 'vue';
+
+ import Header from "./Header.vue"; 
 /* import Login from "./Login.vue"; */
 import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
@@ -37,43 +36,13 @@ import MyInvoice from './MyInvoice.vue';
 
 export default {
   components: {
-    Header,
+     Header, 
 /*     Login, */
     Hero,
     Discription,
     Footer,
     InvoiceForm,
     MyInvoice,
-  },
-
-  setup(_, { emit }) {
-    const user = ref(isAuthenticated.value ? JSON.parse(localStorage.getItem('user')) : null);
-    const activeComponent = ref("");
-    const isLoginVisible = ref(false);
-     // Control whether the Login component is visible
-/*   provide('user', user); */
-    // After login
-/*     const handleLoginSuccess = (loggedInUser) => {
-      user.value = loggedInUser;
-      isLoginVisible.value = false; // Hide the login component
-    };
- */
-    const scrollToTop = () => {
-      // Scroll logic here
-    };
-
-    onMounted(() => {
-      isAuthenticated.value = !!user.value;
-      // Additional logic
-    });
-
-    return {
-      user,
-  /*     handleLoginSuccess, */
-      activeComponent,
-      isLoginVisible,
-      scrollToTop,
-    };
   },
 };
 </script>

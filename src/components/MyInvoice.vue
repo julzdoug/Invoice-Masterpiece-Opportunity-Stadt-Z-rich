@@ -74,14 +74,16 @@
 
 <script>
 import { ref, onMounted, computed } from 'vue';
-import { createClient } from '@supabase/supabase-js';
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-import { isAuthenticated } from '../auth.js';
+import { supabase } from "../supabase";
+
+
+import useAuthUser from "../auth";
 import editInvoice from './editInvoice.vue';
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
+
+
+const authUser = useAuthUser();
 
 
 export default {
@@ -110,14 +112,21 @@ export default {
       location.reload(); // Reload the page
     },
   },
-
+  props: {
+    selectedInvoice: Object,
+    invoiceData: Object,
+    companyData: Object,
+    customerData: Object,
+    isEditingInvoice: Boolean,
+  },
 
   setup() {
+      const customerData = ref([]);
+  const companyData = ref([]);
+    const user = ref(authUser.user); 
     const isEditing = ref(false);
     const invoiceRows = ref([]);
     const invoiceData = ref({});
-    const companyData = ref({});
-    const customerData = ref({});
     const isEditingInvoice = ref(false);
     const selectedInvoice = ref(null);
 const showInvoiceForm = ref(false);
@@ -211,9 +220,13 @@ const showInvoiceForm = ref(false);
 
     // Fetch the data when the component is mounted
     onMounted(async () => {
-      await fetchInvoiceData();
-      await fetchCustomerData();
-      await fetchCompanyData();
+   try {
+    await fetchInvoiceData();
+    await fetchCustomerData();
+    await fetchCompanyData();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
     });
 
     // Helper function to get customer name from customerData

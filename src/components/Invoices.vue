@@ -294,13 +294,14 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { createClient } from '@supabase/supabase-js';
+import useAuthUser from "../auth";
+import { supabase } from "../supabase";
 import Header from './Header.vue';
 import Footer from './footer.vue';
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+
+
+const authUser = useAuthUser();
 export default {
     components: {
     Header,

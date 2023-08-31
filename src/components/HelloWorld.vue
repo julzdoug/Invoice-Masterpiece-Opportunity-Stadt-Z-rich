@@ -6,19 +6,19 @@
 
 <script>
 import { ref, onBeforeMount } from 'vue';
-import editInvoice from './editInvoice.vue';
+
 
 import Inovice from './Invoices.vue';
-import Firma_Kunde from './Firma_Kunde.vue';
-import { isAuthenticated } from '../auth.js';
+
+import useAuthUser from "../auth";
 
 export default {
 
   components: {
-    editInvoice,
+
 
     Inovice,
-    Firma_Kunde,
+
   },
 
   setup() {
