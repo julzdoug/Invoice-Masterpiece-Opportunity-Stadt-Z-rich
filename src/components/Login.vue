@@ -133,7 +133,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import useAuthUser from "../auth";
 import { useRouter } from "vue-router";
 
@@ -166,7 +166,7 @@ const handleLogin = async () => {
   let user;
   try {  
       user = await login(form.value);
-    await router.push({ name: "Me" });
+   
   } catch (error) {
    
   }
@@ -209,7 +209,7 @@ const toggleLogin = () => {
 };
 
 const scrollToTop = () => {
-  const scrollButton = this.$refs.scrollButton;
+  const scrollButton = document.getElementById('scrollButton');
   if (scrollButton) {
     scrollButton.style.display = 'none'; // Initially hide the button
   }
@@ -221,28 +221,38 @@ const scrollToTop = () => {
 
   const handleScroll = () => {
     if (scrollButton) {
-      if (window.scrollY > 40) {
-        scrollButton.style.display = 'block';
-      } else {
+      if (window.scrollY > 10) {
         scrollButton.style.display = 'none';
+      } else {
+        scrollButton.style.display = 'block';
+      }
+    }
+  };
+
+  const handleScrollEnd = () => {
+    if (scrollButton) {
+      if (window.scrollY === 0) {
+        scrollButton.style.display = 'none';
+      } else {
+        scrollButton.style.display = 'block';
       }
     }
   };
 
   window.addEventListener('scroll', handleScroll);
+  window.addEventListener('scroll', handleScrollEnd);
 
-  const handleScrollEnd = () => {
-    if (scrollButton) {
-      if (window.scrollY === 0) {
-        scrollButton.style.display = 'block';
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('scroll', handleScrollEnd);
-      }
-    }
+  onMounted(() => {
+    handleScroll();
+    handleScrollEnd();
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScrollEnd);
+  });
   };
 
-  window.addEventListener('scroll', handleScrollEnd);
-}
 </script>
 
 

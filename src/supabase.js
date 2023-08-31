@@ -7,6 +7,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 console.log(supabase.auth);
 
+
 export async function fetchCompanyData() {
   try {
     const user = supabase.auth.user;

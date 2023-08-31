@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse bg-light custom-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="nav-link active bg-light" @click="handleMenuClick('Firma_Kunde')">Startseite</a>
+            <a class="nav-link active bg-light" @click="handleMenuClick('Me')">Startseite</a>
           </li>
           <li class="nav-item">
             <a class="nav-link ms-5 bg-light" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>

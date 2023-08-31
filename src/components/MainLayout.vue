@@ -1,7 +1,7 @@
 <template>
      <Header /> 
       <div class="container mt-2 ">
-    <component :is="activeComponent" />
+    
   </div>
 <Hero  />
   <div class="button-section-jumper" >

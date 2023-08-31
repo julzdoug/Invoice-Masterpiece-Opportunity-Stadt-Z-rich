@@ -9,59 +9,90 @@ import { useRouter } from "vue-router";
 const user = ref(null);
   const { supabase } = useSupabase();
 
-export default function useAuthUser() {
-const router = useRouter();
+export default function useAuthUser(router){
+
 
 
   /**
    * Login with email and password
    */
-  const login = async ({ email, password }) => {
+const login = async ({ email, password }) => {
+  try {
     const { user, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
+
+    // Store user data in localStorage
+    const userToStore = {
+      id: user.id,
+      email: user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+
     return user;
+  } catch (error) {
+    throw error;
+  }
+};
 
-  };
 
-  /**
-   * Login with refresh token
-   * Useful for logging in after email confirmations
-   */
-  const loginWithRefreshToken = async (token) => {
+const loginWithRefreshToken = async (token) => {
+  try {
     const { user, error } = await supabase.auth.signInWithOtp({ refreshToken: token });
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
-    return user;  
-  };
+    // Store user data in localStorage
+    const userToStore = {
+      id: user.id,
+      email: user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
 
-  /**
-   * Login with google, github, etc
-   */
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
 // auth.js
 // ...
 
 const loginWithSocialProvider = async (provider) => {
   console.log(`Logging in with ${provider}...`);
   try {
-    await supabase.auth.signInWithOAuth({ provider });
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider });
+    if (error) {
+      throw error;
+    }
+
+    // Store user data in localStorage
+    const userToStore = {
+      id: data.user.id,
+      email: data.user.email,
+      // Add other user properties you want to store
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
   } catch (error) {
     console.error(error);
   }
 };
 
-
-
-
-  /**
-   * Logout
+   /* Logout
    */
-  const logout = async () => {
-    const { error } = supabase.auth.signOut();
-    if (error) throw error;
-  };
+const logout = async () => {
+  const { error } = supabase.auth.signOut();
+  if (error) {
+    throw error;
+  }
 
-  /**
-   * Check if the user is logged in or not
+  // Clear user data from localStorage
+  localStorage.removeItem('user');
+};
+   /* Check if the user is logged in or not
    */
   const isLoggedIn = () => {
     return !!user.value;
