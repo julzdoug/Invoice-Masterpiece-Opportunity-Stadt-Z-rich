@@ -17,9 +17,7 @@
 
 </template>
 
-<style>
-/* No need for custom styling here if you're using Bootstrap classes */
-</style>
+
 <style>
 @import 'bootstrap/dist/css/bootstrap.css';
 

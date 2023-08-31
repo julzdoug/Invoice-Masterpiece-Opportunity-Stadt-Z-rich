@@ -18,67 +18,39 @@
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
-        <router-link :to="{ name: 'Logout' }">Logout</router-link>
-<div class="dropdown">
-  <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" v-if="user">
-    {{ user.email }}
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item bg-light" @click="signOut">Logout</a></li>
-  </ul>
-</div>
+        
+  <div class="dropdown me-3" >
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ user.email }}
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item bg-light"><router-link :to="{ name: 'Logout' }">Logout</router-link></a></li>
+    </ul>
+  </div>
       </div>
     </div>
   </nav>
 </template>
 
-
-
-
-
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { supabase } from '../supabase';
 import useAuthUser from "../auth";
 
-const route = useRoute();
+const { user } = useAuthUser();
 const router = useRouter();
-const userEmail = ref('');
 
-const user = ref(useAuthUser.value ? JSON.parse(localStorage.getItem('user')) : null);
-const googleUser = ref({ session: { access_token: null } });
-
-async function fetchSupabaseUser() {
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    userEmail.value = user.email; // Update userEmail with the fetched email
-  } catch (error) {
-    console.error('Error fetching Supabase user:', error.message);
-  }
-}
-
-async function signOut() {
-  await supabase.auth.signOut();
-  router.push({ name: 'Login' }); // Redirect to Login component after logout
-}
 
 function handleMenuClick(componentName) {
-
   router.push({ name: componentName });
 }
 
 onMounted(async () => {
-  if (useAuthUser.value) {
-    await fetchUser();
-    const sessionData = JSON.parse(localStorage.getItem('session'));
-    if (sessionData && sessionData.user) {
-      googleUser.value.session.access_token = sessionData.user.access_token; // Update the access token
-    }
-
-    await fetchSupabaseUser(); // Fetch user data from Supabase
+  if (authUser.isLoggedIn()) {
+    user.value = JSON.parse(localStorage.getItem('user'));
   }
-});
+  });
 </script>
 
 
