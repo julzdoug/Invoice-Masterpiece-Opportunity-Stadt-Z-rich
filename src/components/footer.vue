@@ -26,8 +26,8 @@
 }
 
   .footer-image {
-    width: 20%;
-    height: 20%;
+    width: 10%;
+    height: 10%;
   }
  
   .footer-title {
@@ -44,7 +44,7 @@
 @media (max-width: 767px) {
   .footer-image {
     width: 20%;
-    height: 20%;
+    height: 10%;
   }
  
   .footer-title {
