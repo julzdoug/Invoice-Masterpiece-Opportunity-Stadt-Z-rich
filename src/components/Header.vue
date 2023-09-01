@@ -19,12 +19,25 @@
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
         
-  <div class="dropdown me-3" >
-    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <div class="dropdown me-3">
+    <button
+      class="btn btn-outline-primary dropdown-toggle"
+      type="button"
+      id="userDropdown"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
       {{ user.email }}
     </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item bg-light"><router-link :to="{ name: 'Logout' }">Logout</router-link></a></li>
+    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+      <li>
+        <router-link
+          :to="{ name: 'Logout' }"
+          class="dropdown-item bg-light text-danger"
+        >
+          Logout
+        </router-link>
+      </li>
     </ul>
   </div>
       </div>

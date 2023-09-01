@@ -53,7 +53,7 @@ export default {
 }
 .fit {
   height:auto;
-  margin:5vh ;
+  margin: 1%;
 
 }
 .scroll-back-to-top {

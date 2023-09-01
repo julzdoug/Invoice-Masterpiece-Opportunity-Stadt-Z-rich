@@ -300,7 +300,13 @@ const showInvoiceForm = ref(false);
 </script>
 
 
-<style scoped>
+<style>
+#app {
+  height: 100vh;
+}
+.fit {
+  height:auto;
+}
 .container {
   display: flex;
   flex-direction: column;
