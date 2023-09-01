@@ -182,7 +182,7 @@
       </div>
     </form>
       <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary" @click="submitCompanyForm">Next</button>
+    <button class="btn btn-primary mb-5" @click="submitCompanyForm">Next</button>
 
     </div>
   </div>
@@ -308,8 +308,8 @@
       </div>
     </form>
           <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary" @click="submitCustomerForm">Next</button>
-    <button class="btn btn-secondary me-3" @click="previousStep">Previous</button>
+    <button class="btn btn-primary mb-5" @click="submitCustomerForm">Next</button>
+    <button class="btn btn-secondary me-3 mb-5" @click="previousStep">Previous</button>
 
     </div>
   </div>
@@ -323,8 +323,8 @@
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
     <div>
-    <button class="col btn btn-primary mt-3" @click="nextStep()">Next</button>
-    <button class="col btn btn-secondary mt-3 me-3" @click="previousStep">Previous</button>
+    <button class="col btn btn-primary mt-3 mb-5" @click="nextStep()">Next</button>
+    <button class="col btn btn-secondary mt-3 me-3 mb-5" @click="previousStep">Previous</button>
 </div>
   </div>
   
@@ -396,9 +396,9 @@
           </tbody>
    </table>
     </div>
-    <button class="btn btn-primary d-block mx-auto my-3" @click="addNewRow">Add New Row</button>
-    <button class="btn btn-primary d-block mx-auto my-3" @click="saveChanges">Save Invoice</button>
-    <button class="btn btn-secondary ms-3" @click="previousStep">Previous</button>
+    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="addNewRow">Add New Row</button>
+    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="saveChanges">Save Invoice</button>
+    <button class="btn btn-secondary ms-3 mb-5" @click="previousStep">Previous</button>
   </div>
 </div>
 

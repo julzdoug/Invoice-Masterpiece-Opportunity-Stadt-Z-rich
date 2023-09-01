@@ -70,6 +70,7 @@
     <form @submit.prevent="handleSubmit">
       <!-- Anmeldung -->
       <h1>Mach dein Konto</h1>
+      <span>Mit Google</span>
       <div class="social-container">
                    <button class="btn btn-google justify-content-center btn-outline-secondary" @click.prevent="handleLogingoogle('google')">
   <i class="bi bi-google"></i></button>
@@ -101,10 +102,13 @@
                   <form @submit.prevent="handleLogin">
                     <!-- Anmelde Formular-->
                     <h1>Anmelden</h1>
+                    <span>Mit Google</span>
                     <div class="social-container">
+                       
                        <button class="btn btn-google justify-content-center btn-outline-secondary"
-                        @click.prevent="handleLogingoogle('google')"><i class="bi bi-google">oogle</i></button>
+                        @click.prevent="handleLogingoogle('google')"><i class="bi bi-google"></i></button>
                     </div>
+
                     <span>Benutze dein Konto</span>
                     <input type="email" v-model="form.email" placeholder="Email" autocomplete="Benutzer Name"
                       class="form-control" />
@@ -142,7 +146,7 @@
     </section>
   </div>
   <div class="scroll-back-to-top" @click="scrollToTop" ref="scrollButton">
-    <button class="btn btn-primary btn-sm">Nach Oben</button>
+    <button class="btn btn-primary btn-sm"><i class="bi bi-file-arrow-up-fill"></i></button>
   </div>
 </template>
 

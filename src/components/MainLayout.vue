@@ -1,45 +1,88 @@
 <template>
-  <div class="app-container">
-    <Header />
-    <main class="content">
-      <Hero />
-      <div class="button-section-jumper" ></div>
-<Discription  />
-<div class="button-section-jumper" ></div>
+     <Header /> 
 
-    </main>
-    <div id="form" class="fit mt-2 bg-opacity-25 bg-primary">
+     <section class="content ms-3 me-3">
+<Hero  />
+  <div class="button-section-jumper" >
+    
+  </div>
+<Discription  />
+<!-- <editInvoice v-if="user" /> -->
+  <div class="button-section-jumper" >
+
+  </div>
+
+<div id="form" class="fit bg-primary bg-opacity-25">
   <InvoiceForm />
-                      <div class="row text-center">
-                    <i class="col bi bi-star"></i>
-                    <i class="col bi bi-star"></i>
-                    <i class="col bi bi-star"></i>
-                    </div>
+
+  <!--   <Login v-if="!user" @login-success="handleLoginSuccess" /> -->
+</div>
+  <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
+    <button class="btn btn-primary btn-sm"><i class="bi bi-file-arrow-up-fill"></i></button>
   </div>
-    <Footer />
-    <div class="scroll-back-to-top" @click="scrollToTop" ref="scrollButton">
-      <button class="btn btn-primary btn-sm">Scroll To Top</button>
-    </div>
-  </div>
+  </section>
+  <Footer />
 </template>
 
 <script>
-import { ref } from 'vue';
- import Header from "./Header.vue"; 
+import { ref, onMounted, onUnmounted } from 'vue';
+import Header from "./Header.vue";
 import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
 import InvoiceForm from './InvoiceForm.vue';
-import MyInvoice from './MyInvoice.vue';
 
 export default {
   components: {
-     Header, 
+    Header,
     Hero,
     Discription,
     Footer,
     InvoiceForm,
-    MyInvoice,
+  },
+  methods: {
+    scrollToTop() {
+      const scrollButton = this.$refs.scrollButton;
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
+      const handleScroll = () => {
+        if (scrollButton) {
+          if (window.scrollY > 10) {
+            scrollButton.style.display = 'none';
+          } else {
+            scrollButton.style.display = 'block';
+          }
+        }
+      };
+
+      const handleScrollEnd = () => {
+        if (scrollButton) {
+          if (window.scrollY === 0) {
+            scrollButton.style.display = 'none';
+          } else {
+            scrollButton.style.display = 'block';
+          }
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScrollEnd);
+
+      onMounted(() => {
+        handleScroll();
+        handleScrollEnd();
+        
+      });
+
+      onUnmounted(() => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('scroll', handleScrollEnd);
+      });
+    },
   },
 };
 </script>
@@ -53,8 +96,6 @@ export default {
 }
 .fit {
   height:auto;
-  margin: 1%;
-
 }
 .scroll-back-to-top {
   position: fixed;
@@ -68,6 +109,11 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.content {
+  flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  margin-top:15vh;
 }
 
 </style>
