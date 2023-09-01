@@ -93,7 +93,7 @@ const logout = async () => {
    * Register*/
    
   const register = async ({ email, password, ...meta }) => {
-    const { user, error } = await supabase.auth.signUp(
+    const { data, error } = await supabase.auth.signUp(
       email,
     password,
       {

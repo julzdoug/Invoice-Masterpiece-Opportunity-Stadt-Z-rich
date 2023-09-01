@@ -2,10 +2,10 @@
 <div v-if="step === 1" class="justify-content-center align-items-center">
   <div>
        
-    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
+    <h1 class="fs-5 bg-primary bg-opacity-25 text-light">Rechnungsteller wählen:</h1>
     
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
+  <li class="text-light list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="company in companies"

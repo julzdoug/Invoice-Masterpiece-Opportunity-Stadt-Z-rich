@@ -1,25 +1,21 @@
 <template>
-
-  <Header />
-  <!--Titel und Aushwal-->
-   <section>
+  <div class="container">
+    <Header />
+    <!--Titel und Auswahl-->
+    <section class="content">
       <!--Kunden Daten-->
-
-
-    <div class="justify-content-center align-items-center">
-              <div class="my-1 ms-2 back">Meine Angaben:<br>       
-      </div>
-      <table class="table table-hover text-center ms-1 me-1" v-if="invoiceRows.length > 0" aria-label="">
+      <div class="table-container">
+        <table class="table table-hover text-center fit">
         <thead class="table-light">
           <tr>        
-            <th class="text-dark bg-light">Kunde.</th>
-            <th class="text-dark bg-light">Rechnungsteller</th>
-            <th class="text-dark bg-light">Rechnungsnummer</th>
-            <th class="text-dark bg-light">Rechnungs Datum</th>
-            <th class="text-dark bg-light">Betrag</th>
-                <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-printer"></i></span></th>
-            <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
+            <th class="text-white bg-opacity-75 bg-primary">Kunde.</th>
+            <th class="text-white bg-opacity-75 bg-primary">Rechnungsteller</th>
+            <th class="text-white bg-opacity-75 bg-primary">Rechnungsnummer</th>
+            <th class="text-white bg-opacity-75 bg-primary">Rechnungs Datum</th>
+            <th class="text-white bg-opacity-75 bg-primary">Betrag</th>
+                <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-trash3"></i></span></th>
+            <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-printer"></i></span></th>
+            <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-pencil"></i></span></th>
           </tr>
         </thead>
         <tbody class="table text-95 text-secondary-d3 text-start">
@@ -46,15 +42,11 @@
             </td>
           </tr>
         </tbody>
-      </table>
-      
-    </div>
-
-  </section>
-
+        </table>
+      </div>
+    </section>
   <section>
     <div v-if="isEditingInvoice">
-
         <editInvoice
           :selectedInvoice="selectedInvoice"
           :invoiceData="invoiceData"
@@ -65,11 +57,9 @@
         />
     </div>
   </section>
-
-  <section>
-<Footer />
-</section>
-
+   
+  </div>
+   <Footer />
 </template>
 
 <script>
@@ -310,50 +300,43 @@ const showInvoiceForm = ref(false);
 </script>
 
 
-<style scoped>
-.custom-select {
-  height: 38px;
-  width: 50%;
-  
-}
-
-.back {
-  background-color: rgb(192, 212, 249);
-}
-
-
-
-/* Adjust styles for mobile devices */
-@media (max-width: 576px) {
-
-  .table {
-    
-    font-size: 12px; /* Adjust font size for mobile devices */
-  }
-  th, td {
-    min-width: 80px; /* Adjust as needed to prevent squished content */
-  }
-}
-
+<style>
 #app {
   height: 100vh;
 }
 .fit {
   height:auto;
 }
-.scroll-back-to-top {
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: rgb(101, 172, 212);
+}
+
+Header {
   position: fixed;
-  bottom: 100px;
-  right: 20px;
-}
-.scroll-back-to-top button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  width: 90%;
+  top: 0;
+  z-index: 1; /* Ensure the header is above other content */
 }
 
+.content {
+  margin-top: 60px; /* Adjust this margin to match your header's height */
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Adjust styles for mobile devices */
+@media (max-width: 576px) {
+  .container {
+    margin-top: 20%;
+    min-height: 100vh;
+  }
+}
 </style>
-

@@ -1,7 +1,7 @@
 <template>
   <Header />
   <!--Seten Information-->
-  <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
+  <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm; margin: 0 auto;">
     <div class="page-header text-blue-d2">
       <h1 class="page-title text-secondary-d1">
         {{ invoiceData.invoice_number }}
@@ -25,11 +25,11 @@
           <div class="row">
             <div class="col-12">
               <div class="text-center text-150 print-text-100">
-                <img  class="img" v-if="companyData && companyData.logo" :src="companyData.logo" alt="Company Logo" />
+                <img  class="img" width="180" height="80" v-if="companyData && companyData.logo" :src="companyData.logo" alt="Company Logo" />
                  <span v-else>Loading...</span>
                  <br>
                  <br>
-                <span class="text-default-d3 fs-6 mt-2">
+                <span class="text-default-d3 fs-6 mt-2 fw-bold">
                   {{ companyData ? `${companyData.company_name}-${companyData.profession} ${companyData.name}
                                     ${companyData.surname},
                                     ${companyData.street},${companyData.street_number},${companyData.postal_code},${companyData.place}` :
@@ -67,7 +67,7 @@
 
             <div class="col-sm-4 me-5 be-1 mt-3">
               <!-- RechnungsDaten -->
-              <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
+              <div class="col-sm pe-5 text-dark-m2 text-sm my-3 mt-3">
                 <div class="my-2 d-flex justify-content-between">
                   <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
                   <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
@@ -88,7 +88,8 @@
                 </div>
               </div>
             </div>
-            <div class="container">
+            
+            <div>
               <div class="row">
                 <div id="billhead" class="col-sm-11 d-flex">
                   <table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
@@ -115,7 +116,7 @@
                 </div>
                 <!-- Kalkulation-->
                 <div class="row brc-default-l2 text-start">
-                  <div id="bill" class="col-sm-12 container text-start mt-5">
+                  <div id="bill" class="col-sm-12 text-start mt-5">
                     <div class="row">
                       <div class="col-3">
                         Zwischensumme
@@ -157,7 +158,7 @@
 
 
                   <hr class="row brc-default-l1 mx-n1 mb-4 mt-5" />
-                  <div class="col-sm-12 container donwpart">
+                  <div class="col-sm-12 donwpart">
                     <div class="row">
                       <div class="col-3">Rechnungsbetrag zahlbar bis</div>
                       <div class="col-3 text-start" v-if="invoiceData">
@@ -165,7 +166,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="container mt-5">
+                  <div class=" mt-5">
                     <div class="row">
                       <div class="col-4 mt-5">Freundliche Grüsse</div>
                     </div>
@@ -178,7 +179,7 @@
                   </div>
                   <br>
                                   </div>
-                <div class="container">
+                <div class="">
                   <div id="footer" class="row mt-5 align-items-end">
                     <div class="col adress mt-3 mb-2 justify-content-start">
                       <!-- Firmen Angaben Fussnote -->
@@ -284,6 +285,7 @@
         </div>
       </div>
     </div>
+    
   </div>
   <div class="fixed-bottom">
 <Footer />
@@ -546,41 +548,43 @@ const exportToPDF = async () => {
 
 
 
-<style>
+<style scoped>
 body {
-  size: 0;
-  margin-top: 0;
-  color: #ffffff;
+  font-size: 12px;
+  margin: 0;
+  color: #000; /* Set your desired text color */
 }
 
-.invoice-section {
-  width: 210;
-  height: 197;
-  font-size: 70%;
-  margin-top: auto;
-  background-color: #ffffff;
+.container.invoice-section {
+  width: 100%;
+  max-width: 800px; /* Adjust this value as needed */
+  margin: 0 auto;
   padding: 20px;
-  border: 5px solid #ffffff;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 5%;
-  margin-top: 5%;
+  font-size: 14px;
 }
 
 .img {
-  max-width: 20%;
-  height: 20%;
+  max-width: 100%;
+  height: auto;
 }
+
+.text-default-d3 {
+  font-size: 14px;
+}
+
 .adress {
-  font-size: xx-small;
-  
+  font-size: 10px; /* Adjust the font size as needed */
 }
 
 .downpart {
-  margin-top: 20%;
+  margin-top: 20px;
 }
 
 .ansprechung {
-  margin-top: 10%;
+  margin-top: 10px;
 }
 
 .text-secondary-d1 {
@@ -588,23 +592,18 @@ body {
 }
 
 .page-header {
-  margin: 0 0 1rem;
-  padding-bottom: 1rem;
-  padding-top: .5rem;
+  margin: 0;
+  padding: 10px 0;
   border-bottom: 1px dotted #e2e2e2;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -ms-flex-align: center;
   align-items: center;
 }
 
 .page-title {
-  padding: 0;
   margin: 0;
-  font-size: 1.75rem;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .brc-default-l1 {
@@ -613,24 +612,24 @@ body {
 
 .ml-n1,
 .mx-n1 {
-  margin-left: -.25rem !important;
+  margin-left: 0 !important;
 }
 
 .mr-n1,
 .mx-n1 {
-  margin-right: -.25rem !important;
+  margin-right: 0 !important;
 }
 
 .mb-4,
 .my-4 {
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 0 !important;
 }
 
 hr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: 0;
-  border-top: 1px solid rgba(0, 0, 0, .1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .text-grey-m2 {
@@ -656,16 +655,16 @@ hr {
 
 .pb-25,
 .py-25 {
-  padding-bottom: .75rem !important;
+  padding-bottom: 5px !important;
 }
 
 .pt-25,
 .py-25 {
-  padding-top: .75rem !important;
+  padding-top: 5px !important;
 }
 
 .bgc-default-tp1 {
-  background-color: rgba(121, 169, 197, .92) !important;
+  background-color: rgba(121, 169, 197, 0.92) !important;
 }
 
 .bgc-default-l4,
@@ -674,7 +673,6 @@ hr {
 }
 
 .page-header .page-tools {
-  -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
@@ -685,7 +683,7 @@ hr {
 }
 
 .w-2 {
-  width: 1rem;
+  width: 10px;
 }
 
 .text-120 {
@@ -720,48 +718,36 @@ hr {
   vertical-align: bottom !important;
 }
 
-
-
 @media screen and (max-width: 768px) {
   body {
-    font-size: 14px;
+    font-size: 12px;
   }
 
-  .invoice-section {
-    width: auto;
-    height: auto;
-    font-size: medium;
-    margin-top: auto;
-    background-color: #ffffff;
+  .container.invoice-section {
+    max-width: none;
+    width: 100%;
+    font-size: 12px;
     padding: 2%;
-    border: 2px solid #ffffff;
+    border: 1px solid #ccc;
     border-radius: 2px;
   }
 
   .page-title {
-    font-size: 1.5rem;
+    font-size: 16px;
   }
 
   .text-secondary-d1 {
     color: #999999 !important;
   }
 
-
   .page-header {
-    margin: auto;
-    padding-bottom: 2%;
-    padding-top: content;
-    border-bottom: 1px dotted #e2e2e2;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    align-items: center;
+    padding: 5px 0;
   }
 
   .mb-4,
   .my-4 {
     margin: 0 !important;
   }
-}</style>
+}
+
+</style>
