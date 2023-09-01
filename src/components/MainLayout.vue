@@ -1,33 +1,31 @@
 <template>
-     <Header /> 
-      <div class="container mt-2 ">
-    
-  </div>
-<Hero  />
-  <div class="button-section-jumper" >
-    
-  </div>
+  <div class="app-container">
+    <Header />
+    <main class="content">
+      <Hero />
+      <div class="button-section-jumper" ></div>
 <Discription  />
-<!-- <editInvoice v-if="user" /> -->
-  <div class="button-section-jumper" >
+<div class="button-section-jumper" ></div>
 
-  </div>
-
-<div id="form" class="fit">
+    </main>
+    <div id="form" class="fit mt-2 bg-opacity-25 bg-primary">
   <InvoiceForm />
-<Footer />
-  <!--   <Login v-if="!user" @login-success="handleLoginSuccess" /> -->
-</div>
-  <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
-    <button class="btn btn-primary btn-sm">Scroll To Top</button>
+                      <div class="row text-center">
+                    <i class="col bi bi-star"></i>
+                    <i class="col bi bi-star"></i>
+                    <i class="col bi bi-star"></i>
+                    </div>
+  </div>
+    <Footer />
+    <div class="scroll-back-to-top" @click="scrollToTop" ref="scrollButton">
+      <button class="btn btn-primary btn-sm">Scroll To Top</button>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
-
  import Header from "./Header.vue"; 
-/* import Login from "./Login.vue"; */
 import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
@@ -37,7 +35,6 @@ import MyInvoice from './MyInvoice.vue';
 export default {
   components: {
      Header, 
-/*     Login, */
     Hero,
     Discription,
     Footer,
@@ -56,6 +53,8 @@ export default {
 }
 .fit {
   height:auto;
+  margin:5vh ;
+
 }
 .scroll-back-to-top {
   position: fixed;
@@ -71,17 +70,4 @@ export default {
   cursor: pointer;
 }
 
-
-
-/* .main-content {
-  flex: 1;
-  height: 100%;
-} */
-
-/* .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-} */
 </style>

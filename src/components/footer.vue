@@ -1,5 +1,5 @@
 <template>
-<footer class="footer py-2 bg-body-tertiary">
+<footer class="footer py-2 bg-body-tertiary ms-3 me-3">
   <div class="container-fluid text-start">
     <div class="row align-items-center">
       <div class="col">

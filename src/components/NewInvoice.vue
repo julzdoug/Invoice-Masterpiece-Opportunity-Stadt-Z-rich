@@ -1,15 +1,16 @@
 <template>
-  <div class="">
+   <div class="container">
     <Header />
+    <section class="content">
 <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-outline-primary m-2" @click="toggleComponent">
+        <button class="btn btn-outline-light m-2" @click="toggleComponent">
       {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
     </button>
     </div>
     <div class="row">
     <div class="" v-if="showVorhandeneComponent">
       <hr>
-      <h1 class="fs-4 mt-3 text-center bg-light">Vorhandene Einträge</h1>
+      <h1 class="fs-4 mt-3 text-light text-center fw-3">Vorhandene Einträge</h1>
       <selectInvoiceForm />
     </div>
 
@@ -18,7 +19,9 @@
       <InvoiceForm />
     </div>
   </div>
+   </section>
     </div>
+   
     <Footer />
 
 </template>
@@ -55,6 +58,39 @@ export default {
 
 
 <style>
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: rgb(101, 172, 212);
+}
+
+Header {
+  position: fixed;
+  width: 90%;
+  top: 0;
+  z-index: 1; /* Ensure the header is above other content */
+}
+
+.content {
+  margin-top: 60px; /* Adjust this margin to match your header's height */
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Adjust styles for mobile devices */
+@media (max-width: 576px) {
+  .container {
+    margin-top: 20%;
+    min-height: 100vh;
+  }
+}
 /* Style your modal overlay */
 .modal {
   position: fixed;
