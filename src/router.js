@@ -29,6 +29,7 @@ const routes = [
     path: '/MyInvoice',
     name: 'MyInvoice',
     component: MyInvoice,
+    requiresAuth: true,
     props: true,
     meta: { requiresAuth: true },
     children: [
@@ -84,6 +85,8 @@ const router = createRouter({
   routes,
 });
 const authUser = useAuthUser(router);
+
+
 
 router.beforeEach(async (to, from, next) => {
   const { isLoggedIn } = useAuthUser();

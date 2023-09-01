@@ -1,21 +1,21 @@
 <template>
-  <div class="container">
-    <Header />
-    <!--Titel und Auswahl-->
-    <section class="content">
+    <div class="page-container">
+  <Header />
+  <!--Titel und Aushwal-->
+    <section class="content ms-3 me-3">
       <!--Kunden Daten-->
       <div class="table-container">
         <table class="table table-hover text-center fit">
         <thead class="table-light">
           <tr>        
-            <th class="text-white bg-opacity-75 bg-primary">Kunde.</th>
-            <th class="text-white bg-opacity-75 bg-primary">Rechnungsteller</th>
-            <th class="text-white bg-opacity-75 bg-primary">Rechnungsnummer</th>
-            <th class="text-white bg-opacity-75 bg-primary">Rechnungs Datum</th>
-            <th class="text-white bg-opacity-75 bg-primary">Betrag</th>
-                <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-trash3"></i></span></th>
-            <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-printer"></i></span></th>
-            <th class="text-white bg-opacity-75 bg-primary text-center"><span><i class="bi bi-pencil"></i></span></th>
+            <th class="text-dark bg-light">Kunde.</th>
+            <th class="text-dark bg-light">Rechnungsteller</th>
+            <th class="text-dark bg-light">Rechnungsnummer</th>
+            <th class="text-dark bg-light">Rechnungs Datum</th>
+            <th class="text-dark bg-light">Betrag</th>
+                <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
+            <th class="text-dark bg-light text-center"><span><i class="bi bi-printer"></i></span></th>
+            <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
           </tr>
         </thead>
         <tbody class="table text-95 text-secondary-d3 text-start">
@@ -42,9 +42,10 @@
             </td>
           </tr>
         </tbody>
-        </table>
-      </div>
-    </section>
+      </table>  
+    </div>
+  </section>
+
   <section>
     <div v-if="isEditingInvoice">
         <editInvoice
@@ -57,9 +58,8 @@
         />
     </div>
   </section>
-   
-  </div>
-   <Footer />
+<Footer />
+</div>
 </template>
 
 <script>
@@ -74,6 +74,8 @@ import Footer from "./footer.vue";
 
 
 const authUser = useAuthUser();
+
+
 
 
 export default {
@@ -99,8 +101,10 @@ export default {
       });
     },
       reloadPage() {
-      location.reload(); // Reload the page
+      router.push({ name: 'MyInvoice' }); // Reload the page
+ 
     },
+    
   },
   props: {
     selectedInvoice: Object,
@@ -109,6 +113,7 @@ export default {
     customerData: Object,
     isEditingInvoice: Boolean,
   },
+
 
   setup() {
       const customerData = ref([]);
@@ -214,6 +219,7 @@ const showInvoiceForm = ref(false);
     await fetchInvoiceData();
     await fetchCustomerData();
     await fetchCompanyData();
+    
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -297,46 +303,57 @@ const showInvoiceForm = ref(false);
     };
   },
 };
+
+
 </script>
 
 
-<style>
-#app {
-  height: 100vh;
-}
-.fit {
-  height:auto;
-}
-.container {
+<style scoped>
+
+.page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: rgb(101, 172, 212);
-}
-
-Header {
-  position: fixed;
-  width: 90%;
-  top: 0;
-  z-index: 1; /* Ensure the header is above other content */
+  min-height: 100vh; /* Ensure the page takes at least the full viewport height */
 }
 
 .content {
-  margin-top: 60px; /* Adjust this margin to match your header's height */
-  padding: 20px;
-  flex-grow: 1;
+  flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  margin-top:15vh;
 }
+
+/* Style your Header and Footer components as needed */
+Header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+Footer {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+
+
+.custom-select {
+  height: 38px;
+  width: 50%;
+  
+}
+
+.back {
+  background-color: rgb(192, 212, 249);
+}
+
+
+
 
 .table-container {
   overflow-x: auto;
   max-width: 100%;
 }
 
-/* Adjust styles for mobile devices */
-@media (max-width: 576px) {
-  .container {
-    margin-top: 20%;
-    min-height: 100vh;
-  }
-}
 </style>
+

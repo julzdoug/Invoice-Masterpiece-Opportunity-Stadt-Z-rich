@@ -29,11 +29,11 @@
     >
       {{ user.email }}
     </button>
-    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="userDropdown">
       <li>
         <router-link
           :to="{ name: 'Logout' }"
-          class="dropdown-item bg-light text-danger"
+          class="dropdown-item bg-light text-dark"
         >
           Logout
         </router-link>

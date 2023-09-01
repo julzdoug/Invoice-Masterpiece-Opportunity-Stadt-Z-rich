@@ -8,16 +8,18 @@
           <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             data-bs-toggle="modal"></button>
         </div>
-        <div class="row ms-3">
+        <div class="row m-2">
           <div class="col-8 d-flex justify-content-start m-2">
-            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+            <div class="d-flex flex-wrap">
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
               @close="closeEditModal">Rechnungen</button>
-            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
               >Empfänger</button>
-              <button class="btn btn-outline-primary btn-md ms-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i></span></button>   
+              <button class="btn btn-outline-primary m-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i></span></button>   
+          </div>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body modal-dialog-scrollable">
           <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
             <div class="row">
               <div class="form-group col-md-6 col-sm-12 mb-3">           
@@ -33,7 +35,7 @@
                     </template>
                     <template v-else>
                       <div class="image-preview" v-if="companyData && companyData.logo">
-                        <img :src="companyData.logo" alt="Logo Preview" class="preview-image">
+                        <img :src="companyData.logo" alt="Logo Preview" class="preview-image" width="100" height="100">
                       </div>
                     </template>
                   </div>
@@ -315,16 +317,18 @@
           <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             data-bs-target="#exampleModalToggle" data-bs-toggle="modal"></button>
         </div>
-        <div class="row ms-3">
+        <div class="row m-2">
           <div class="col-8 d-flex justify-content-start m-2">
-            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle2"
+            <div class="d-flex flex-wrap">
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2"
               data-bs-toggle="modal">Rechnungen</button>
-            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
               @close="closeEditModal">Rechnungsteller</button>
-              <button class="btn btn-outline-primary btn-md ms-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil"></i></span></button> 
+              <button class="btn btn-outline-primary m-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil"></i></span></button> 
           </div>
         </div>
-        <div class="modal-body">
+        </div>
+        <div class="modal-body modal-dialog-scrollable">
           <form class="container mt-2" @submit.prevent="submitCustomerForm">
             <div class="row">
               <div class="col-8 d-flex justify-content-start">
@@ -490,15 +494,17 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
           </button>
         </div>
-        <div class="row ms-3">
+        <div class="row m-2">
           <div class="col-8 d-flex justify-content-start m-2">
-            <button class="btn btn-outline-primary" data-bs-target="#exampleModalToggle3"
+            <div class="d-flex flex-wrap">
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3"
               data-bs-toggle="modal">Rechnungsteller</button>
-            <button class="btn btn-outline-primary ms-2" data-bs-target="#exampleModalToggle"
+            <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle"
               data-bs-toggle="modal">Empfänger</button>
           </div>
         </div>
-        <div class="modal-body">
+        </div>
+        <div class="modal-body modal-dialog-scrollable">
           <form @submit.prevent="submitInvoiceForm">
 
             <div class="table-responsive">
@@ -529,7 +535,7 @@
                     <td>{{ row.invoice_number }}</td>
                     <td>
                       <template v-if="isEditingRow[index]">
-                        <input v-model="row.description" />
+                        <input class="form-control" v-model="row.description" />
                       </template>
                       <template v-else>
                         {{ row.description }}
@@ -537,7 +543,7 @@
                     </td>
                     <td>
                       <template v-if="isEditingRow[index]">
-                        <input v-model="row.quantity" type="number" />
+                        <input class="form-control" v-model="row.quantity" type="number" />
                       </template>
                       <template v-else>
                         {{ row.quantity }}
@@ -545,7 +551,7 @@
                     </td>
                     <td class="">
                       <template v-if="isEditingRow[index]">
-                        <input v-model="row.price_per_unit" type="number" />
+                        <input class="form-control" v-model="row.price_per_unit" type="number" />
                       </template>
                       <template v-else>
                         {{ row.price_per_unit }}
@@ -557,7 +563,7 @@
               </table>
                   </div>
        <div class="total-container"> <!-- Add a class to the container -->
-      <div class="total text-center">Total: {{ calculateTotal() }}</div>
+      <div class="total text-center">Gesamt Betrag: {{ calculateTotal() }}</div>
     </div>
   
               <div class="d-grid gap-2 col-6 mx-auto">
@@ -1232,7 +1238,10 @@ export default {
   margin-top: 10px;
   font-weight: bold;
 }
-
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
 /* 
 .table {
   table-layout: fixed;

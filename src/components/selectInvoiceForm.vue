@@ -1,11 +1,11 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
-<div v-if="step === 1" class="justify-content-center align-items-center">
+<div v-if="step === 1" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
   <div>
        
-    <h1 class="fs-5 bg-primary bg-opacity-25 text-light">Rechnungsteller wählen:</h1>
+    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
     
 <ul class="list-group">
-  <li class="text-light list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
+  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="company in companies"
@@ -132,43 +132,40 @@
             <th class="width=140 text-dark bg-light">Positionspreis</th>
           </tr>
         </thead>
-<tbody class="text-secondary-d3">
+<tbody class="text-95 text-secondary-d3">
           <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
  
             <td class="text-center">
-              <button class="btn btn-warning m-1" @click="editRow(index)">
+              <button class="text-dark bg-light text-center" @click="editRow(index)">
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
             <td class="text-center">
-              <button class="btn btn-warning m-1" @click="deleteRow(index)">
+              <button class="text-dark bg-light text-center" @click="deleteRow(index)">
                 <i class="bi bi-trash3"></i>
               </button>
 
             </td>
          
             <td>
-              <!-- <template v-if="isEditing[index]"> -->
-                <template v-if="isEditing && editingIndex === index">
-                <input v-model="row.description" />
+              <template v-if="isEditing[index]">
+                <input class="form-control" v-model="row.description" />
               </template>
               <template v-else>
                 {{ row.description }}
               </template>
             </td>
             <td>
-              <!-- <template v-if="isEditing[index]"> -->
-                <template v-if="isEditing && editingIndex === index">
-                <input v-model="row.quantity" type="number" />
+              <template v-if="isEditing[index]">
+                <input class="form-control" v-model="row.quantity" type="number" />
               </template>
               <template v-else>
                 {{ row.quantity }}
               </template>
             </td>
             <td class="text-95">
-              <!-- <template v-if="isEditing[index]"> -->
-                <template v-if="isEditing && editingIndex === index">
-                <input v-model="row.price_per_unit" type="number" />
+              <template v-if="isEditing[index]">
+                <input class="form-control" v-model="row.price_per_unit" type="number" />
               </template>
               <template v-else>
                 {{ row.price_per_unit }}
@@ -329,7 +326,6 @@ export default {
     // Bestellung eintragen
     const editRow = (index) => {
       isEditing.value[index] = true;
-      
     };
     // Bestellung löschen
     const deleteRow = async (index) => {
@@ -542,6 +538,11 @@ export default {
 <style css>
 .list-group-item:hover {
   background-color: #a7b7be; /* Change this color to your desired hover color */
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 
