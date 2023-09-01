@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <Header />
-<div class="d-grid gap-2 col-6 mx-auto bg-primary bg-opacity-25">
+<div class="d-grid gap-2 col-6 mx-auto bg-primary bg-opacity-25 topper">
         <button class="btn btn-outline-primary m-2" @click="toggleComponent">
       {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
     </button>
@@ -76,5 +76,10 @@ export default {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
+.topper {
+    flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  margin-top:15vh;
+}
 
 </style>

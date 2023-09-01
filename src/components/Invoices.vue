@@ -40,7 +40,7 @@
           </div>
 
           <div id="invoice-section" class="row align-item d-flex ms-5">
-            <div class="col-sm mt-4">
+            <div class="col-sm mt-2">
               <!-- Kunden Daten -->
               <div v-if="customerData">
                 <span class="text-sm text-dark-m2 align-middle date-element">{{ customerData ? customerData.name : 'Loading...'
@@ -56,10 +56,10 @@
                   <b class="text-600 date-element mt-3">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
                 </div>
                 <div class="col-sm-12">
-                  <div class="my-1 mt-5 date-element" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
+                  <div class="my-1 mt-5 date-elements" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
                     'Loading...' }} {{ customerData ? customerData.name :
                     'Loading...' }}</div>
-                  <div class="my-1 mt-3 date-element">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
+                  <div class="my-1 mt-3 date-elements">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
                     unterbreiten.</div>
                 </div>
               </div>
@@ -551,7 +551,10 @@ const exportToPDF = async () => {
   max-width: 150px; /* Adjust the max width as per your design */
   overflow-wrap: break-word; /* Allow word wrapping */
 }
-
+.date-elements {
+  max-width: 80%; /* Adjust the max width as per your design */
+  overflow-wrap: break-word; /* Allow word wrapping */
+}
 
 Footer {
   margin-top: 10%;
@@ -572,7 +575,7 @@ body {
   padding: 20px;
   border: 5px solid #ffffff;
   border-radius: 5px;
-  margin-bottom: 5%;
+  margin-bottom: 50%;
   margin-top: 5%;
   overflow-y: auto; 
 }
@@ -734,45 +737,192 @@ hr {
 
 
 @media screen and (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
+ .date-element {
+  max-width: 150px;
+  overflow-wrap: break-word;
+}
+.date-elements {
+  max-width: 80%;
+  overflow-wrap: break-word;
+}
 
-  .invoice-section {
-    width: auto;
-    height: auto;
-    font-size: medium;
-    margin-top: auto;
-    background-color: #ffffff;
-    padding: 2%;
-    border: 2px solid #ffffff;
-    border-radius: 2px;
-  }
+Footer {
+  margin-top: 10%;
+}
 
-  .page-title {
-    font-size: 1.5rem;
-  }
+body {
+  size: 0;
+  margin-top: 0;
+  color: #ffffff;
+  font-size: 14px; /* Adjust font size for mobile */
+}
 
-  .text-secondary-d1 {
-    color: #999999 !important;
-  }
+.invoice-section {
+  width: auto;
+  height: auto;
+  font-size: medium;
+  margin-top: auto;
+  background-color: #ffffff;
+  padding: 2%;
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+  overflow-y: auto;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
 
+.img {
+  max-width: 20%;
+  height: 20%;
+}
 
-  .page-header {
-    margin: 10%;
-    padding-bottom: 2%;
-    padding-top: content;
-    border-bottom: 1px dotted #e2e2e2;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    align-items: center;
-  }
+.adress {
+  font-size: xx-small;
+}
 
-  .mb-4,
-  .my-4 {
-    margin: 0 !important;
-  }
-}</style>
+.downpart {
+  margin-top: 20%;
+}
+
+.ansprechung {
+  margin-top: 10%;
+}
+
+.text-secondary-d1 {
+  color: #999999 !important;
+}
+
+.page-header {
+  margin: 10%;
+  padding-bottom: 2%;
+  padding-top: content;
+  border-bottom: 1px dotted #e2e2e2;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.page-title {
+  padding: 0;
+  margin: 0;
+  font-size: 1.5rem; /* Adjust font size for mobile */
+  font-weight: 300;
+}
+
+.brc-default-l1 {
+  border-color: #dce9f0 !important;
+}
+
+.ml-n1,
+.mx-n1 {
+  margin-left: -.25rem !important;
+}
+
+.mr-n1,
+.mx-n1 {
+  margin-right: -.25rem !important;
+}
+
+.mb-4,
+.my-4 {
+  margin: 0 !important;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.text-grey-m2 {
+  color: #888a8d !important;
+}
+
+.text-success-m2 {
+  color: #86bd68 !important;
+}
+
+.font-bolder,
+.text-600 {
+  font-weight: 600 !important;
+}
+
+.text-110 {
+  font-size: 110% !important;
+}
+
+.text-blue {
+  color: #478fcc !important;
+}
+
+.pb-25,
+.py-25 {
+  padding-bottom: .75rem !important;
+}
+
+.pt-25,
+.py-25 {
+  padding-top: .75rem !important;
+}
+
+.bgc-default-tp1 {
+  background-color: rgba(121, 169, 197, .92) !important;
+}
+
+.bgc-default-l4,
+.bgc-h-default-l4:hover {
+  background-color: #f3f8fa !important;
+}
+
+.page-header .page-tools {
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.btn-light {
+  color: #757984;
+  background-color: #f5f6f9;
+  border-color: #dddfe4;
+}
+
+.w-2 {
+  width: 1rem;
+}
+
+.text-120 {
+  font-size: 120% !important;
+}
+
+.text-primary-m1 {
+  color: #4087d4 !important;
+}
+
+.text-danger-m1 {
+  color: #dd4949 !important;
+}
+
+.text-blue-m2 {
+  color: #68a3d5 !important;
+}
+
+.text-150 {
+  font-size: 150% !important;
+}
+
+.text-60 {
+  font-size: 60% !important;
+}
+
+.text-grey-m1 {
+  color: #7b7d81 !important;
+}
+
+.align-bottom {
+  vertical-align: bottom !important;
+}
+}
+</style>
