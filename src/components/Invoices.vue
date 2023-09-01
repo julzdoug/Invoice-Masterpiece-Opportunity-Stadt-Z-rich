@@ -1,7 +1,7 @@
 <template>
   <Header />
   <!--Seten Information-->
-  <div class="page-content container mb-5" style="width: 21cm; height: 29.7cm;">
+  <div class="page-content container" style="width: 21cm; height: 29.7cm;">
     <div class="page-header text-blue-d2">
       <h1 class="page-title text-secondary-d1">
         {{ invoiceData.invoice_number }}
@@ -43,47 +43,48 @@
             <div class="col-sm mt-4">
               <!-- Kunden Daten -->
               <div v-if="customerData">
-                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.name : 'Loading...'
+                <span class="text-sm text-dark-m2 align-middle date-element">{{ customerData ? customerData.name : 'Loading...'
                 }}</span>&nbsp;
-                <span class="text-sm text-dark-m2 align-middle">{{ customerData ? customerData.surname : 'Loading...'
+                <span class="text-sm text-dark-m2 align-middle date-element">{{ customerData ? customerData.surname : 'Loading...'
                 }}</span>
-                <div class="my-1">{{ customerData ? customerData.street : 'Loading...' }} {{ customerData ?
+                <div class="my-1" date-element>{{ customerData ? customerData.street : 'Loading...' }} {{ customerData ?
                   customerData.streetnumber : 'Loading...' }}</div>
-                <div class="my-1" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }} {{
+                <div class="my-1 date-element" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }} {{
                   customerData ? customerData.place : 'Loading...' }}</div>
-                <div class="my-1 mt-0 pt-5" v-if="invoiceData">
+                <div class="my-1 mt-0 pt-5 date-element" v-if="invoiceData">
                   <div class="ansprechung"></div>
-                  <b class="text-600">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
+                  <b class="text-600 date-element mt-3">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
                 </div>
                 <div class="col-sm-12">
-                  <div class="my-1 mt-5" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
+                  <div class="my-1 mt-5 date-element" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
                     'Loading...' }} {{ customerData ? customerData.name :
                     'Loading...' }}</div>
-                  <div class="my-1 mt-3">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
+                  <div class="my-1 mt-3 date-element">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
                     unterbreiten.</div>
                 </div>
               </div>
             </div>
 
-            <div class="col-sm-4 me-5 be-1 mt-3">
-              <!-- RechnungsDaten -->
-              <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
-                <div class="my-2 d-flex justify-content-between">
-                  <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
-                </div>
-                <div class="my-2 d-flex justify-content-between">
-                  <div class="col-7 texts-end"> <span class="">Datum:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
-                </div>
+ <div class="col-sm-4 col-4 me-5 be-1 mt-2">
+    <!-- RechnungsDaten -->
+    <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
+      <div class="my-2 d-flex justify-content-between">
+        <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
+        <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
+      </div>
+      <div class="my-2 d-flex justify-content-between">
+        <div class="col-7 texts-end"> <span class="">Datum:</span></div>
+        <!-- Apply CSS styles to the date element -->
+        <div class="col-10 pe-5 text-end date-element" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
+      </div>
                 <div class="my-2 d-flex justify-content-between">
                   <div class="col-7 texts-end"> <span class="">UiD:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="customerData">{{ companyData ? companyData.uid_number :
+                  <div class="col-10 pe-5 text-end  text-end date-element" v-if="customerData">{{ companyData ? companyData.uid_number :
                     'Loading...' }}</div>
                 </div>
                 <div class="my-2 d-flex justify-content-between">
                   <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
-                  <div class="col-10 pe-5 text-end" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
+                  <div class="col-10 pe-5 text-end  text-end date-element" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
                   </div>
                 </div>
               </div>
@@ -285,9 +286,7 @@
       </div>
     </div>
   </div>
-  <div class="fixed-bottom">
 <Footer />
-</div>
 </template> 
 
 <script>
@@ -547,6 +546,17 @@ const exportToPDF = async () => {
 
 
 <style>
+
+.date-element {
+  max-width: 150px; /* Adjust the max width as per your design */
+  overflow-wrap: break-word; /* Allow word wrapping */
+}
+
+
+Footer {
+  margin-top: 10%;
+}
+
 body {
   size: 0;
   margin-top: 0;
@@ -564,6 +574,7 @@ body {
   border-radius: 5px;
   margin-bottom: 5%;
   margin-top: 5%;
+  overflow-y: auto; 
 }
 
 .img {
@@ -588,7 +599,7 @@ body {
 }
 
 .page-header {
-  margin: 0 0 1rem;
+  margin:10%;
   padding-bottom: 1rem;
   padding-top: .5rem;
   border-bottom: 1px dotted #e2e2e2;
@@ -748,7 +759,7 @@ hr {
 
 
   .page-header {
-    margin: auto;
+    margin: 10%;
     padding-bottom: 2%;
     padding-top: content;
     border-bottom: 1px dotted #e2e2e2;
