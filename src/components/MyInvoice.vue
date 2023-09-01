@@ -1,11 +1,8 @@
 <template>
-
   <Header />
   <!--Titel und Aushwal-->
    <section>
       <!--Kunden Daten-->
-
-
     <div class="justify-content-center align-items-center">
               <div class="my-1 ms-2 back">Meine Angaben:<br>       
       </div>
@@ -46,15 +43,11 @@
             </td>
           </tr>
         </tbody>
-      </table>
-      
+      </table>  
     </div>
-
   </section>
-
   <section>
     <div v-if="isEditingInvoice">
-
         <editInvoice
           :selectedInvoice="selectedInvoice"
           :invoiceData="invoiceData"
@@ -65,11 +58,9 @@
         />
     </div>
   </section>
-
   <section>
 <Footer />
 </section>
-
 </template>
 
 <script>

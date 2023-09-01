@@ -72,16 +72,15 @@
       <h1>Mach dein Konto</h1>
       <div class="social-container">
                    <button class="btn btn-google justify-content-center btn-outline-secondary" @click.prevent="handleLogingoogle('google')">
-  <i class="bi bi-google"></i> Login with Google
-</button>
+  <i class="bi bi-google"></i></button>
 
                   </div>
                   <span><h5>Registriere dich mit deine E-mail</h5></span>
                   <span><h6>Los geht!!</h6></span>
                   <i class="bi bi-arrow-down-square-fill"></i>
-                  <input type="email" v-model="form.signupEmail" placeholder="Email" autocomplete="username"
+                  <input type="email" v-model="forms.email" placeholder="Email" autocomplete="username"
                     class="form-control form-control-lg" />
-                  <input type="password" v-model="form.signupPassword" autocomplete="new-password" placeholder="Passwort"
+                  <input type="password" v-model="forms.password" autocomplete="new-password" placeholder="Passwort"
                     class="form-control form-control-lg" />
                     <div class="row">
                     <i class="col bi bi-star"></i>
@@ -104,7 +103,7 @@
                     <h1>Anmelden</h1>
                     <div class="social-container">
                        <button class="btn btn-google justify-content-center btn-outline-secondary"
-                        @click.prevent="handleLogingoogle('google')"><i class="bi bi-google">Login with Google</i></button>
+                        @click.prevent="handleLogingoogle('google')"><i class="bi bi-google">oogle</i></button>
                     </div>
                     <span>Benutze dein Konto</span>
                     <input type="email" v-model="form.email" placeholder="Email" autocomplete="Benutzer Name"
@@ -162,10 +161,13 @@ const user = ref(null);
 const form = ref({
   email: "",
   password: "",
-  signupEmail: "",
-  signupPassword: "",
+
 });
-   
+   const forms = ref({
+  email: "",
+  password: "",
+
+});
 // call the proper login method from the AuthUser composable
 // on the submit of the form
 const handleLogingoogle = async (provider) => {
@@ -191,19 +193,25 @@ const handleLogin = async () => {
 };
 
 // function to hand the form submit
-const handleSubmit = async () => {
+const handleSubmit = async ({ email, password, ...meta }) => {
+
   try {
-    const user = await register({
-      email: form.signupEmail,
-      password: form.signupPassword,
+    const { data, error } = await supabase.auth.signUp({
+      email: forms.value.email,
+      password: forms.value.password,
       // You can pass additional meta data if needed
     });
 
-    console.log("User signed up successfully:", user);
-    alert("You've successfully signed up. Please check your email for confirmation.");
-    router.push("/EmailConfirmation");
+    if (error) {
+      // Handle error, show an alert, etc.
+      console.error("Sign-up error:", error);
+    } else {
+      // Redirect to the EmailConfirmation.vue page
+      router.push("/email-confirmation");
+    }
   } catch (error) {
-    alert(error.message);
+    // Handle other errors if needed
+    console.error("Unexpected error:", error);
   }
 };
 
@@ -537,4 +545,23 @@ input {
   margin: 0 5px;
   height: 40px;
   width: 40px;
-}</style>
+}
+
+.btn-google {
+  background-color: #002fff; /* Google's button color */
+  color: #ffffff; /* Text color */
+  border: 1px solid #0898ff; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  padding: 8px 16px; /* Padding around the text */
+  font-size: 14px; /* Text size */
+  font-weight: bold; /* Text boldness */
+  cursor: pointer; /* Show pointer cursor on hover */
+   
+}
+
+.btn-google:hover {
+  background-color: #b3c3ec; /* Lighten the background color on hover */
+}
+
+
+</style>

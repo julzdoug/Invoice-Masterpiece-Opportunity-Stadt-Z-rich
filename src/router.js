@@ -11,11 +11,7 @@ import Password from '../src/components/ForgotPassword.vue';
 
 
 const routes = [
-  {
-    name: 'EmailConfirmation',
-    path: '/email-confirmation',
-    component: Email,
-  },
+
   {
     name: 'Home',
     path: '/',
@@ -60,6 +56,11 @@ const routes = [
     name: 'NewInvoice',
     meta: { requiresAuth: true },
     component: NewInvoice,
+  },
+    {
+    name: 'EmailConfirmation',
+    path: '/email-confirmation',
+    component: Email,
   },
   {
     name: 'ForgotPassword',

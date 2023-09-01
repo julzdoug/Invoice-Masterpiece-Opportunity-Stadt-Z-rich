@@ -1,20 +1,20 @@
 <template> 
-  <nav class="navbar navbar-expand-lg bg-body-light">
-    <div class="container-fluid bg-light">
+  <nav class="navbar navbar-expand-lg fixed-top bg-light ms-3 me-3 mt-0">
+    <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse bg-light custom-collapse" id="navbarText">
+      <div class="collapse navbar-collapse custom-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-4">
           <li class="nav-item">
-            <a class="nav-link active bg-light" @click="handleMenuClick('Me')">Startseite</a>
+            <button class="nav-link active" @click="handleMenuClick('Me')">Startseite</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5 bg-light" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</a>
+            <button class="nav-link ms-5" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link ms-5 bg-light" @click="handleMenuClick('NewInvoice')">Neue Rechnung</a>
+            <button class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Neue Rechnung</button>
           </li>
         </ul>
         <span class="navbar-text Zachnung me-3">Zachnung</span>
