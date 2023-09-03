@@ -10,7 +10,7 @@
                   class="d-inline-block align-text-top mb-3">
               </div>
               <div class="col">
-                <div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Rechnung Erstellen' :
+                <div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Login/ Registrieren' :
                   'Zurück' }}</div>
               </div>
             </div>
@@ -30,10 +30,10 @@
               </div>
               <div class="col-md-4 order-md-1">
                 <h1 class="display-3 fw-bold">Zachnung</h1>
-                <h3 class="fw-normal text-muted mb-3">Mach deine Rechnung</h3>
-                <h3 class="fw-normal text-muted mb-3">danach zu einem PDF</h3>
+                <h3 class="fw-normal text-muted mb-3">Mach deine PDF Rechnung</h3>
+                <h3 class="fw-normal text-muted mb-3">mit Zachnung</h3>
                 <div class="d-flex gap-3 justify-content-center lead fw-normal">
-                  <button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Los gehts</button>
+                  <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Los gehts</button>
                 </div>
               </div>
             </div>
@@ -49,12 +49,11 @@
               <div class="product-device product-device-2 shadow-sm d-md-none"></div>
             </div>
             <div class="col-md-4 order-md-1">
-              <h1 class="display-3 fw-bold">In wenigen Schritte eine Rechnung machen</h1>
-              <h3 class="fw-normal text-muted mb-3">Tragen Sie Ihe Daten ein und Bestellungen<br>mit einem Knopfdruck zur
-                fertigen PDF Rechnung</h3>
+              <h1 class="display-3 fw-bold">Ganz einfach Ihre Daten per Formular eingeben</h1>
+              <h3 class="fw-normal text-muted mb-3">und danach<br>die fertige PDF speichern</h3>
 
               <div class="d-flex gap-3 justify-content-center lead fw-normal">
-                <button type="button" class="btn btn-outline-secondary" @click="toggleLogin">Start</button>
+                <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Start</button>
               </div>
             </div>
           </div>
@@ -314,7 +313,7 @@ const scrollToTop = () => {
   height: auto;
   width: auto;
   display: inline-block;
-  background: lightgray;
+  background: rgb(0, 34, 255);
   color: #fff;
   outline: gray;
   text-transform: uppercase;

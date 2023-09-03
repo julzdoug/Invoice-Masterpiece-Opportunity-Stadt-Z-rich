@@ -14,7 +14,7 @@
       <div class="page-tools">
         <a class="btn bg-white btn-light mx-1px text-95" ref="content" data-title="PDF" @click="printInvoice">
           <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-          Drucken
+          PDF Speichern
         </a>
       </div>
     </div>
