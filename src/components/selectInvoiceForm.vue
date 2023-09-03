@@ -1,6 +1,7 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
 <div v-if="step === 1" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
   <div>
+    
        
     <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
     
