@@ -12,10 +12,10 @@
           <div class="col-8 d-flex justify-content-start m-2">
             <div class="d-flex flex-wrap">
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
-              @close="closeEditModal">Rechnungen</button>
+              @close="closeEditModal">Rechnungspositionen</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
               >Empfänger</button>
-              <button class="btn btn-outline-primary m-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i></span></button>   
+              <button class="btn btn-outline-primary m-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i>Ändern</span></button>   
           </div>
           </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="row">
               <div class="form-group col-md-6 col-sm-12 mb-3">           
                                 
-                <label for="logoInput">Company Logo</label>
+                <label for="logoInput">Firma Logo</label>
                 <div class="text-center col-4">
                   <div class="input-with-image">
                     <template v-if="isEditing">
@@ -321,10 +321,10 @@
           <div class="col-8 d-flex justify-content-start m-2">
             <div class="d-flex flex-wrap">
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2"
-              data-bs-toggle="modal">Rechnungen</button>
+              data-bs-toggle="modal">Rechnungspositionen</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
               @close="closeEditModal">Rechnungsteller</button>
-              <button class="btn btn-outline-primary m-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil"></i></span></button> 
+              <button class="btn btn-outline-primary m-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil">Ändern</i></span></button> 
           </div>
         </div>
         </div>
@@ -490,7 +490,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header back">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechnung</h1>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Rechnungspositionen</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" @click="closeModalAndReloadParent">
           </button>
         </div>
@@ -524,7 +524,7 @@
                   <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
                     <td class="text-center">
                       <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
-                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-pencil">Drücke mich</i>
                       </button>
                     </td>
                     <td class="text-center">
