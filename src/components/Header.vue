@@ -14,10 +14,10 @@
             <button class="nav-link ms-5" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Neue Rechnung</button>
+            <button class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Rechnung erstellen</button>
           </li>
         </ul>
-        <span class="navbar-text Zachnung me-3">Zachnung</span>
+        <span class="navbar-text Zachnung me-3">Benutzerkonto</span>
         
   <div class="dropdown me-3">
     <button

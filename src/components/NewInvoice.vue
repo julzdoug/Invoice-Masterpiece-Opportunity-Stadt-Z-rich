@@ -9,7 +9,6 @@
     <div class="row bg-primary bg-opacity-25 mt-3 me-3 ms-3">
     <div class="" v-if="showVorhandeneComponent">
       <hr>
-      <h1 class="fs-4 mt-3 text-center">Vorhandene Einträge</h1>
       <selectInvoiceForm />
     </div>
 

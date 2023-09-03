@@ -18,9 +18,9 @@
       </div>
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
-          <label for="validation3">Unternehmen:</label>
+          <label for="validation3">Branche:</label>
           <div class="input-container">
-            <input type="text" class="form-control text-start" placeholder="Unternehmen" required v-model="companyData.profession">
+            <input type="text" class="form-control text-start" placeholder="Branche" required v-model="companyData.profession">
           </div>
           <div class="invalid-feedback">
             Unternehmen Bitte eintragen.
@@ -308,9 +308,9 @@
       </div>
     </form>
           <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary mb-5" @click="submitCustomerForm">Next</button>
-    <button class="btn btn-secondary me-3 mb-5" @click="previousStep">Previous</button>
-
+    
+    <button class="btn btn-secondary me-3 mb-5" @click="previousStep">Zurück</button>
+<button class="btn btn-primary mb-5" @click="submitCustomerForm">Weiter</button>
     </div>
   </div>
   </div>
@@ -322,9 +322,9 @@
     <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
-    <div>
-    <button class="col btn btn-primary mt-3 mb-5" @click="nextStep()">Next</button>
-    <button class="col btn btn-secondary mt-3 me-3 mb-5" @click="previousStep">Previous</button>
+    <div>   
+    <button class="col btn btn-secondary mt-3 me-3 mb-5" @click="previousStep">Zurück</button>
+     <button class="col btn btn-primary mt-3 mb-5" @click="nextStep()">Weiter</button>
 </div>
   </div>
   
@@ -396,9 +396,10 @@
           </tbody>
    </table>
     </div>
-    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="addNewRow">Add New Row</button>
-    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="saveChanges">Save Invoice</button>
-    <button class="btn btn-secondary ms-3 mb-5" @click="previousStep">Previous</button>
+    <button class="btn btn-secondary ms-3 mb-5" @click="previousStep">Zurück</button>
+    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="addNewRow">Neue Rechnungsposition</button>
+    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="saveChanges">Rechnung erstellen</button>
+    
   </div>
 </div>
 

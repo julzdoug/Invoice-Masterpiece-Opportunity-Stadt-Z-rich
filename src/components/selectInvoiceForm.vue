@@ -1,6 +1,7 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
 <div v-if="step === 1" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
   <div>
+    
        
     <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
     
@@ -99,20 +100,24 @@
       </div>
       
         <div v-if="selectedCustomer && !selectedInvoiceNumber">
-          <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number">
-
+          <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number" required  @input="checkInvoiceNumber">
+<p class="text-danger" v-if="!invoiceNumberEntered">Bitte Rechnungsnummer eintragen</p>
         </div>
         <div class="row mt-3">
         <div class="d-flex">
            <button class="btn btn-outline-primary me-3 col" @click="previousStep()">Zurück</button>
                   <button @click="generateInvoiceNumber" class="btn btn-outline-primary col me-3 ">Rechnungsnummer Generieren</button>
              
-<button class="btn btn-outline-primary col" @click="nextStep()">Next</button>
+        <button
+          class="btn btn-outline-primary col"
+          @click="nextStep()"
+          :disabled="!invoiceNumberEntered"
+        >
+          Weiter
+        </button>
       </div>
 </div>
 </div>
-
-
 
 
   <div v-if="step === 4" class="justify-content-center align-items-center">
@@ -137,7 +142,7 @@
  
             <td class="text-center">
               <button class="text-dark bg-light text-center" @click="editRow(index)">
-                <i class="bi bi-pencil"></i>
+                <i class="bi bi-pencil">drücke mich!</i>
               </button>
             </td>
             <td class="text-center">
@@ -175,12 +180,12 @@
            </tr>
         </tbody>
       </table>
-      <p v-else>No invoice data available.</p>
+     <p class="text-danger" v-else>Bitte Rechnungsposition eintragen.</p> 
     </div>
     <div class="row bg-primary bg-opacity-25">
-    <button class="col btn btn-primary mt-3" @click="addNewRow">Hinzufügen</button>
+    <button class="col btn btn-primary mt-3" @click="addNewRow">Neue Rechnungspositionen</button>
     <button class="col btn btn-secondary mt-3 ms-3" @click="previousStep()">Zurück</button>
-    <button class="col btn btn-primary ms-3 mt-3" @click="saveChanges">Zur Rechnung</button>
+    <button v-if="filteredInvoiceRows.length > 0"  class="col btn btn-primary ms-3 mt-3" @click="saveChanges">Rechnung generieren</button>
             </div>
   </div>
 
@@ -197,6 +202,8 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const storage = supabase.storage;
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
+
+
 
 export default {
   components: {
@@ -384,6 +391,12 @@ export default {
             }
           }
         }
+
+            await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0); // This delay allows the current event loop to finish before redirection
+    });
         navigateToInvoice();
       } catch (error) {
         console.error('Failed to update data:', error);
@@ -403,9 +416,11 @@ export default {
     };
     // Rechnungsnummer Generieren
     const generateInvoiceNumber = () => {
-      // Generate a new invoice number logic goes here
-      // You can use a random number generator or any other logic you prefer
-      invoiceNumber.value = 'INV-' + Math.floor(Math.random() * 100000);
+  const currentYear = new Date().getFullYear();
+  const randomNum = Math.floor(Math.random() * 100000);
+
+  // Combine the current year and the random number to form the invoice number
+  invoiceNumber.value = `${currentYear}-${randomNum}`;
     };
     // Ausgewählte daten Laden
     const fetchSelectedData = async () => {
@@ -476,7 +491,10 @@ export default {
       fetchInvoiceData();
     });
 
+        const invoiceNumberEntered = computed(() => !!invoiceNumber.value);
+
     return {
+       invoiceNumberEntered, 
       customers,
       companies,
   selectedCompany,

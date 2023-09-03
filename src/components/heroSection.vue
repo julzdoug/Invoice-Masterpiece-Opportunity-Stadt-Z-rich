@@ -4,9 +4,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-4 order-md-1">
-        <h1 class="display-3 fw-bold">Rechnungs Generator</h1>
-        <h3 class="fw-normal text-muted mb-3">Erstelle deine Rechnung</h3>
-        <h3 class="fw-normal text-muted mb-3">zu einem PDF</h3>
+        <h1 class="display-3 fs-1 fw-bold">Rechnungs Generator</h1>
+        <h3 class="fw-normal fs-3 text-muted mb-3">Erstelle deine Rechnung</h3>
+        <h3 class="fw-normal fs-3 text-muted mb-3">zu einem PDF</h3>
         <div class="d-flex gap-3 justify-content-center lead fw-normal">
         <button class="btn btn-primary btn-block" @click="jumpToSection('form')">Start</button>
         </div>
