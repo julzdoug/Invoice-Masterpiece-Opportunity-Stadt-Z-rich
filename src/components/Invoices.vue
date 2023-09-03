@@ -1,3 +1,4 @@
+
 <template>
   <Header />
   <!--Seten Information-->
@@ -18,11 +19,11 @@
       </div>
     </div>
     <!--Firmen Daten-->
-    <div id="invoice-section" class="container invoice-section px-0 mt-0">
+    <div id="invoice-section" class="invoice-section px-0 mt-0 ms-1 me-4">
       <div class="row">
 
         <div class="col-12 col-lg-12">
-          <div class="row">
+          <div class="row mb-5">
             <div class="col-12">
               <div class="text-center text-150 print-text-100">
                 <img  class="img" v-if="companyData && companyData.logo" :src="companyData.logo" alt="Company Logo" width="150" height="150" />
@@ -39,8 +40,8 @@
             </div>
           </div>
 
-          <div id="invoice-section" class="row align-item d-flex ms-5">
-            <div class="col-sm mt-2">
+          <div id="invoice-section" class="row align-item d-flex">
+            <div class="col-8 mt-3">
               <!-- Kunden Daten -->
               <div v-if="customerData">
                 <span class="text-sm text-dark-m2 align-middle date-element">{{ customerData ? customerData.name : 'Loading...'
@@ -51,51 +52,57 @@
                   customerData.streetnumber : 'Loading...' }}</div>
                 <div class="my-1 date-element" v-if="customerData">{{ customerData ? customerData.postcode : 'Loading...' }} {{
                   customerData ? customerData.place : 'Loading...' }}</div>
-                <div class="my-1 mt-0 pt-5 date-element" v-if="invoiceData">
-                  <div class="ansprechung"></div>
-                  <b class="text-600 date-element mt-3">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
-                </div>
-                <div class="col-sm-12">
-                  <div class="my-1 mt-5 date-elements" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
-                    'Loading...' }} {{ customerData ? customerData.name :
-                    'Loading...' }}</div>
-                  <div class="my-1 mt-3 date-elements">Vielen Dank für den Auftrag, Ich erlaube mir, <br>Ihnen folgende Rechnung zu
-                    unterbreiten.</div>
+
                 </div>
               </div>
-            </div>
+          
 
- <div class="col-sm-4 col-4 me-5 be-1 mt-2">
+ <div class="col-4">
     <!-- RechnungsDaten -->
-    <div class="col-sm pe-5 text-dark-m2 text-sm my-3">
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">Rechnung - Nr:</span></div>
-        <div class="col-10 pe-5 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
+    <div class="text-dark-m2 text-sm my-3">
+      <div class="my-1 d-flex justify-content-between">
+        <div class="col-6 texts-end"> <span class="">Rechnung - Nr:</span></div>
+        <div class="col-6 text-end" v-if="invoiceData">{{ invoiceData.invoice_number }}</div>
       </div>
-      <div class="my-2 d-flex justify-content-between">
-        <div class="col-7 texts-end"> <span class="">Datum:</span></div>
+      <div class="my-1 d-flex justify-content-between">
+        <div class=" texts-end"> <span class="">Datum:</span></div>
         <!-- Apply CSS styles to the date element -->
-        <div class="col-10 pe-5 text-end date-element" v-if="invoiceData">{{ invoiceData.invoice_date }}</div>
+        <div class="text-end date-element" v-if="invoiceData">{{ new Date(invoiceData.invoice_date).getDate() }}.{{ new Date(invoiceData.invoice_date).getMonth() + 1 }}.{{ new Date(invoiceData.invoice_date).getFullYear() }}</div>
       </div>
-                <div class="my-2 d-flex justify-content-between">
-                  <div class="col-7 texts-end"> <span class="">UiD:</span></div>
-                  <div class="col-10 pe-5 text-end  text-end date-element" v-if="customerData">{{ companyData ? companyData.uid_number :
+                <div class="my-1 d-flex justify-content-between">
+                  <div class=" texts-end"> <span class="">UiD:</span></div>
+                  <div class="text-end  text-end date-element" v-if="customerData">{{ companyData ? companyData.uid_number :
                     'Loading...' }}</div>
                 </div>
-                <div class="my-2 d-flex justify-content-between">
-                  <div class="col-7 texts-end"> <span class="">MwSt:</span></div>
-                  <div class="col-10 pe-5 text-end  text-end date-element" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
+                <div class="my-1 d-flex justify-content-between">
+                  <div class=" texts-end"> <span class="">MwSt:</span></div>
+                  <div class="text-end  text-end date-element" v-if="companyData">{{ companyData ? companyData.mwst : 'Loading...' }}
                   </div>
                 </div>
               </div>
             </div>
-            <div class="container">
+  </div>
+
+                <div class="my-1 mt-0 pt-5 date-element" v-if="invoiceData">
+                  <div class="ansprechung"></div>
+                  <b class="text-600 date-element mt-2">Rechnung-Nr.</b><b class="text-600 ms-3">{{ invoiceData.invoice_number }}</b>
+                </div>
+                <div class="col-sm-12">
+                  <div class="my-1 mt-2 date-elements" v-if="customerData">Sehr Geehrter {{ customerData ? customerData.gender :
+                    'Loading...' }} {{ customerData ? customerData.name :
+                    'Loading...' }}</div>
+                  <div class="my-1 mt-2 date-elements">Vielen Dank für den Auftrag, Ich erlaube mir, Ihnen folgende Rechnung zu
+                    unterbreiten.</div>
+
+
+
+
               <div class="row">
-                <div id="billhead" class="col-sm-11 d-flex">
-                  <table class="table-responsive col table-borderless border-0 border-b-2" aria-label="">
+                <div id="billhead" class="col-sm-12 mt-5 d-flex">
+                  <table class="table-responsive col table-borderless mb-5" aria-label="">
                     <!-- Rechnungsangaben -->
                     <thead>
-                      <tr class="row text-600 py-25">
+                      <tr class="row text-600 py-10 mb-3">
                         <th class="text-dark bg-light col-2 col-sm-1">Pos.</th>
                         <th class="text-dark bg-light col-8 col-sm-5">Bezeichnung/Beschreibung</th>
                         <th class="text-dark bg-light d-none d-sm-block col-sm-2">Menge</th>
@@ -104,7 +111,7 @@
                       </tr>
                     </thead>
                     <tbody class="text-95 text-secondary-d3">
-                      <tr class="row text-300 py-25" v-for="(row, index) in invoiceData.invoice_rows" :key="index">
+                      <tr class="row text-300 py-10" v-for="(row, index) in invoiceData.invoice_rows" :key="index">
                         <td class="text-dark col-2 col-sm-1">{{ index + 1 }}</td>
                         <td class="col-8 col-sm-5">{{ row.description }}</td>
                         <td class="d-none d-sm-block col-sm-2">{{ row.quantity }}</td>
@@ -114,61 +121,61 @@
                     </tbody>
                   </table>
                 </div>
+                </div>
                 <!-- Kalkulation-->
-                <div class="row brc-default-l2 text-start">
-                  <div id="bill" class="col-sm-12 container text-start mt-5">
+   
+            
                     <div class="row">
-                      <div class="col-3">
+                      <div class="col-6">
                         Zwischensumme
                       </div>
-                      <div class="col text-end">
-                      </div>
-                      <div class="col-2 text-end me-4">
+
+                      <div class="col-6 text-end">
                         {{ invoiceTotal }}
                       </div>
                     </div>
                     <div class="row align-items">
-                      <div class="col-5">
+                      <div class="col-4">
                         Mehrwertsteuer
                       </div>
-                      <div class="col text-center">
+                      <div class="col-4 ps-5 text-center">
                         7,7%
                       </div>
-                      <div class="col-2 text-end me-4">
+                      <div class="col-4 text-end">
                         {{ invoiceTotalWithTax }}
                       </div>
                     </div>
                     <div class="row align-items-end">
-                      <div class="col">
+                      <hr class="col-12">
+                      <div class="col-4">
                         <p class="fw-bold mb-0">Rechnugsbetrag</p>ink.Material
                       </div>
-                      <div class="col text-center">
+                      <div class="col-4 text-center">
                         <p class="fw-bold">inkl.MwSt.</p>
                       </div>
-                      <div class="col-2 text-end me-4">
-                        <u>
-                          <p class="fw-bold text-end">{{ finalCalculation }}</p>
-                        </u>
-                      </div>
-                    </div>
-                  </div>
+                      <div class="col-4 text-end">
+                        <u class="double-underline">
+                          <p class="fw-bold text-end">{{ finalCalculation }}</p>                       
+                        </u>                        
+                      </div>                    
+                    </div>              
                   
 
                    <!-- Rechnungs end sätze -->
 
 
-                  <hr class="row brc-default-l1 mx-n1 mb-4 mt-5" />
-                  <div class="col-sm-12 container donwpart">
+                 
+                  <div class="col-sm-12 donwpart mt-5">
                     <div class="row">
                       <div class="col-3">Rechnungsbetrag zahlbar bis</div>
                       <div class="col-3 text-start" v-if="invoiceData">
-                        <p class="fw-bold mb-0">{{ invoiceData.invoice_date }} + 30days</p>
+                        <p class="fw-bold mb-0">{{ new Date(invoiceData.invoice_date).getDate() }}.{{ new Date(invoiceData.invoice_date).getMonth() + 1 }}.{{ new Date(invoiceData.invoice_date).getFullYear() }} + 30days</p>
                       </div>
                     </div>
                   </div>
-                  <div class="container mt-5">
+                  <div class="mt-3">
                     <div class="row">
-                      <div class="col-4 mt-5">Freundliche Grüsse</div>
+                      <div class="col-4 mt-3">Freundliche Grüsse</div>
                     </div>
                     <div class="row mt-5">
                       <div class="col-4" v-if="companyData">{{ companyData ? companyData.name : 'Loading...' }}{{
@@ -178,9 +185,10 @@
                     </div>
                   </div>
                   <br>
-                                  </div>
-                <div class="container">
-                  <div id="footer" class="row mt-5 align-items-end">
+                            
+      
+                  <div id="footer" class="mt-5 align-items-end ">
+                    <div class="row">
                     <div class="col adress mt-3 mb-2 justify-content-start">
                       <!-- Firmen Angaben Fussnote -->
                       <div>
@@ -201,86 +209,63 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col mt-3 adress mb-2 justify-content-end">
+                    <div class="col mt-3 adress mb-2 justify-content-center">
                       <!-- Second column aligned at the center -->
-                      <div class="row">
-                        <div class="col-10 text-center">
+               
+                        
                           <div class="row">
-                            <div class="col text-start">
+                            <div class="text-start">
                               <div class="text-sm-3 text-dark-m2">GLKB</div>
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-2">
-                              <div class="text-sm ps-6 text-start text-dark">Konto:</div>
-                            </div>
-                            <div class="col-7 text-end">
+                           
+                              <div class="col-2 text-sm ps-6 text-start text-dark">Konto:</div>
+                     
+                            <div class="col-6 text-end">
                               <div class="text-sm text-dark">{{ companyData ? companyData.account : 'Loading...' }}</div>
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-2">
-                              <div class="text-sm ps-6 text-start text-dark">IBAN:</div>
-                            </div>
-                            <div class="col-7 text-end">
+                           
+                              <div class="col-2 text-sm ps-6 text-start text-dark">IBAN:</div>
+                            
+                            <div class="col-6 text-end">
                               <div class="text-sm text-dark">{{ companyData ? companyData.iban_number : 'Loading...' }}</div>
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-2">
-                              <div class="text-sm ps-6 text-start text-dark">MwSt:</div>
-                            </div>
-                            <div class="col-7 text-end">
+           <div class="col-2 text-sm ps-6 text-start text-dark">MwSt:</div>
+                         
+                            <div class="col-6 text-end">
                               <div class="text-sm text-dark">{{ companyData ? companyData.mwst : 'Loading...' }}</div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        
+                   
                     </div>
-                    <div class="col mt-3 me-0 mb-4 adress justify-content-end">
+                    <div class="col-4  mt-3 mb-4 adress justify-content-end date-element">
                       <!-- Third column aligned at the end -->
-                      <div class="row">
-                        <div class="col-10">
-                          <div class="row">
-                            <div class="col">
-                              <div class="text-sm text-start text-dark">Telefon:</div>
-                            </div>
-                            <div class="col-8 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.phone_number : 'Loading...' }}
-                              </div>
-                            </div>
+                 
+                                            <div class="row">                       
+                              <div class="col-6 text-sm text-start text-dark">Telefon:</div>                                     
+                              <div class="col-6 text-sm text-dark text-end">{{ companyData ? companyData.phone_number : 'Loading...' }}
+                              </div>                          
                           </div>
-                          <div class="row">
-                            <div class="col">
-                              <div class="text-sm text-start text-dark">Website:</div>
-                            </div>
-                            <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.webpage : 'Loading...' }}</div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col">
-                              <div class="text-sm text-start text-dark">E-Mail:</div>
-                            </div>
-                            <div class="col-7 text-end">
-                              <div class="text-sm text-dark">{{ companyData ? companyData.email : 'Loading...' }}</div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col">
-                              <div class="text-sm text-start text-dark"></div>
-                            </div>
-                            <div class="col-7 text-end">
-                              <div class="text-sm text-dark"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+<div class="row">
+                              <div class="col-6 text-sm text-start text-dark">Website:</div>
+                              <div class="col-6 text-sm text-dark text-end">{{ companyData ? companyData.webpage : 'Loading...' }}</div>
+</div>
+                          <div class="row">                    
+                              <div class="col-6 text-sm text-start text-dark">E-Mail:</div>                      
+                              <div class="col-6 text-sm text-dark text-end">{{ companyData ? companyData.email : 'Loading...' }}</div>
+                          </div>             
+                  
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              
+          
           </div>
         </div>
       </div>
@@ -518,6 +503,8 @@ const exportToPDF = async () => {
       { deep: true }
     );
 
+
+    
     onMounted(() => {
       fetchInvoiceData();
     });
@@ -546,6 +533,19 @@ const exportToPDF = async () => {
 
 
 <style>
+
+.double-underline {
+  text-decoration: underline double;
+}
+
+
+hr {
+  border: none;
+  height: 2px;
+  /* Set the hr color */
+  color: #000000;  /* old IE */
+  background-color:#000000;  /* Modern Browsers */
+}
 
 .date-element {
   max-width: 150px; /* Adjust the max width as per your design */
