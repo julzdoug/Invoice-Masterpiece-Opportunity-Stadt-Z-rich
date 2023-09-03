@@ -18,9 +18,9 @@
       </div>
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
-          <label for="validation3">Unternehmen:</label>
+          <label for="validation3">Branche:</label>
           <div class="input-container">
-            <input type="text" class="form-control text-start" placeholder="Unternehmen" required v-model="companyData.profession">
+            <input type="text" class="form-control text-start" placeholder="Branche" required v-model="companyData.profession">
           </div>
           <div class="invalid-feedback">
             Unternehmen Bitte eintragen.
