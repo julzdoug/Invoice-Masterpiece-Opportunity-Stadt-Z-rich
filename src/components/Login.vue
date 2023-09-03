@@ -30,8 +30,8 @@
               </div>
               <div class="col-md-4 order-md-1">
                 <h1 class="display-3 fw-bold">Zachnung</h1>
-                <h3 class="fw-normal text-muted mb-3">Mach deine PDF Rechnung</h3>
-                <h3 class="fw-normal text-muted mb-3">mit Zachnung</h3>
+                <h3 class="fw-normal fs-1 text-muted mb-3">Mach deine PDF Rechnung</h3>
+                <h3 class="fw-normal fs-1 text-muted mb-3">mit Zachnung</h3>
                 <div class="d-flex gap-3 justify-content-center lead fw-normal">
                   <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Los gehts</button>
                 </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="col-md-4 order-md-1">
               <h1 class="display-3 fw-bold">Ganz einfach Ihre Daten per Formular eingeben</h1>
-              <h3 class="fw-normal text-muted mb-3">und danach<br>die fertige PDF speichern</h3>
+              <h3 class="fw-normal fs-1 text-muted mb-3">und danach<br>die fertige PDF speichern</h3>
 
               <div class="d-flex gap-3 justify-content-center lead fw-normal">
                 <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Start</button>
