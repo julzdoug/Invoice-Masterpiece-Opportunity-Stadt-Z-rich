@@ -13,6 +13,9 @@
           <li class="nav-item">
             <button class="nav-link ms-5" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</button>
           </li>
+                    <li class="nav-item">
+            <button class="nav-link ms-5" @click="handleMenuClick('Customer')">Firma</button>
+          </li>
           <li class="nav-item">
             <button class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Rechnung erstellen</button>
           </li>

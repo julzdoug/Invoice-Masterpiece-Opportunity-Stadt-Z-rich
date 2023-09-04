@@ -330,14 +330,7 @@
         </div>
         <div class="modal-body modal-dialog-scrollable">
           <form class="container mt-2" @submit.prevent="submitCustomerForm">
-            <div class="row">
-              <div class="col-8 d-flex justify-content-start">
-              </div>
-              <div class="col-8 d-flex justify-content-start m-2">
-              </div>
-              <div class="col-8 d-flex justify-content-end">
-              </div>
-            </div>
+            
             <div class="col-md-6 mb-3 col-sm-12">
               <label>Gender:</label>
               <div class="form-check" v-if="isEditing">
@@ -468,8 +461,6 @@
                   Email Bitte eingeben.
                 </div>
               </div>
-            </div>
-            <div class="col-8 d-flex justify-content-center">
             </div>
 
           </form>
