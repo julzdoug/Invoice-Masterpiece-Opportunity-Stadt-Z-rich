@@ -296,7 +296,7 @@
           </div>
           <div class="row">
             <div class="col-2 d-flex justify-content-start">
-              <button class="btn btn-danger btn-lg mt-3 mb-5" v-if="selectedEntry" @click="deleteCompany">löschen</button>
+              <button class="btn btn-danger btn-lg mt-3 mb-5" v-if="selectedEntry" :disabled="!selectedEntry" @click="deleteCompany">löschen</button>
             </div>
             <div class="col-8 d-flex justify-content-center">
             </div>
