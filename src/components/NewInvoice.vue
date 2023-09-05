@@ -1,23 +1,12 @@
 <template>
   <div class="">
     <Header />
-<div class="d-grid gap-2 col-6 mx-auto bg-primary bg-opacity-25 topper">
-        <button class="btn btn-outline-primary m-2" @click="toggleComponent">
-      {{ showVorhandeneComponent ? 'Neue Einträge Erstellen' : 'Vorhandene Einträge' }}
-    </button>
-    </div>
-    <div class="row bg-primary bg-opacity-25 mt-3 me-3 ms-3">
-    <div class="" v-if="showVorhandeneComponent">
+<div class="d-grid gap-2 col-11 mx-auto bg-primary bg-opacity-25 topper">
       <hr>
       <selectInvoiceForm />
-    </div>
-
-    <div v-else>
-      <h1 class="fs-5 text-center">Neue Einträge Erstellen</h1>
-      <InvoiceForm />
-    </div>
   </div>
     </div>
+  
     <Footer />
 
 </template>
@@ -25,28 +14,19 @@
 <script>
 import { ref } from 'vue';
 import selectInvoiceForm from './selectInvoiceForm.vue';
-import InvoiceForm from './InvoiceForm.vue';
+
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
 
 export default {
   components: {
     selectInvoiceForm,
-    InvoiceForm,
+    
     Header,
     Footer,
   },
   
-  data() {
-    return {
-      showVorhandeneComponent: true, // Show Vorhandene Einträge component by default
-    };
-  },
-  methods: {
-    toggleComponent() {
-      this.showVorhandeneComponent = !this.showVorhandeneComponent;
-    },
-  },
+
 
 }
 </script>
@@ -79,6 +59,9 @@ export default {
     flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
   overflow-y: auto; /* Add vertical scroll if content overflows */
   margin-top:15vh;
+}
+.back {
+  background-color: rgb(192, 212, 249);
 }
 
 </style>

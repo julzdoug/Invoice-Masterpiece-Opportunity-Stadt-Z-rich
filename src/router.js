@@ -8,6 +8,8 @@ import Email from '../src/components/EmailConfirmation.vue';
 import Invoice from '../src/components/Invoices.vue';
 import NewInvoice from '../src/components/NewInvoice.vue';
 import Password from '../src/components/ForgotPassword.vue';
+import Company from '../src/components/Company.vue';
+import Customer from '../src/components/Customer.vue';
 
 
 const routes = [
@@ -41,6 +43,21 @@ const routes = [
         component: editInvoice,
       }
     ]
+  },
+      {
+    path: '/Cusomer',
+    name: 'Customer',
+    props: true,
+    meta: { requiresAuth: true },
+    component: Customer,
+  },
+
+    {
+    path: '/Company',
+    name: 'Company',
+    props: true,
+    meta: { requiresAuth: true },
+    component: Company,
   },
   // Route for the Invoices component
   {
