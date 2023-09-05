@@ -1,4 +1,7 @@
 <template>
+  <Header />
+    <div class="content">
+    <div class="container">
 <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
   <option disabled value="">Select an entry</option>
   
@@ -6,7 +9,7 @@
     {{ entry.company_name }}
   </option>
 </select>
-
+</div>
   <div v-if="selectedTable === 'company'">
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
@@ -307,6 +310,8 @@
 
     </form>
   </div> 
+    </div>
+  <Footer />
 </template>
 
 <script>
@@ -316,8 +321,15 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import Header from './Header.vue';
+import Footer from './footer.vue';
+
 
 export default {
+    components: {
+    Header,
+    Footer,
+  },
   computed: {
     isCompanySelected() {
       const isSelected = !!this.selectedEntry;
@@ -494,28 +506,30 @@ async function saveChanges() {
     }
   }
 
-    async function deleteCompany() {
-      const companyIdToDelete = companyId.value;
-      if (companyIdToDelete) {
-        try {
-          const { data, error } = await supabase
-            .from('company')
-            .delete()
-            .match({ id: companyIdToDelete });
+async function deleteCompany() {
+  try {
+    if (selectedTable.value === 'company' && companyData.value.id) {
+      // Delete existing company
+      const { data, error } = await supabase
+        .from('company')
+        .delete()
+        .eq('id', companyData.value.id);
 
-          if (error) {
-            console.error('Failed to delete company:', error);
-          } else {
-            companyId.value = null;
-            location.reload();
-          }
-        } catch (error) {
-          console.error('Failed to delete company:', error);
-        }
-      } else {
-        console.error('No company selected to delete');
+      if (error) {
+        throw new Error(error.message);
       }
+      location.reload();
+      console.log('Company data deleted successfully!');
+    } else {
+      // Handle the case when the selected table or company ID is not available
+      throw new Error('Invalid table or company ID');
     }
+  } catch (error) {
+    console.error('Error deleting company:', error.message);
+  }
+}
+
+
 
 function toggleEditMode() {
   if (selectedTable.value === 'company') {

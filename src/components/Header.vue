@@ -13,9 +13,14 @@
           <li class="nav-item">
             <button class="nav-link ms-5" @click="handleMenuClick('MyInvoice')">Meine Rechnungen</button>
           </li>
-                    <li class="nav-item">
-            <button class="nav-link ms-5" @click="handleMenuClick('Customer')">Firma</button>
-          </li>
+              <li class="nav-item dropdown ms-5" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-link">Angaben</div>
+   
+          <ul class="dropdown-menu">
+            <li><button class="nav-link" @click="handleMenuClick('Customer')">Empfänger</button></li>
+            <li><button class="nav-link" @click="handleMenuClick('Company')">Rechnungsteller</button></li>
+          </ul>
+              </li>
           <li class="nav-item">
             <button class="nav-link ms-5" @click="handleMenuClick('NewInvoice')">Rechnung erstellen</button>
           </li>
@@ -32,8 +37,8 @@
     >
       {{ user.email }}
     </button>
-    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="userDropdown">
-      <li>
+    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+      <li class="nav-link">
         <router-link
           :to="{ name: 'Logout' }"
           class="dropdown-item bg-light text-dark"
@@ -91,5 +96,10 @@ onMounted(async () => {
   font-size: larger;
   font-weight: bold;
   border-color: black;
+}
+
+
+.dropdown-menu li:hover {
+  background-color:rgb(232, 231, 231); /* Change 'your-color' to the desired background color */
 }
 </style>

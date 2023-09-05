@@ -1,17 +1,31 @@
 <template>
-  <div>
-    <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-      <option disabled value="">Select an entry</option>
+  <Header />
+  <div class="content">
+    <div class="container">
+     <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
+      <option selected>Select an entry</option>
       <option v-for="entry in entries.customer" :key="entry.id" :value="entry">
         {{ entry.name }}
       </option>
-    </select>
+    </select> 
+</div>
+
 
   <div v-if="selectedTable === 'customer'">
     <form class="container mt-5" @submit.prevent="submitCustomerForm">
       <div class="row">
         <div class="col-2 d-flex justify-content-start"></div>
         <div class="col-8 d-flex justify-content-center">
+                    <div class="row">
+          <div class="col-6">
+            <button class="btn btn-md"  @click="handleButtonClick('new')" :disabled="isEditing">Neu</button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-md" @click="toggleEditMode" :disabled="!selectedEntry || isEditing">Ändern</button>
+
+            <button class="btn btn-md" @click="handleButtonClick('cancel')" :disabled="!isEditing">Abbrechen</button>
+          </div>
+        </div>
         </div>
         <div class="col-2 d-flex justify-content-end"></div>
       </div>
@@ -146,16 +160,7 @@
                 </div>
               </div>  
             </div>          
-          <div class="row">
-          <div class="col-6">
-            <button class="btn btn-md"  @click="handleButtonClick('new')" :disabled="isEditing">Neu</button>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-md" @click="toggleEditMode" :disabled="!selectedEntry || isEditing">Ändern</button>
 
-            <button class="btn btn-md" @click="handleButtonClick('cancel')" :disabled="!isEditing">Abbrechen</button>
-          </div>
-        </div>
 
         <!-- Save and Delete buttons -->
         <div class="row">
@@ -171,6 +176,7 @@
       </form>
   </div>
 </div>
+<Footer />
 </template>
 
 <script>
@@ -179,9 +185,15 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+import Header from './Header.vue';
+import Footer from './footer.vue';
 
 export default {
+  components: {
+    Header,
+    Footer,
+  },
+
         computed: {
   isCustomerSelected() {
     const isSelected = !!this.selectedEntry;
@@ -308,30 +320,35 @@ function clearFormData() {
 }
 
 
-    async function deleteCustomer() {
-      const customerIdToDelete = customerId.value;
-      if (customerIdToDelete) {
-        try {
-          const { data, error } = await supabase
-            .from('customer')
-            .delete()
-            .match({ id: customerIdToDelete });
+async function deleteCustomer() {
+  const customerNameToDelete = customerData.value.name; // Get the name of the customer to delete
+  if (customerNameToDelete) {
+    try {
+      console.log('Deleting customer with name:', customerNameToDelete); // Debugging
 
-          if (error) {
-            console.error('Failed to delete customer:', error);
-          } else {
-            // Remove the deleted customer from the form
-            customerId.value = null;
-             location.reload();// Optionally, you can reload the customer list after deleting the customer
-            await loadCustomerList();
-          }
-        } catch (error) {
-          console.error('Failed to delete customer:', error);
-        }
+      const { data, error } = await supabase
+        .from('customer')
+        .delete()
+        .eq('name', customerNameToDelete); // Match customers by name
+
+      if (error) {
+        console.error('Failed to delete customer:', error);
       } else {
-        console.error('No customer selected to delete');
+        // Remove the deleted customer from the form
+        customerId.value = null;
+        console.log('Customer deleted successfully'); // Debugging
+        location.reload(); // Optionally, you can reload the customer list after deleting the customer
+        await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
       }
+    } catch (error) {
+      console.error('Failed to delete customer:', error);
     }
+  } else {
+    console.error('No customer selected to delete');
+  }
+}
+
+
 
 
 function toggleEditMode() {
@@ -415,6 +432,10 @@ img {
   height: 50%;
   width: 50%;
 }
-
+.content {
+  flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  margin-top:15vh;
+}
 
 </style>
