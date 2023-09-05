@@ -169,14 +169,16 @@
                 </div>
                 <!-- Save and Delete buttons -->
                 <div class="row">
-                  <div class="col-2 d-flex justify-content-start">
+                  <div class="col-2 d-flex justify-content-start" v-if="selectedEntry">
                     <button class="btn btn-danger btn-lg mt-3 mb-5" v-if="selectedEntry" :disabled="!selectedEntry"
                       @click="deleteCustomer">Löschen</button>
                   </div>
-                  <div class="col-8 d-flex justify-content-center"></div>
+                  <div class="col-8 d-flex justify-content-center">
+                                        <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" @click="saveChanges">Speichern</button>
+                  </div>
                   <div class="col-2 d-flex justify-content-end">
-                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" @click="saveChanges">Speichern</button>
-                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="!selectedEntry" :disabled="isCompanySelected"
+
+                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" :disabled="isCompanySelected"
                       @click="createNewCustomer">Erstellen</button>
                   </div>
                 </div>
