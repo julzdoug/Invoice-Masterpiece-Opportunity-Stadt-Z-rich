@@ -1,11 +1,33 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
+<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Leeres RechnungsFormular
+</button>
+      <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content back">
+      <div class="modal-header back">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Empfänger</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body modal-dialog-scrollable">
+     <InvoiceForm />
+      </div>
+      <div class="modal-footer bg-primary bg-opacity-25">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div> 
+
 <div v-if="step === 1" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
   <div>
     
        
-    <h1 class="fs-5 bg-opacity-25">Rechnungsteller wählen:</h1>
+    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Neuer Rechnungsteller:
 </button>
 
@@ -28,7 +50,7 @@
   </div>
 </div> 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
+  <li class="list-group-item list-group-item-action" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="company in companies"
@@ -51,11 +73,11 @@
 </div>
 
   <!-- Step 3: Customer Form -->
-<div v-if="step === 2" class="justify-content-center align-items-center">
+<div v-if="step === 2" class="justify-content-center align-items-center  bg-primary bg-opacity-25 ms-3 me-3">
   <div>
     <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
+<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Neuer Kunde Erstellen
 </button>
       <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,7 +98,7 @@
   </div>
 </div> 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCustomer === null">Empfänger</li>
+  <li class="list-group-item list-group-item-action" :aria-current="selectedCustomer === null">Empfänger</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="customer in customers"
@@ -91,12 +113,13 @@
 </ul>
 
     </div>
-  </div>
-  <div class="justify-content-center mt-3 bg-primary bg-opacity-25">
+      <div class="justify-content-center mt-3 bg-primary bg-opacity-25">
     <div class="d-grid gap-2 mx-auto">
-    <button class="btn btn-outline-primary ms-3 me-3" @click="previousStep()">Zurück</button>
+    <button class="btn btn-outline-primary ms-3 me-3 mb-3" @click="previousStep()">Zurück</button>
   </div>
   </div>
+  </div>
+
 
 
   <div v-if="step === 3" class="m-3 justify-content-center align-items-center">
@@ -144,7 +167,7 @@
           <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number" required  @input="checkInvoiceNumber">
 <p class="text-danger" v-if="!invoiceNumberEntered">Bitte Rechnungsnummer eintragen</p>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3 mb-3">
         <div class="d-flex">
            <button class="btn btn-outline-primary me-3 col" @click="previousStep()">Zurück</button>
                   <button @click="generateInvoiceNumber" class="btn btn-outline-primary col me-3 ">Rechnungsnummer Generieren</button>
@@ -223,7 +246,7 @@
       </table>
      <p class="text-danger" v-else>Bitte Rechnungsposition eintragen.</p> 
     </div>
-    <div class="row bg-primary bg-opacity-25">
+    <div class="row bg-primary bg-opacity-25 mb-3">
     <button class="col btn btn-primary mt-3" @click="addNewRow">Neue Rechnungspositionen</button>
     <button class="col btn btn-secondary mt-3 ms-3" @click="previousStep()">Zurück</button>
     <button v-if="filteredInvoiceRows.length > 0"  class="col btn btn-primary ms-3 mt-3" @click="saveChanges">Rechnung generieren</button>
@@ -245,7 +268,7 @@ import Header from "./Header.vue";
 import Footer from "./footer.vue";
 import modalcompany from './modalcompany.vue';
 import modalcustomer from './modalcustomer.vue';
-
+import InvoiceForm from './InvoiceForm.vue';
 
 export default {
   components: {
@@ -253,6 +276,7 @@ export default {
     Footer,
  modalcompany,
 modalcustomer,
+InvoiceForm,
 
       data() {
     return {
