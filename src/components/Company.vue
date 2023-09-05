@@ -24,8 +24,6 @@
                   <button class="btn btn-primary btn-md" v-if="selectedEntry" @click="toggleEditMode"><i
                       class="bi bi-pencil">Drücke mich</i></button>
                 </div>
-                <div class="col-2 d-flex justify-content-end">
-                </div>
               </div>
               <label for="logoInput">Company Logo</label>
               <div class="text-center col-4">
