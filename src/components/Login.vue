@@ -129,12 +129,12 @@
               <div class="overlay-panel overlay-left">
                 <h1>Wilkommen bei Zachnung!</h1>
                 <p>Bitte Anmelden</p>
-                <button class="btn btn-outline-primary btn-block ghost" @click="showSigninPanel">Anmelden</button>
+                <button class="btn btn-outline-light btn-block ghost" @click="showSigninPanel">Anmelden</button>
               </div>
               <div class="overlay-panel overlay-right">
                 <h1>Hallo Freund</h1>
                 <p>Neu</p>
-                <button class="btn btn-outline-primary btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
+                <button class="btn btn-outline-light btn-block ghost" @click="showSignupPanel">Neu Amnelden</button>
               </div>
             </div>
           </div>
@@ -484,9 +484,9 @@ input {
 }
 
 .overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  background: #0008ff;
+  background: -webkit-linear-gradient(to right, #0008ff, #868aed);
+  background: linear-gradient(to right, #0008ff, #464775);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
