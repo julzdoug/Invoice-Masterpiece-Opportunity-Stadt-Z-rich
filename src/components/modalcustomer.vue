@@ -137,7 +137,7 @@
                 </div>
               </div>  
             </div>          
-          <div class="col-2 d-flex justify-content-end">
+          <div class="d-flex justify-content-end">
 
            <button class="btn btn-success btn-lg"  @click="createNewCustomer">{{ isEditing ? 'Speichern' : 'Erstellen' }}</button>
           </div>

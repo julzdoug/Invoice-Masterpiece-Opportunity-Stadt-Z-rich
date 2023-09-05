@@ -1,9 +1,9 @@
 <template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
-<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#Invoice">
   Leeres RechnungsFormular
 </button>
       <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Invoice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">
@@ -27,12 +27,12 @@
        
     <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
    <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Debitor">
   Neuer Rechnungsteller:
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Debitor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">
@@ -76,11 +76,11 @@
 <div v-if="step === 2" class="justify-content-center align-items-center  bg-primary bg-opacity-25 ms-3 me-3">
   <div>
     <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
-<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Customer">
   Neuer Kunde Erstellen
 </button>
       <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Customer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">

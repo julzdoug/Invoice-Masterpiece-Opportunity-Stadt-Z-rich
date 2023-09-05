@@ -177,9 +177,9 @@
                   </div>
                   <div class="col-8 d-flex justify-content-center"></div>
                   <div class="col-2 d-flex justify-content-end">
-                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" @click="saveChanges">{{ isEditing ?
+                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="!selectedEntry" @click="saveChanges">{{ isEditing ?
                       'Speichern' : 'Erstellen' }}</button>
-                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="!selectedEntry" :disabled="isCompanySelected"
+                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" :disabled="isCompanySelected"
                       @click="createNewCustomer">{{ isEditing ? 'Speichern' : 'Erstellen' }}</button>
                   </div>
                 </div>
