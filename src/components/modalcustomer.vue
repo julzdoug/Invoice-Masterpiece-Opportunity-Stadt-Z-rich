@@ -338,6 +338,7 @@ function toggleEditMode() {
     onMounted(async () => {
 await loadCustomerData();
  clearFormData()
+ toggleEditMode();
     });
 
     watch(selectedTable, loadCustomerData);
@@ -361,7 +362,7 @@ await loadCustomerData();
       createNewCustomer,
       deleteCustomer,
       entries,
-      handleButtonClick,
+      
     };
   },
 };
