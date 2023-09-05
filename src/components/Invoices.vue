@@ -451,10 +451,10 @@ const exportToPDF = async () => {
   logoImg.src = logoUrl;
 
   const config = {
-    margin: [10, 0, 10, 0],
+    margin: [10, 10, 10, 10],
     filename: 'invoice.pdf',
     image: { type: 'png', quality: 1 },
-    html2canvas: { scale: 3, useCORS: true }, // Add useCORS option
+    html2canvas: { scale: 1.5, useCORS: true }, // Add useCORS option
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
   };
  

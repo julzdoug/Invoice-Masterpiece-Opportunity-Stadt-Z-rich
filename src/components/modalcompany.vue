@@ -1,28 +1,14 @@
 <template>
-<select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-  <option disabled value="">Select an entry</option>
-  
-  <option v-for="entry in entries.company" :key="entry.id" :value="entry">
-    {{ entry.company_name }}
-  </option>
-</select>
+
 
   <div v-if="selectedTable === 'company'">
-    <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
+    <form class="container mt-2" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
-        <div class="form-group col-md-6 mb-3">
-               <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-      </div>
-  <div class="col-8 d-flex ms-3 justify-content-center">
-    <button class="btn btn-primary btn-md" v-if="!selectedEntry"  @click="toggleEditMode">{{ isEditing ? 'Cancel' : 'Neu' }}</button>
-    <button class="btn btn-primary btn-md" v-if="selectedEntry" @click="toggleEditMode">{{ isEditing ? 'Cancel' :
-        'Ändern'
-      }}</button>
-  </div>
-  <div class="col-2 d-flex justify-content-end">
-  </div>
-</div>
+
+
+
+        <div class="form-group col-md-6 col-sm-12 mb-3">
+<div class="row">
           <label for="logoInput">Company Logo</label>
           <div class="text-center col-4">
             <div class="input-with-image">
@@ -41,8 +27,9 @@
           </div>
         </div>
       </div>
+      </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Unternehmen:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -57,7 +44,7 @@
             Enter Unternehmen.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Firma:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -74,7 +61,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Vorname:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -88,7 +75,7 @@
             Enter Vorname.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Name:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -104,7 +91,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Strasse:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -118,7 +105,7 @@
             Enter Strasse.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -135,7 +122,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Postleitzahl:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -150,7 +137,7 @@
             Enter Postleitzahl.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Ort:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -166,7 +153,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Email:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -180,7 +167,7 @@
             Enter Email.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Webpage:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -197,7 +184,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Telefon Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -212,7 +199,7 @@
             Enter Telefon Nummer.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">UiD Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -229,7 +216,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">IBAN:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -243,7 +230,7 @@
             Enter IBAN.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -259,7 +246,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Bank:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -273,7 +260,7 @@
             Enter Bank.
           </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Konto Nummer:</label>
           <div class="input-container">
             <template v-if="isEditing">
@@ -289,23 +276,13 @@
           </div>
         </div>
       </div>
-     <div class="row">
-  <div class="col-2 d-flex justify-content-start">
-    <button class="btn btn-danger btn-lg" v-if="selectedEntry" @click="deleteCompany">löschen</button> 
-  </div>
-  <div class="col-8 d-flex justify-content-center">
 
-  </div>
-  <div class="col-2 d-flex justify-content-end">
+  <div class="d-flex justify-content-end">
     <button class="btn btn-success btn-lg" :disabled="isCompanySelected" @click="createNewCompany(companyData)">Erstellen</button>
-
-    <button class="btn btn-success btn-lg" v-if="selectedEntry" @click="saveChanges">Speichern</button>
   </div>
-</div>
-
-
 
     </form>
+
   </div> 
 </template>
 
@@ -532,6 +509,7 @@ function toggleEditMode() {
     
   await loadCompanyData();
   clearFormData();
+  toggleEditMode();
     });
 
     watch(selectedTable, loadCompanyData);
@@ -563,31 +541,3 @@ function toggleEditMode() {
   
 };
 </script>
-
-
-<style>
-.input-container {
-  position: relative;
-}
-
-.form-control-static {
-  padding: 0.375rem 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  line-height: 2.0;
-  min-height: 38px;
-  /* Add a fixed height */
-}
-
-.smaller-form {
-  display:flexbox; /* Adjust the value as needed */
-  margin-bottom: 10%;/* Enable vertical scrolling if necessary */
-}
-
-img {
-  height: 50%;
-  width: 50%;
-}
-
-
-</style>

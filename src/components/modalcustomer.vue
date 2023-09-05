@@ -1,21 +1,10 @@
 <template>
-  <div>
-    <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-      <option disabled value="">Select an entry</option>
-      <option v-for="entry in entries.customer" :key="entry.id" :value="entry">
-        {{ entry.name }}
-      </option>
-    </select>
 
   <div v-if="selectedTable === 'customer'">
-    <form class="container mt-5" @submit.prevent="submitCustomerForm">
-      <div class="row">
-        <div class="col-2 d-flex justify-content-start"></div>
-        <div class="col-8 d-flex justify-content-center">
-        </div>
-        <div class="col-2 d-flex justify-content-end"></div>
-      </div>
-            <div class="col-md-6 mb-3 col-sm-12">
+    <form class="container mt-2" @submit.prevent="submitCustomerForm">
+      <div class="row"></div>
+        <div class="form-group col-md-6 col-sm-12 mb-3">
+<div class="row">
               <label>Gender:</label>
               <div class="form-check" v-if="isEditing">
                 <input class="form-check-input" type="radio" id="mrRadio" value="Herr" v-model="customerData.gender" />
@@ -33,6 +22,8 @@
                 <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender || 'None' }}</div>
               </div>
             </div>
+        </div>
+    
             <div class="row">
               <div class="col-md-6 mb-3 col-sm-12">
                 <label for="validation3">Vorname:</label>
@@ -146,31 +137,15 @@
                 </div>
               </div>  
             </div>          
-          <div class="row">
-          <div class="col-6">
-            <button class="btn btn-md"  @click="handleButtonClick('new')" :disabled="isEditing">Neu</button>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-md" @click="toggleEditMode" :disabled="!selectedEntry || isEditing">Ändern</button>
-
-            <button class="btn btn-md" @click="handleButtonClick('cancel')" :disabled="!isEditing">Abbrechen</button>
-          </div>
-        </div>
-
-        <!-- Save and Delete buttons -->
-        <div class="row">
-          <div class="col-2 d-flex justify-content-start">
-            <button class="btn btn-danger btn-lg" v-if="selectedEntry" :disabled="!selectedEntry" @click="deleteCustomer">Löschen</button>
-          </div>
-          <div class="col-8 d-flex justify-content-center"></div>
           <div class="col-2 d-flex justify-content-end">
 
            <button class="btn btn-success btn-lg"  @click="createNewCustomer">{{ isEditing ? 'Speichern' : 'Erstellen' }}</button>
           </div>
-        </div>
+        
+  
       </form>
   </div>
-</div>
+
 </template>
 
 <script>
@@ -391,30 +366,3 @@ await loadCustomerData();
   },
 };
 </script>
-
-<style>
-.input-container {
-  position: relative;
-}
-
-.form-control-static {
-  padding: 0.375rem 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  line-height: 2.0;
-  min-height: 38px;
-  /* Add a fixed height */
-}
-
-.smaller-form {
-  display:flexbox; /* Adjust the value as needed */
-  margin-bottom: 10%;/* Enable vertical scrolling if necessary */
-}
-
-img {
-  height: 50%;
-  width: 50%;
-}
-
-
-</style>

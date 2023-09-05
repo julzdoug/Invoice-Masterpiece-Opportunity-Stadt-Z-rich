@@ -3,8 +3,30 @@
   <div>
     
        
-    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
-    
+    <h1 class="fs-5 bg-opacity-25">Rechnungsteller wählen:</h1>
+   <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Neuer Rechnungsteller:
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content back">
+      <div class="modal-header back">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Rechnungsteller</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body modal-dialog-scrollable">
+      <modalcompany />
+      </div>
+      <div class="modal-footer bg-primary bg-opacity-25">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div> 
 <ul class="list-group">
   <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCompany === null">Rechnungsteller:</li>
   <li
@@ -32,7 +54,27 @@
 <div v-if="step === 2" class="justify-content-center align-items-center">
   <div>
     <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
-    <div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+      <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content back">
+      <div class="modal-header back">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Empfänger</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body modal-dialog-scrollable">
+      <modalcustomer />
+      </div>
+      <div class="modal-footer bg-primary bg-opacity-25">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div> 
 <ul class="list-group">
   <li class="list-group-item list-group-item-action bg-primary bg-opacity-25" :aria-current="selectedCustomer === null">Empfänger</li>
   <li
@@ -55,7 +97,6 @@
     <button class="btn btn-outline-primary ms-3 me-3" @click="previousStep()">Zurück</button>
   </div>
   </div>
-</div>
 
 
   <div v-if="step === 3" class="m-3 justify-content-center align-items-center">
@@ -202,14 +243,17 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const storage = supabase.storage;
 import Header from "./Header.vue";
 import Footer from "./footer.vue";
-
+import modalcompany from './modalcompany.vue';
+import modalcustomer from './modalcustomer.vue';
 
 
 export default {
   components: {
     Header,
     Footer,
- 
+ modalcompany,
+modalcustomer,
+
       data() {
     return {
       isEditing: false,
@@ -485,6 +529,9 @@ export default {
       fetchSelectedData();
       fetchInvoiceData();
       await fetchCompanies();
+          $('#exampleModal').on('hidden.bs.modal', () => {
+      location.reload(); // Reload the page when the modal is closed
+    });
     });
 
     watch(selectedInvoiceNumber, () => {
@@ -562,6 +609,8 @@ export default {
   overflow-x: auto;
   max-width: 100%;
 }
-
+.back {
+  background-color: rgb(192, 212, 249);
+}
 
 </style>
