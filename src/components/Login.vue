@@ -551,19 +551,19 @@ input {
 }
 
 .btn-google {
-  background-color: #002fff; /* Google's button color */
-  color: #ffffff; /* Text color */
-  border: 1px solid #0898ff; /* Border color */
+  background-color: #ffffff; /* Google's button color */
+  color: #000000; /* Text color */
+  border: 1px solid #9da2a5; /* Border color */
   border-radius: 4px; /* Rounded corners */
   padding: 8px 16px; /* Padding around the text */
   font-size: 14px; /* Text size */
   font-weight: bold; /* Text boldness */
   cursor: pointer; /* Show pointer cursor on hover */
-   
+   border-radius: 50%;
 }
 
 .btn-google:hover {
-  background-color: #b3c3ec; /* Lighten the background color on hover */
+  background-color: #8a8b8f; /* Lighten the background color on hover */
 }
 
 
