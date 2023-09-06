@@ -264,8 +264,35 @@ const showInvoiceForm = ref(false);
       isEditingInvoice.value = !isEditingInvoice.value;
 
     };
+const deleteRow = async (row) => {
+  // Show a confirmation dialog
+  const shouldDelete = confirm('Are you sure you want to delete this row?');
 
-    const deleteRow = async (row) => {
+  if (!shouldDelete) {
+    return; // If the user cancels the confirmation, do nothing
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('invoice')
+      .delete()
+      .eq('invoice_number', row.invoice_number);
+
+    if (error) {
+      console.error('Failed to delete invoice:', error);
+      return;
+    }
+
+    // Remove the deleted row from the invoiceRows array
+    invoiceRows.value = invoiceRows.value.filter((r) => r.id !== row.id);
+
+    await fetchInvoiceData();
+  } catch (error) {
+    console.error('Failed to delete invoice:', error);
+  }
+};
+
+/*     const deleteRow = async (row) => {
       try {
         const { data, error } = await supabase
           .from('invoice')
@@ -284,7 +311,7 @@ const showInvoiceForm = ref(false);
       } catch (error) {
         console.error('Failed to delete invoice:', error);
       }
-    };
+    }; */
 
 
     return {
