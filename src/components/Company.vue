@@ -19,10 +19,10 @@
                 <div class="d-flex justify-content-start">
                 </div>
                 <div class="col-8 d-flex justify-content-start mt-5 mb-5">
-                  <button class="btn btn-primary btn-md" v-if="!selectedEntry" @click="toggleEditMode"><i
+<!--                   <button class="btn btn-primary btn-md" v-if="!selectedEntry" @click="toggleEditMode"><i
                       class="bi bi-pencil">Drücke mich</i></button>
                   <button class="btn btn-primary btn-md" v-if="selectedEntry" @click="toggleEditMode"><i
-                      class="bi bi-pencil">Drücke mich</i></button>
+                      class="bi bi-pencil">Drücke mich</i></button> -->
                 </div>
               </div>
               <label for="logoInput">Company Logo</label>
@@ -361,7 +361,7 @@ export default {
       bank: '',
     });
     const companyId = ref(null);
-    const isEditing = ref(false);
+    const isEditing = ref(true);
 
     function clearFormData() {
       companyData.value = {
