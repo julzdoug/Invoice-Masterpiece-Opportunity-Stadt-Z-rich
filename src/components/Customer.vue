@@ -17,10 +17,9 @@
               <div class="row">
                 <div class="d-flex justify-content-start"></div>
                 <div class="col-8 d-flex justify-content-start mt-5 mb-5">
-                  <button class="btn btn-primary btn-md" v-if="!selectedEntry" @click="handleButtonClick('new')" :disabled="isEditing"><i
-                      class="bi bi-pencil">Drücke mich</i></button>
-                  <button class="btn btn-primary" @click="toggleEditMode" v-if="selectedEntry" :disabled="!selectedEntry || isEditing"><i
-                      class="bi bi-pencil">Drücke mich</i></button>
+
+<!--                   <button class="btn btn-primary" @click="toggleEditMode" v-if="selectedEntry" ><i
+                      class="bi bi-pencil">Drücke mich</i></button> -->
 
                 </div>
               </div>
@@ -159,7 +158,7 @@
                           v-model="customerData.email">
                       </template>
                       <template v-else>
-                        <div class="form-control-static" v-if="customerData">{{ customerData.email }}</div>
+                        <div class="form-control-static" v-if="customerData && customerData">{{ customerData.email }}</div>
                       </template>
                     </div>
                     <div class="invalid-feedback">
@@ -169,16 +168,16 @@
                 </div>
                 <!-- Save and Delete buttons -->
                 <div class="row">
-                  <div class="col-2 d-flex justify-content-start" v-if="selectedEntry">
-                    <button class="btn btn-danger btn-lg mt-3 mb-5" v-if="selectedEntry" :disabled="!selectedEntry"
+                  <div class="col-2 d-flex justify-content-start">
+                    <button class="btn btn-danger btn-lg mt-3 mb-5"  v-if="customerData.id" 
                       @click="deleteCustomer">Löschen</button>
                   </div>
                   <div class="col-8 d-flex justify-content-center">
-                                        <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" @click="saveChanges">Speichern</button>
+                                        
                   </div>
                   <div class="col-2 d-flex justify-content-end">
-
-                    <button class="btn btn-success btn-lg mb-5 mt-3" v-if="selectedEntry" :disabled="isCompanySelected"
+<button class="btn btn-success btn-lg mb-5 mt-3"  v-if="customerData.id" @click="saveChanges">Speichern</button>
+                    <button class="btn btn-success btn-lg mb-5 mt-3"  v-if="!customerData.id" 
                       @click="createNewCustomer">Erstellen</button>
                   </div>
                 </div>
@@ -234,7 +233,7 @@ export default {
     });
 
     const customerId = ref(null);
-    const isEditing = ref(false);
+    const isEditing = ref(true);
 
 
     async function saveChanges() {
@@ -275,6 +274,7 @@ export default {
         } else {
           // Handle success, e.g., show a success message
           console.log('New customer created successfully!', data);
+          location.reload();
         }
       } catch (error) {
         console.error('Error creating a new customer:', error);
@@ -330,10 +330,47 @@ export default {
       };
     }
 
-
     async function deleteCustomer() {
+  const customerNameToDelete = customerData.value.name; // Get the name of the customer to delete
+
+  if (customerNameToDelete) {
+    // Display a confirmation dialog
+    const confirmDelete = window.confirm(`Are you sure you want to delete customer ${customerNameToDelete}?`);
+
+    if (confirmDelete) {
+      try {
+        console.log('Deleting customer with name:', customerNameToDelete); // Debugging
+
+        const { data, error } = await supabase
+          .from('customer')
+          .delete()
+          .eq('name', customerNameToDelete); // Match customers by name
+
+        if (error) {
+          console.error('Failed to delete customer:', error);
+        } else {
+          // Remove the deleted customer from the form
+          customerId.value = null;
+          console.log('Customer deleted successfully'); // Debugging
+          location.reload(); // Optionally, you can reload the customer list after deleting the customer
+          await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
+        }
+      } catch (error) {
+        console.error('Failed to delete customer:', error);
+      }
+    } else {
+      console.log('Delete action canceled.');
+    }
+  } else {
+    console.error('No customer selected to delete');
+  }
+}
+
+
+/*     async function deleteCustomer() {
       const customerNameToDelete = customerData.value.name; // Get the name of the customer to delete
       if (customerNameToDelete) {
+
         try {
           console.log('Deleting customer with name:', customerNameToDelete); // Debugging
 
@@ -357,7 +394,7 @@ export default {
       } else {
         console.error('No customer selected to delete');
       }
-    }
+    } */
 
 
 
@@ -374,23 +411,11 @@ export default {
     }
 
 
-    function handleButtonClick(action) {
-      if (action === 'new') {
-        clearFormData();
-        customerId.value = null;
-        isEditing.value = true;
-      } else if (action === 'edit') {
-        isEditing.value = true;
-      } else if (action === 'cancel') {
-        isEditing.value = false;
-        clearFormData();
-        customerId.value = null;
-      }
-    }
+
 
     onMounted(async () => {
       await loadCustomerData();
-      clearFormData()
+      clearFormData();
     });
 
     watch(selectedTable, loadCustomerData);
@@ -414,7 +439,7 @@ export default {
       createNewCustomer,
       deleteCustomer,
       entries,
-      handleButtonClick,
+
     };
   },
 };
@@ -423,6 +448,7 @@ export default {
 <style>
 .input-container {
   position: relative;
+
 }
 
 .form-control-static {
