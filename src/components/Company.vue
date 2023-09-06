@@ -459,7 +459,7 @@ export default {
         }
 
         console.log('New company created:', data);
-
+ location.reload();
         // You can choose to handle the success or further actions here
 
       } catch (error) {
@@ -505,6 +505,37 @@ export default {
     }
 
     async function deleteCompany() {
+  try {
+    if (selectedTable.value === 'company' && companyData.value.id) {
+      // Display a confirmation dialog
+      const confirmDelete = window.confirm(`Are you sure you want to delete company with ID ${companyData.value.id}?`);
+
+      if (confirmDelete) {
+        // Delete existing company
+        const { data, error } = await supabase
+          .from('company')
+          .delete()
+          .eq('id', companyData.value.id);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+        location.reload();
+        console.log('Company data deleted successfully!');
+      } else {
+        console.log('Delete action canceled.');
+      }
+    } else {
+      // Handle the case when the selected table or company ID is not available
+      throw new Error('Invalid table or company ID');
+    }
+  } catch (error) {
+    console.error('Error deleting company:', error.message);
+  }
+}
+
+
+/*     async function deleteCompany() {
       try {
         if (selectedTable.value === 'company' && companyData.value.id) {
           // Delete existing company
@@ -526,7 +557,7 @@ export default {
         console.error('Error deleting company:', error.message);
       }
     }
-
+ */
 
 
     function toggleEditMode() {

@@ -1,5 +1,5 @@
-<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
-<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#Invoice">
+<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 container-fluid">
+<button type="button" class="btn btn-outline-light btn-primary mb-3 ms-3 me-3" data-bs-toggle="modal" data-bs-target="#Invoice">
   Leeres RechnungsFormular
 </button>
       <!-- Modal -->
@@ -27,7 +27,7 @@
        
     <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
    <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Debitor">
+<button type="button" class="btn btn-outline-light mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Debitor">
   Neuer Rechnungsteller:
 </button>
 
@@ -76,7 +76,7 @@
 <div v-if="step === 2" class="justify-content-center align-items-center  bg-primary bg-opacity-25 ms-3 me-3">
   <div>
     <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
-<button type="button" class="btn btn-outline-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Customer">
+<button type="button" class="btn btn-outline-light mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Customer">
   Neuer Kunde Erstellen
 </button>
       <!-- Modal -->
@@ -122,8 +122,8 @@
 
 
 
-  <div v-if="step === 3" class="m-3 justify-content-center align-items-center">
-     <div class="row">
+  <div v-if="step === 3" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
+     <div class="row ms-1">
           <div class="col text-secondary">
             <p class="fw-bold">Empfänger:</p>
 
@@ -142,7 +142,8 @@
         <div class="my-1">
           {{ selectedCustomer && selectedCustomer.email }}
         </div>
-      </div>      <div class="col text-secondary">
+      </div>      
+      <div class="col text-secondary">
         <p class="fw-bold">Rechnungsteller:</p>
 
         <div class="my-1">
@@ -162,18 +163,20 @@
         </div>
       </div>
       </div>
-      
-        <div v-if="selectedCustomer && !selectedInvoiceNumber">
+      <div class="row">
+        <div class="m-2 col" v-if="selectedCustomer && !selectedInvoiceNumber">
           <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer Number" required  @input="checkInvoiceNumber">
 <p class="text-danger" v-if="!invoiceNumberEntered">Bitte Rechnungsnummer eintragen</p>
         </div>
-        <div class="row mt-3 mb-3">
+      </div>
+
+        <div class="row mt-3 mb-3 ms-2 me-2">
         <div class="d-flex">
-           <button class="btn btn-outline-primary me-3 col" @click="previousStep()">Zurück</button>
-                  <button @click="generateInvoiceNumber" class="btn btn-outline-primary col me-3 ">Rechnungsnummer Generieren</button>
+           <button class="btn btn-outline-light btn-primary me-1 col-md col-sm-12" @click="previousStep()">Zurück</button>
+                  <button @click="generateInvoiceNumber" class="btn btn-outline-light btn-primary col-md col-sm-12 me-1 ">Rechnungsnummer Generieren</button>
              
         <button
-          class="btn btn-outline-primary col"
+          class="btn btn-outline-light btn-primary col-md col-sm-12 me-1"
           @click="nextStep()"
           :disabled="!invoiceNumberEntered"
         >
@@ -181,6 +184,7 @@
         </button>
       </div>
 </div>
+
 </div>
 
 

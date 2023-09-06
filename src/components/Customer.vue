@@ -173,10 +173,10 @@
                       @click="deleteCustomer">Löschen</button>
                   </div>
                   <div class="col-8 d-flex justify-content-center">
-                                        <button class="btn btn-success btn-lg mb-5 mt-3"  v-if="customerData.id" @click="saveChanges">Speichern</button>
+                                        
                   </div>
                   <div class="col-2 d-flex justify-content-end">
-
+<button class="btn btn-success btn-lg mb-5 mt-3"  v-if="customerData.id" @click="saveChanges">Speichern</button>
                     <button class="btn btn-success btn-lg mb-5 mt-3"  v-if="!customerData.id" 
                       @click="createNewCustomer">Erstellen</button>
                   </div>
@@ -330,10 +330,47 @@ export default {
       };
     }
 
-
     async function deleteCustomer() {
+  const customerNameToDelete = customerData.value.name; // Get the name of the customer to delete
+
+  if (customerNameToDelete) {
+    // Display a confirmation dialog
+    const confirmDelete = window.confirm(`Are you sure you want to delete customer ${customerNameToDelete}?`);
+
+    if (confirmDelete) {
+      try {
+        console.log('Deleting customer with name:', customerNameToDelete); // Debugging
+
+        const { data, error } = await supabase
+          .from('customer')
+          .delete()
+          .eq('name', customerNameToDelete); // Match customers by name
+
+        if (error) {
+          console.error('Failed to delete customer:', error);
+        } else {
+          // Remove the deleted customer from the form
+          customerId.value = null;
+          console.log('Customer deleted successfully'); // Debugging
+          location.reload(); // Optionally, you can reload the customer list after deleting the customer
+          await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
+        }
+      } catch (error) {
+        console.error('Failed to delete customer:', error);
+      }
+    } else {
+      console.log('Delete action canceled.');
+    }
+  } else {
+    console.error('No customer selected to delete');
+  }
+}
+
+
+/*     async function deleteCustomer() {
       const customerNameToDelete = customerData.value.name; // Get the name of the customer to delete
       if (customerNameToDelete) {
+
         try {
           console.log('Deleting customer with name:', customerNameToDelete); // Debugging
 
@@ -357,7 +394,7 @@ export default {
       } else {
         console.error('No customer selected to delete');
       }
-    }
+    } */
 
 
 
