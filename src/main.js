@@ -8,6 +8,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import Modal from "vue-bs-modal";
 const app = createApp(App);
 
+
 createApp(App).use(router).mount("#app");
 
 

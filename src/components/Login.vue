@@ -1,23 +1,22 @@
 <template>
   <div>
-    <header>
-      <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <div class="container-fluid text-start">
-            <div class="row align-items-center">
-              <div class="col">
-                <img src="../assets/logo.svg" alt="Logo" width="30" height="24"
-                  class="d-inline-block align-text-top mb-3">
-              </div>
-              <div class="col">
-                <div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Login/ Registrieren' :
-                  'Zurück' }}</div>
-              </div>
-            </div>
+<header>
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="container-fluid text-start">
+        <div class="row align-items-center">
+          <div class="col-3">
+            <img src="../assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top mb-3 ms-5">
+          </div>
+          <div class="col-6 text-center">
+            <div class="button" type="button" @click="toggleLogin">{{ showLandingPage ? 'Login/ Registrieren' : 'Zurück' }}</div>
           </div>
         </div>
-      </nav>
-    </header>
+      </div>
+    </div>
+  </nav>
+</header>
+
     <section v-show="showLandingPage">
       <main>
         <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
@@ -32,7 +31,7 @@
                 <h1 class="display-3 fw-bold">Zachnung</h1>
                 <h3 class="fw-normal fs-1 text-muted mb-3">Mach deine PDF Rechnung</h3>
                 <h3 class="fw-normal fs-1 text-muted mb-3">mit Zachnung</h3>
-                <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                <div class="d-flex gap-3 justify-content-start lead fw-normal">
                   <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Los gehts</button>
                 </div>
               </div>
@@ -52,7 +51,7 @@
               <h1 class="display-3 fw-bold">Ganz einfach Ihre Daten per Formular eingeben</h1>
               <h3 class="fw-normal fs-1 text-muted mb-3">und danach<br>die fertige PDF speichern</h3>
 
-              <div class="d-flex gap-3 justify-content-center lead fw-normal">
+              <div class="d-flex gap-3 justify-content-start lead fw-normal">
                 <button type="button" class="btn btn-outline-primary btn-lg mt-5" @click="toggleLogin">Start</button>
               </div>
             </div>
@@ -550,6 +549,7 @@ input {
   width: 40px;
 }
 
+
 .btn-google {
   background-color: #ffffff; /* Google's button color */
   color: #000000; /* Text color */
@@ -559,11 +559,25 @@ input {
   font-size: 14px; /* Text size */
   font-weight: bold; /* Text boldness */
   cursor: pointer; /* Show pointer cursor on hover */
-   border-radius: 50%;
+   border-radius: 40%;
 }
 
 .btn-google:hover {
-  background-color: #8a8b8f; /* Lighten the background color on hover */
+  background-color: #3658e0; /* Lighten the background color on hover */
+}
+/* Center the button on large screens */
+@media (min-width: 768px) {
+  .col.text-center {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* Hide the image on mobile devices */
+@media (max-width: 767px) {
+  .col-3:first-child {
+    display: none;
+  }
 }
 
 

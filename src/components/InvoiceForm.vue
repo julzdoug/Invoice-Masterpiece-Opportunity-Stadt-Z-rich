@@ -334,13 +334,13 @@
 <div v-if="step === 4" class="d-flex justify-content-center align-items-center">
   <div class="col-md-10">
     <h1 class="text-center">4. Rechnung</h1>
-    <div class="table-responsive">
+    <div class="table-responsive table-container">
       <table class="table table-borderless border-0 border-b-2 col-md-6"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
           <thead>
             <tr>
-              <th class="text-dark bg-light"></th>
-              <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>
+          
+
               <th class="text-dark bg-light text-center"><span><i class="bi bi-trash3"></i></span></th>
               <th class="text-dark bg-light">Pos.</th>
               <th class="text-dark bg-light">Rechnungsnummer</th>
@@ -352,16 +352,9 @@
           </thead>
           <tbody class="text-95 text-secondary-d3">
             <tr v-for="(row, index) in invoiceRows" :key="row.id">
-              <td>
-                <input type="checkbox" v-model="row.checked" />
-              </td>
+
               <td class="text-center">
-                <button class="btn btn-warning m-1" @click="editRow(index)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-warning m-1" @click="deleteRow(index)">
+                <button class="btn btn-outline-warning m-1 text-dark" @click="deleteRow(index)">
                   <i class="bi bi-trash3"></i>
                 </button>
               </td>
@@ -369,7 +362,7 @@
               <td>{{ row.invoice_number }}</td>
               <td>
                 <template v-if="isEditing[index]">
-                  <input v-model="row.description" />
+                  <input class="form-control" v-model="row.description" />
                 </template>
                 <template v-else>
                   {{ row.description }}
@@ -377,7 +370,7 @@
               </td>
               <td>
                 <template v-if="isEditing[index]">
-                  <input v-model="row.quantity" type="number" />
+                  <input class="form-control" v-model="row.quantity" type="number" />
                 </template>
                 <template v-else>
                   {{ row.quantity }}
@@ -385,7 +378,7 @@
               </td>
               <td class="text-95">
                 <template v-if="isEditing[index]">
-                  <input v-model="row.price_per_unit" type="number" />
+                  <input class="form-control" v-model="row.price_per_unit" type="number" />
                 </template>
                 <template v-else>
                   {{ row.price_per_unit }}
@@ -728,3 +721,11 @@ async deleteCustomer() {
   },
 };
 </script>
+
+
+<style>
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+</style>

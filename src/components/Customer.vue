@@ -238,12 +238,12 @@ export default {
 
     async function saveChanges() {
       try {
-        if (selectedTable.value === 'customer' && customerId.value) {
+        if (selectedTable.value === 'customer' && customerData.value.id) {
           // Update existing customer
           const { data, error } = await supabase
             .from('customer')
-            .update(this.customerData.value) // Use customerData directly
-
+            .update(customerData.value) // Use customerData directly
+.eq('id', customerData.value.id);
 
           if (error) {
             throw new Error(error.message);

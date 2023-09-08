@@ -10,7 +10,7 @@ import NewInvoice from '../src/components/NewInvoice.vue';
 import Password from '../src/components/ForgotPassword.vue';
 import Company from '../src/components/Company.vue';
 import Customer from '../src/components/Customer.vue';
-
+import Delete from '../src/components/account-deleted.vue';
 
 const routes = [
 
@@ -84,6 +84,11 @@ const routes = [
     name: 'ForgotPassword',
     path: '/forgotPassword',
     component: Password,
+  },
+  {
+      name: 'Delete',
+    path: '/Delete',
+    component: Delete,
   },
   {
     name: 'Logout',
