@@ -498,7 +498,7 @@
         <div class="modal-body modal-dialog-scrollable">
           <form @submit.prevent="submitInvoiceForm">
 
-            <div class="table-responsive">
+            <div class="table-responsive table-container">
               <table class="table table-hover" aria-label="" v-if="selectedInvoice !== ''">
                 <thead>
                   <tr>
@@ -514,12 +514,12 @@
                 <tbody class="table align-middle">
                   <tr v-for="(row, index) in filteredInvoiceRows" :key="row.id">
                     <td class="text-center">
-                      <button class="btn btn-warning m-1" @click="toggleEditRow(index)">
+                      <button class="btn btn-warning m-1 text-dark" @click="toggleEditRow(index)">
                         <i class="bi bi-pencil">Drücke mich</i>
                       </button>
                     </td>
                     <td class="text-center">
-                      <button class="btn btn-warning m-1" @click="deleteRow(index)">
+                      <button class="btn btn-warning m-1 text-dark" @click="deleteRow(index)">
                         <i class="bi bi-trash3"></i>
                       </button>
                     </td>

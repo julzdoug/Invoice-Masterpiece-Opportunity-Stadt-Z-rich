@@ -4,7 +4,7 @@
   <!--Titel und Aushwal-->
     <section class="content ms-3 me-3">
       <!--Kunden Daten-->
-      <div class="table-container">
+      <div class="table-container table-responsive">
         <table class="table table-hover text-center fit">
         <thead class="table-light">
           <tr>        

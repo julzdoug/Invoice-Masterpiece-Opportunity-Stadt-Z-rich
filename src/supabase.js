@@ -7,6 +7,21 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 console.log(supabase.auth);
 
+  export async function fetchUserIdFromSupabase() {
+  try {
+    const { data: user, error } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error(error);
+      return null;
+    }
+
+    return user.id;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 export async function fetchCompanyData() {
   try {
