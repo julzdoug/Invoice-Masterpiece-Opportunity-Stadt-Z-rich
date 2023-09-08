@@ -463,7 +463,11 @@ const exportToPDF = async () => {
     logoImg.onload = resolve;
   });
 
-  await html2pdf().set(config).from(document.getElementById('invoice-section')).save();
+
+
+  await html2pdf().set(config).from(document.getElementById('invoice-section'))
+  
+  .save();
 
   // Reset the src attribute of the logoImg after generating the PDF
   logoImg.src = '';
