@@ -187,7 +187,7 @@
                   <br>
                             
       
-                  <div id="footer" class="mt-5 align-items-end ">
+                  <div id="footer" class="mt-5 align-items-end">
                     <div class="row">
                     <div class="col adress mt-3 mb-2 justify-content-start">
                       <!-- Firmen Angaben Fussnote -->
@@ -456,22 +456,56 @@ const exportToPDF = async () => {
     image: { type: 'png', quality: 1 },
     html2canvas: { scale: 1.5, useCORS: true }, // Add useCORS option
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    // Add a callback to apply custom CSS styles
+    onbeforepdf: (pdf) => {
+      pdf.internal.scaleFactor = 1; // Reset the scale factor to 1
+      const stylesheet = document.styleSheets[0]; // Use the appropriate style sheet
+
+      // Select the element with the double-underline class
+      const element = document.querySelector('.double-underline');
+
+      if (element) {
+        // Get the text content of the element
+        const text = element.innerText;
+
+        // Get the computed style to check for text-decoration
+        const style = window.getComputedStyle(element);
+        const textDecoration = style.getPropertyValue('text-decoration');
+
+        // Check if the text-decoration is 'underline double'
+        if (textDecoration.includes('underline double')) {
+          // Apply custom CSS style for double underline
+          stylesheet.insertRule('.double-underline { text-decoration: underline double; }', 0);
+
+          // Draw the double underline using jsPDF
+          const rect = element.getBoundingClientRect();
+          const lineWidth = pdf.internal.pageSize.width - 40; // Adjust the line width as needed
+          const startX = rect.left + 10;
+          const endX = startX + lineWidth;
+          const startY = rect.bottom + 5; // Adjust the vertical position as needed
+
+          pdf.setLineWidth(0.2); // Set line width as needed
+          pdf.line(startX, startY, endX, startY); // Draw the first line
+          pdf.line(startX, startY + 2, endX, startY + 2); // Draw the second line
+        }
+
+        // Remove the element to avoid duplication in the PDF
+        element.style.display = 'none';
+      }
+    },
   };
- 
+
   // Wait for the image to load before generating the PDF
   await new Promise((resolve) => {
     logoImg.onload = resolve;
   });
 
-
-
-  await html2pdf().set(config).from(document.getElementById('invoice-section'))
-  
-  .save();
+  await html2pdf().set(config).from(document.getElementById('invoice-section')).save();
 
   // Reset the src attribute of the logoImg after generating the PDF
   logoImg.src = '';
 };
+
 
 
 
@@ -582,6 +616,7 @@ body {
   margin-bottom: 50%;
   margin-top: 5%;
   overflow-y: auto; 
+  
 }
 
 .img {
