@@ -109,6 +109,7 @@ async function deleteUser(userId) {
     await supabase.from('invoice').delete().eq('user_id', userId);
     await supabase.from('customer').delete().eq('user_id', userId);
     await supabase.from('company').delete().eq('user_id', userId);
+    await supabase.from('storage.objects').delete().eq('owner', userId);
 
     // Delete the user account
     await supabase.from('auth.users').delete().eq('id', userId);
