@@ -281,7 +281,7 @@ import jsPDF from 'jspdf';
 import useAuthUser from "../auth";
 import { supabase } from "../supabase";
 import Header from './Header.vue';
-
+const storage = supabase.storage;
 
 
 const authUser = useAuthUser();
@@ -436,20 +436,6 @@ function byteaToBase64(bytea) {
     };
     // PDF Expotiern
 const exportToPDF = async () => {
-
-  const logoImg = document.querySelector('.img');
-
-  if (!logoImg) {
-    console.error('Logo image element not found.');
-    return;
-  }
-
-  // Get the logoUrl from companyData
-  const logoUrl = companyData.value.logo;
-
-  // Set the src attribute of the logoImg
-  logoImg.src = logoUrl;
-
   const config = {
     margin: [10, 10, 10, 10],
     filename: 'invoice.pdf',
@@ -458,18 +444,30 @@ const exportToPDF = async () => {
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
   };
 
-  // Wait for the image to load before generating the PDF
-  await new Promise((resolve) => {
-    logoImg.onload = resolve;
-  });
+  // Get the logo URL from companyData
+  const logoUrl = companyData.value.logo;
 
+  // Check if logoUrl is available
+  if (logoUrl) {
+    const logoImg = document.createElement('img');
+    logoImg.src = logoUrl;
 
+    // Wait for the image to load before generating the PDF
+    await new Promise((resolve) => {
+      logoImg.onload = resolve;
+    });
 
-  await html2pdf().set(config).from(document.getElementById('invoice-section'))
-  .save();
+    // Set the logo image in the PDF
+    config.image.src = logoUrl;
+  }
 
-  // Reset the src attribute of the logoImg after generating the PDF
-  logoImg.src = '';
+  // Generate and save the PDF
+  await html2pdf().set(config).from(document.getElementById('invoice-section')).save();
+
+  // Reset the src attribute of the logoImg if it was set
+  if (config.image.src) {
+    config.image.src = '';
+  }
 };
 
 
