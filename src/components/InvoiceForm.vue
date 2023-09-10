@@ -7,7 +7,7 @@
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
           <div class="row">
-            <label for="logoInput">Company Logo</label>
+            <label for="logoInput">Logo</label>
             <div class="text-center col-4">
         <div class="input-with-image">
           <input type="file" class="form-control" id="logoInput" @change="handleLogoChange($event)" />
@@ -23,7 +23,7 @@
             <input type="text" class="form-control text-start" placeholder="Branche" required v-model="companyData.profession">
           </div>
           <div class="invalid-feedback">
-            Unternehmen Bitte eintragen.
+            Branche Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -98,12 +98,12 @@
       </div>
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
-          <label for="validation3">Email:</label>
+          <label for="validation3">E-mail:</label>
           <div class="input-container">
-            <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
+            <input type="email" class="form-control" placeholder="E-mail" required v-model="companyData.email">
           </div>
           <div class="invalid-feedback">
-            Email Bitte eintragen.
+            E-mail Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -388,6 +388,9 @@
             </tr>
           </tbody>
    </table>
+       <div class="total-container"> <!-- Add a class to the container -->
+      <div class="total text-center">Gesamt Betrag: Total: {{ total }}</div>
+      </div> 
     </div>
     <button class="btn btn-secondary ms-3 mb-5" @click="previousStep">Zurück</button>
     <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="addNewRow">Neue Rechnungsposition</button>
@@ -412,6 +415,14 @@ const storage = supabase.storage;
 
 
 export default {
+  computed: {
+  total() {
+    // Use reduce to sum up the total from all rows
+    return this.invoiceRows.reduce((acc, row) => {
+      return acc + this.calculateRowTotal(row);
+    }, 0);
+  },
+},
 
   data() {
     return {

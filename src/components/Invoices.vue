@@ -1,9 +1,9 @@
 
 <template>
-  <Header />
+  <Header :headerClass="noPrintClass" />
   <!--Seten Information-->
   <div class="page-content container" style="width: 21cm; height: 29.7cm;">
-    <div class="page-header text-blue-d2">
+    <div class="page-header text-blue-d2 no-print">
       <h1 class="page-title text-secondary-d1">
         {{ invoiceData.invoice_number }}
         <small class="page-info">
@@ -271,7 +271,7 @@
       </div>
     </div>
   </div>
-<Footer />
+
 </template> 
 
 <script>
@@ -281,14 +281,14 @@ import jsPDF from 'jspdf';
 import useAuthUser from "../auth";
 import { supabase } from "../supabase";
 import Header from './Header.vue';
-import Footer from './footer.vue';
+
 
 
 const authUser = useAuthUser();
 export default {
     components: {
     Header,
-    Footer,
+
   },
   // Angaben der Zahlen und wie man sie Speichert 
   name: 'Invoices',
@@ -579,7 +579,7 @@ body {
   border-radius: 5px;
   margin-bottom: 50%;
   margin-top: 5%;
-  overflow-y: auto; 
+
   
 }
 
@@ -769,7 +769,7 @@ body {
   padding: 2%;
   border: 2px solid #ffffff;
   border-radius: 2px;
-  overflow-y: auto;
+  
   margin-bottom: 5%;
   margin-top: 5%;
 }
@@ -927,5 +927,11 @@ hr {
 .align-bottom {
   vertical-align: bottom !important;
 }
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
 }
 </style>
