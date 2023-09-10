@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header back">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Rechnungsteller</h1>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">Kreditor</h1>
           <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             data-bs-toggle="modal"></button>
         </div>
@@ -14,7 +14,7 @@
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
               @close="closeEditModal">Rechnungspositionen</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
-              >Empfänger</button>
+              >Debitor</button>
               <button class="btn btn-outline-primary m-2" v-if="companyData" @click="toggleEditModeCompany"><span><i class="bi bi-pencil"></i>Ändern</span></button>   
           </div>
           </div>
@@ -171,17 +171,17 @@
             </div>
             <div class="row">
               <div class="col-md-6 mb-3 col-sm-12">
-                <label for="validation3">Email:</label>
+                <label for="validation3">E-mail:</label>
                 <div class="input-container">
                   <template v-if="isEditing">
-                    <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
+                    <input type="email" class="form-control" placeholder="E-mail" required v-model="companyData.email">
                   </template>
                   <template v-else>
                     <div class="form-control-static" v-if="companyData.email">{{ companyData.email }}</div>
                   </template>
                 </div>
                 <div class="invalid-feedback">
-                  Email Bitte eintragen.
+                  E-mail Bitte eintragen.
                 </div>
               </div>
               <div class="col-md-6 mb-3 col-sm-12">
@@ -239,7 +239,7 @@
                 <label for="validation3">IBAN:</label>
                 <div class="input-container">
                   <template v-if="isEditing">
-                    <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
+                    <input type="text" class="form-control" placeholder="IBAN" pattern="[0-9]*" v-model="companyData.iban_number">
                   </template>
                   <template v-else>
                     <div class="form-control-static" v-if="companyData.iban_number">{{ companyData.iban_number }}
@@ -254,7 +254,7 @@
                 <label for="validation3">Mehrwertsteuer:</label>
                 <div class="input-container">
                   <template v-if="isEditing">
-                    <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
+                    <input type="text" class="form-control" placeholder="Mehrwertsteuer" pattern="[0-9]*" v-model="companyData.mwst">
                   </template>
                   <template v-else>
                     <div class="form-control-static" v-if="companyData.mwst">{{ companyData.mwst }}</div>
@@ -313,7 +313,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header  back">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Empfänger</h1>
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Debitor</h1>
           <button ref="modalButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             data-bs-target="#exampleModalToggle" data-bs-toggle="modal"></button>
         </div>
@@ -323,7 +323,7 @@
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle2"
               data-bs-toggle="modal">Rechnungspositionen</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
-              @close="closeEditModal">Rechnungsteller</button>
+              @close="closeEditModal">Kreditor</button>
               <button class="btn btn-outline-primary m-2" v-if="customerData" @click="toggleEditModeCustomer"><span><i class="bi bi-pencil">Ändern</i></span></button> 
           </div>
         </div>
@@ -332,7 +332,7 @@
           <form class="container mt-2" @submit.prevent="submitCustomerForm">
             
             <div class="col-md-6 mb-3 col-sm-12">
-              <label>Gender:</label>
+              <label>Geschlecht:</label>
               <div class="form-check" v-if="isEditing">
                 <input class="form-check-input" type="radio" id="mrRadio" value="Herr" v-model="customerData.gender" />
                 <label class="form-check-label" for="mrRadio">Herr</label>
@@ -343,7 +343,7 @@
               </div>
               <div class="form-check" v-if="isEditing">
                 <input class="form-check-input" type="radio" id="noneRadio" value="" v-model="customerData.gender" />
-                <label class="form-check-label" for="noneRadio">None</label>
+                <label class="form-check-label" for="noneRadio">Keine Angaben</label>
               </div>
               <div v-else>
                 <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender }}</div>
@@ -448,17 +448,17 @@
             </div>
             <div class="row">
               <div class="col-md-6 mb-3 col-sm-12">
-                <label for="validation3">Email:</label>
+                <label for="validation3">E-mail:</label>
                 <div class="input-container">
                   <template v-if="isEditing">
-                    <input type="email" class="form-control" placeholder="Email" required v-model="customerData.email">
+                    <input type="email" class="form-control" placeholder="E-mail" required v-model="customerData.email">
                   </template>
                   <template v-else>
                     <div class="form-control-static" v-if="customerData">{{ customerData.email }}</div>
                   </template>
                 </div>
                 <div class="invalid-feedback">
-                  Email Bitte eingeben.
+                  E-mail Bitte eingeben.
                 </div>
               </div>
             </div>
@@ -489,9 +489,9 @@
           <div class="col-8 d-flex justify-content-start m-2">
             <div class="d-flex flex-wrap">
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3"
-              data-bs-toggle="modal">Rechnungsteller</button>
+              data-bs-toggle="modal">Kreditor</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle"
-              data-bs-toggle="modal">Empfänger</button>
+              data-bs-toggle="modal">Debito</button>
           </div>
         </div>
         </div>

@@ -17,8 +17,8 @@
             <div class="nav-link">Angaben</div>
    
           <ul class="dropdown-menu">
-            <li><button class="nav-link" @click="handleMenuClick('Customer')">Empfänger</button></li>
-            <li><button class="nav-link" @click="handleMenuClick('Company')">Rechnungsteller</button></li>
+            <li><button class="nav-link" @click="handleMenuClick('Customer')">Debitor</button></li>
+            <li><button class="nav-link" @click="handleMenuClick('Company')">Kreditor</button></li>
 
           </ul>
               </li>

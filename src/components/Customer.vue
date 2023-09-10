@@ -4,7 +4,7 @@
     <div class="content-fluid bg-primary bg-opacity-25 ms-3 me-3">
       <div class="container top">
         <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-          <option selected>Select an entry</option>
+          <option selected>Debitor</option>
           <option v-for="entry in entries.customer" :key="entry.id" :value="entry">
             {{ entry.name }}
           </option>
@@ -26,7 +26,7 @@
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3 col-sm-12">
-                  <label>Gender:</label>
+                  <label>Geschlecht:</label>
                   <div class="form-check" v-if="isEditing">
                     <input class="form-check-input" type="radio" id="mrRadio" value="Herr"
                       v-model="customerData.gender" />
@@ -39,7 +39,7 @@
                   </div>
                   <div class="form-check" v-if="isEditing">
                     <input class="form-check-input" type="radio" id="noneRadio" value="" v-model="customerData.gender" />
-                    <label class="form-check-label" for="noneRadio">None</label>
+                    <label class="form-check-label" for="noneRadio">Keine Angaben</label>
                   </div>
                   <div v-else>
                     <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender ||
@@ -151,10 +151,10 @@
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="validation3">Email:</label>
+                    <label for="validation3">E-mail:</label>
                     <div class="input-container">
                       <template v-if="isEditing">
-                        <input type="email" class="form-control" placeholder="Email" required
+                        <input type="email" class="form-control" placeholder="E-mail" required
                           v-model="customerData.email">
                       </template>
                       <template v-else>
@@ -162,7 +162,7 @@
                       </template>
                     </div>
                     <div class="invalid-feedback">
-                      Email Bitte eingeben.
+                      E-mail Bitte eingeben.
                     </div>
                   </div>
                 </div>

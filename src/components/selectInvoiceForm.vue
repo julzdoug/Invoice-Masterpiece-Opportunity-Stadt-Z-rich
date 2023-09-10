@@ -248,7 +248,12 @@
            </tr>
         </tbody>
       </table>
-     <p class="text-danger" v-else>Bitte Rechnungsposition eintragen.</p> 
+       <p class="text-danger" v-else>Bitte Rechnungsposition eintragen.</p> 
+<div class="total-container">
+  <div class="total text-center">Gesamt Betrag: Total: {{ total }}</div>
+</div>
+
+    
     </div>
     <div class="row bg-primary bg-opacity-25 mb-3">
     <button class="col btn btn-primary mt-3" @click="addNewRow">Neue Rechnungspositionen</button>
@@ -307,6 +312,13 @@ InvoiceForm,
     const invoiceNumber = ref('');
       const selectedCompany = ref(null);
   const selectedCustomer = ref(null);
+
+  const total = computed(() => {
+  return filteredInvoiceRows.value.reduce((accumulator, row) => {
+    return accumulator + (row.quantity * row.price_per_unit);
+  }, 0); // Initialize accumulator to 0
+});
+
 
   const selectCompany = (company) => {
     selectedCompany.value = company;
@@ -590,6 +602,7 @@ InvoiceForm,
       generateInvoiceNumber,
       fetchSelectedData,
       navigateToInvoice,
+      total,
     };
   },
 

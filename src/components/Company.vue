@@ -4,7 +4,7 @@
     <div class="content-fluid bg-primary bg-opacity-25 ms-3 me-3">
       <div class="container top">
         <select v-model="selectedEntry" class="form-select mt-3" aria-label="Default select example">
-          <option disabled value="">Select an entry</option>
+          <option disabled value="">Kreditoren</option>
 
           <option v-for="entry in entries.company" :key="entry.id" :value="entry">
             {{ entry.company_name }}
@@ -25,7 +25,7 @@
                       class="bi bi-pencil">Drücke mich</i></button> -->
                 </div>
               </div>
-              <label for="logoInput">Company Logo</label>
+              <label for="logoInput">Logo</label>
               <div class="text-center col-4">
                 <div class="input-with-image">
                   <template v-if="isEditing">
@@ -45,10 +45,10 @@
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="validation3">Unternehmen:</label>
+              <label for="validation3">Branche:</label>
               <div class="input-container">
                 <template v-if="isEditing">
-                  <input type="text" class="form-control text-start" placeholder="Unternehmen" required
+                  <input type="text" class="form-control text-start" placeholder="Branche" required
                     v-model="companyData.profession">
                 </template>
                 <template v-else>
@@ -56,7 +56,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Unternehmen.
+                Branche Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -71,7 +71,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Firma.
+                Firma Bitte eingeben.
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Vorname.
+                Vorname Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -101,7 +101,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Name.
+                Name Bitte eingeben.
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Strasse.
+                Strasse Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -132,7 +132,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Nummer.
+                Nummer Bitte eingeben.
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Postleitzahl.
+                Postleitzahl Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -163,23 +163,23 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Ort.
+                Ort Bitte eingeben.
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="validation3">Email:</label>
+              <label for="validation3">E-mail:</label>
               <div class="input-container">
                 <template v-if="isEditing">
-                  <input type="email" class="form-control" placeholder="Email" required v-model="companyData.email">
+                  <input type="email" class="form-control" placeholder="E-mail" required v-model="companyData.email">
                 </template>
                 <template v-else>
                   <div class="form-control-static" v-if="companyData">{{ companyData.email }}</div>
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Email.
+                E-mail Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -195,7 +195,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Webpage.
+                Webpage Bitte eingeben.
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Telefon Nummer.
+                Telefon Nummer Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -227,7 +227,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter UiD Nummer.
+                UiD Nummer Bitte eingeben.
               </div>
             </div>
           </div>
@@ -236,28 +236,28 @@
               <label for="validation3">IBAN:</label>
               <div class="input-container">
                 <template v-if="isEditing">
-                  <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
+                  <input type="text" class="form-control" pattern="[0-9]*"  placeholder="IBAN" v-model="companyData.iban_number">
                 </template>
                 <template v-else>
                   <div class="form-control-static" v-if="companyData">{{ companyData.iban_number }}</div>
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter IBAN.
+                IBAN Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="validation3">Mehrwertsteuer:</label>
               <div class="input-container">
                 <template v-if="isEditing">
-                  <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
+                  <input type="text" class="form-control"  pattern="[0-9]*" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
                 </template>
                 <template v-else>
                   <div class="form-control-static" v-if="companyData">{{ companyData.mwst }}</div>
                 </template>
               </div>
               <class class="invalid-feedback">
-                Enter Mehrwertsteuer.
+                Mehrwertsteuer Bitte eingeben.
               </class>
             </div>
           </div>
@@ -273,7 +273,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Enter Bank.
+                Bank Bitte eingeben.
               </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -288,7 +288,7 @@
                 </template>
               </div>
               <div class="invalid-feedback">
-                Konto Nummer.
+                Nummer Bitte eingeben.
               </div>
             </div>
           </div>
