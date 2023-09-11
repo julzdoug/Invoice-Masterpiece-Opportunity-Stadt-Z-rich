@@ -2,7 +2,7 @@
 
   <div v-if="step === 1" class="d-flex justify-content-center align-items-center">
     <div class="row">
-    <h1 class="justify-content-center">Rechnungsteller:</h1>
+    <h1 class="justify-content-center mt-3">Kreditor:</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
@@ -122,7 +122,7 @@
           <label for="validation3">Telefon Nummer:</label>
           <div class="input-container">
             <input type="text" class="form-control" pattern="[0-9]*" placeholder="Telefon Nummer"
-              v-model="companyData.phone_number">
+              v-model="companyData.phone_number" required>
           </div>
           <div class="invalid-feedback">
             Telefon Nummer Bitte eintragen.
@@ -143,7 +143,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">IBAN:</label>
           <div class="input-container">
-            <input type="text" class="form-control" placeholder="IBAN" v-model="companyData.iban_number">
+            <input type="text" class="form-control" pattern="[0-9]*" placeholder="IBAN" v-model="companyData.iban_number" required>
           </div>
           <div class="invalid-feedback">
             IBAN Bitte eintragen.
@@ -152,7 +152,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Mehrwertsteuer:</label>
           <div class="input-container">
-            <input type="text" class="form-control" placeholder="Mehrwertsteuer" v-model="companyData.mwst">
+            <input type="text" class="form-control" pattern="[0-9]*" placeholder="Mehrwertsteuer" v-model="companyData.mwst" required>
           </div>
           <div class="invalid-feedback">
             Mehrwertsteuer Bitte eintragen.
@@ -163,7 +163,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">Bank:</label>
           <div class="input-container">
-            <input type="text" class="form-control" placeholder="Bank" v-model="companyData.bank">
+            <input type="text" class="form-control" placeholder="Bank" v-model="companyData.bank" required>
           </div>
           <div class="invalid-feedback">
             Bank Bitte eintragen.
@@ -173,7 +173,7 @@
           <label for="validation3">Konto Nummer:</label>
           <div class="input-container">
             <input type="text" class="form-control" pattern="[0-9]*" placeholder="Konto Nummer"
-              v-model="companyData.account">
+              v-model="companyData.account" required>
           </div>
           <div class="invalid-feedback">
             Konto Nummer Bitte eintragen.
@@ -181,8 +181,8 @@
         </div>
       </div>
     </form>
-      <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary mb-5" @click="submitCompanyForm">Next</button>
+      <div class="d-grid gap-2 col-6 mx-auto mt-3">
+    <button type="button" class="btn btn-outline-light btn-primary mb-5" @click="submitCompanyForm">Weiter</button>
 
     </div>
   </div>
@@ -190,11 +190,11 @@
   <!-- Step 3: Customer Form -->
   <div v-if="step === 2" class="d-flex justify-content-center align-items-center">
     <div class="row">
-    <h1 class="justify-content-center">2. Kunde</h1>
+    <h1 class="justify-content-center">Debitor</h1>
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCustomerForm">
             <div class="row">
 <div class="col-md-6 mb-3 col-sm-12">
-  <label>Gender:</label>
+  <label>Geschlecht:</label>
   <div class="form-check">
     <input
       class="form-check-input"
@@ -223,7 +223,7 @@
       value=""
       v-model="customerData.gender"
     />
-    <label class="form-check-label" for="noneRadio">None</label>
+    <label class="form-check-label" for="noneRadio">Keine Angaben</label>
   </div>
   <div class="invalid-feedback">
     Ansprache.
@@ -309,8 +309,8 @@
     </form>
           <div class="d-flex justify-content-center mt-3">
     
-    <button class="btn btn-secondary me-3 mb-5" @click="previousStep">Zurück</button>
-<button class="btn btn-primary mb-5" @click="submitCustomerForm">Weiter</button>
+    <button class="btn btn-outline-light btn-secondary btn-lg me-3 mb-5" @click="previousStep">Zurück</button>
+<button class="btn btn-outline-light btn-primary btn-lg mb-5" @click="submitCustomerForm">Weiter</button>
     </div>
   </div>
   </div>
@@ -318,7 +318,7 @@
 <div v-if="step === 3" class="d-flex justify-content-center align-items-center">
      <div class="row">
   <div class="col-md-8 text-center">
-    <h1 class="fs-5">3. Rechnungsnummer:</h1>
+    <h1 class="fs-5">Rechnungsnummer:</h1>
     <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
@@ -333,7 +333,7 @@
 
 <div v-if="step === 4" class="d-flex justify-content-center align-items-center">
   <div class="col-md-10">
-    <h1 class="text-center">4. Rechnung</h1>
+    <h1 class="text-center">Rechnungsposition</h1>
     <div class="table-responsive table-container">
       <table class="table table-borderless border-0 border-b-2 col-md-6"
           v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">

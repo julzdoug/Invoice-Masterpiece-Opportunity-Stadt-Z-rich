@@ -499,7 +499,7 @@
           <form @submit.prevent="submitInvoiceForm">
 
             <div class="table-responsive table-container">
-              <table class="table table-hover" aria-label="" v-if="selectedInvoice !== ''">
+              <table class="table table-hover text-center fit" aria-label="" v-if="selectedInvoice !== ''">
                 <thead>
                   <tr>
                     <th class="text-dark bg-light text-center"><span><i class="bi bi-pencil"></i></span></th>

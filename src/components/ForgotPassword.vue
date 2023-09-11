@@ -27,22 +27,22 @@
           <div class="card shadow-sm">
             <div class="card-body">
               <div class="mb-4">
-                <h5>Forgot Password?</h5>
-                <p class="mb-2">Enter your registered email ID to reset the password
+                <h5>Passwort vergessen?</h5>
+                <p class="mb-2">Tragen Sie Ihre E-mail Adresse ein um das Passwort zurück zu setzten. sie erhalten ein Mail.
                 </p>
               </div>
               <form class="max-w-lg m-auto" @submit.prevent="handlePasswordReset()">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" name="email" placeholder="Enter Your Email"
+                  <label for="email" class="form-label">E-mail</label>
+                  <input type="email" class="form-control" name="email" placeholder="Enter Your E-mail"
                     v-model="email">
                 </div>
                 <div class="mb-3 d-grid">
                   <button class="btn btn-primary">
-                    Reset Password
+                    Passwort zurücksetzte
                   </button>
                 </div>
-                <button type="button" class="btn text-primary" @click="handleMenuClick('Me')">sign in</button>
+                <button type="button" class="btn text-primary" @click="handleMenuClick('Me')">Anmelden</button>
               </form>
             </div>
           </div>
@@ -53,7 +53,7 @@
   <div class="container-fluid text-start">
     <div class="row align-items-center">
       <div class="col">
-        <img src="../assets/vue.svg" alt="Logo" width="16" height="10" class="footer-image align-text-top">
+        <img src="../assets/logo.svg" alt="Logo" width="16" height="10" class="footer-image align-text-top">
       </div>
       <div class="col">
         <h3 class="footer-title">Zachnung mach Deine Rechnung</h3>

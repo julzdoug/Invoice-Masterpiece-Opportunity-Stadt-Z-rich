@@ -39,7 +39,7 @@
   <div class="container-fluid text-start">
     <div class="row align-items-center">
       <div class="col">
-        <img src="../assets/vue.svg" alt="Logo" width="16" height="10" class="footer-image align-text-top">
+        <img src="../assets/logo.svg" alt="Logo" width="16" height="10" class="footer-image align-text-top">
       </div>
       <div class="col">
         <h3 class="footer-title">Zachnung mach Deine Rechnung</h3>

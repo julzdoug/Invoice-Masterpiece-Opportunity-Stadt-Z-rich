@@ -9,7 +9,7 @@
 
         <div class="form-group col-md-6 col-sm-12 mb-3">
 <div class="row">
-          <label for="logoInput">Company Logo</label>
+          <label for="logoInput">Firma Logo</label>
           <div class="text-center col-4">
             <div class="input-with-image">
               <template v-if="isEditing">
@@ -30,10 +30,10 @@
       </div>
       <div class="row">
         <div class="col-md-6 mb-3 col-sm-12">
-          <label for="validation3">Unternehmen:</label>
+          <label for="validation3">Branche:</label>
           <div class="input-container">
             <template v-if="isEditing">
-              <input type="text" class="form-control text-start" placeholder="Unternehmen" required
+              <input type="text" class="form-control text-start" placeholder="Branche" required
                 v-model="companyData.profession">
             </template>
             <template v-else>
@@ -41,14 +41,14 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Unternehmen.
+            Branche Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
-          <label for="validation3">Firma:</label>
+          <label for="validation3">Name der Firma:</label>
           <div class="input-container">
             <template v-if="isEditing">
-              <input type="text" class="form-control text-start" placeholder="Firma" required
+              <input type="text" class="form-control text-start" placeholder="Name der Firma" required
                 v-model="companyData.company_name">
             </template>
             <template v-else>
@@ -56,7 +56,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Firma.
+            Name der Firma Bitte eintragen.
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Vorname.
+            Vorname Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -86,7 +86,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Name.
+            Name Bitte eintragen.
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Strasse.
+            Strasse Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -117,7 +117,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Nummer.
+            Nummer Bitte eintragen.
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Postleitzahl.
+            Postleitzahl Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -148,7 +148,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Ort.
+            Ort Bitte eintragen.
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Email.
+            Email Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -179,7 +179,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Webpage.
+            Webpage Bitte eintragen.
           </div>
         </div>
       </div>
@@ -196,7 +196,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Telefon Nummer.
+            Telefon Nummer Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -211,7 +211,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter UiD Nummer.
+            UiD Nummer Bitte eintragen.
           </div>
         </div>
       </div>
@@ -227,7 +227,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter IBAN.
+            IBAN Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -241,7 +241,7 @@
             </template>
           </div>
           <class class="invalid-feedback">
-            Enter Mehrwertsteuer.
+            Mehrwertsteuer Bitte eintragen.
           </class>
         </div>
       </div>
@@ -257,7 +257,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Enter Bank.
+            Bank Bitte eintragen.
           </div>
         </div>
         <div class="col-md-6 mb-3 col-sm-12">
@@ -272,7 +272,7 @@
             </template>
           </div>
           <div class="invalid-feedback">
-            Konto Nummer.
+            Konto Nummer Bitte eintragen.
           </div>
         </div>
       </div>
