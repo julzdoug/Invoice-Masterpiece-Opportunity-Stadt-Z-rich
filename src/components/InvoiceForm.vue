@@ -323,6 +323,7 @@
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
     <div>   
+      
     <button class="col btn btn-secondary mt-3 me-3 mb-5" @click="previousStep">Zurück</button>
      <button class="col btn btn-primary mt-3 mb-5" @click="nextStep()">Weiter</button>
 </div>

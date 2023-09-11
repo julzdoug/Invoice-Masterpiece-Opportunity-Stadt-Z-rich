@@ -10,6 +10,7 @@
           <i class="fa fa-angle-double-right text-80"></i>
           {{ companyData ? companyData.company_name : 'Loading...' }}
         </small>
+        
       </h1>
       <div class="page-tools">
         <a type="button" class="btn btn-outline-primary btn-light mx-1px text-95" ref="content" data-title="PDF" @click="printInvoice">

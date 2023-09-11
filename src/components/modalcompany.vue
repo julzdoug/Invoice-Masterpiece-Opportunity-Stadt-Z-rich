@@ -471,7 +471,7 @@ async function saveChanges() {
     }
   }
 
-    async function deleteCompany() {
+/*     async function deleteCompany() {
       const companyIdToDelete = companyId.value;
       if (companyIdToDelete) {
         try {
@@ -492,7 +492,37 @@ async function saveChanges() {
       } else {
         console.error('No company selected to delete');
       }
+    } */
+    async function deleteCompany() {
+  const companyIdToDelete = companyId.value;
+  if (companyIdToDelete) {
+    // Show a confirmation dialog before proceeding with the delete
+    const confirmed = window.confirm('Sind sie sicher das sie den Kreditor löschen?');
+    
+    if (confirmed) {
+      try {
+        const { data, error } = await supabase
+          .from('company')
+          .delete()
+          .match({ id: companyIdToDelete });
+
+        if (error) {
+          console.error('Failed to delete company:', error);
+        } else {
+          companyId.value = null;
+          location.reload();
+        }
+      } catch (error) {
+        console.error('Failed to delete company:', error);
+      }
+    } else {
+      console.log('Deletion canceled.');
     }
+  } else {
+    console.error('No company selected to delete');
+  }
+}
+
 
 function toggleEditMode() {
   if (selectedTable.value === 'company') {
