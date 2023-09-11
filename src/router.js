@@ -11,6 +11,7 @@ import Password from '../src/components/ForgotPassword.vue';
 import Company from '../src/components/Company.vue';
 import Customer from '../src/components/Customer.vue';
 import Delete from '../src/components/account-deleted.vue';
+import Update from '../src/components/passwordupdate.vue';
 
 const routes = [
 
@@ -79,6 +80,11 @@ const routes = [
     name: 'EmailConfirmation',
     path: '/email-confirmation',
     component: Email,
+  },
+      {
+    name: 'Update',
+    path: '/Update',
+    component: Update,
   },
   {
     name: 'ForgotPassword',
