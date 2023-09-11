@@ -13,7 +13,7 @@
     
     <div class="section">
         <h3 class="fw-bold">Startseite</h3>
-        <p class="fw-normal text-muted mb-3">
+        <p class="fw-normal fs-4 text-muted mb-3">
             Hier können Sie eine Rechnung im PDF-Format erstellen, indem Sie die folgenden Schritte ausführen:
         </p>
         <ul>
@@ -24,34 +24,39 @@
 
     <div class="section">
         <h3 class="fw-bold">Meine Rechnungen</h3>
-        <p class="fw-normal text-muted mb-3">
+        <p class="fw-normal fs-4 text-muted mb-3">
             In diesem Abschnitt können Sie alle erstellten Rechnungen anzeigen, bearbeiten oder löschen. Sie können auch eine erstellte Rechnung erneut einsehen und herunterladen.
         </p>
     </div>
 
     <div class="section">
         <h3 class="fw-bold">Angaben</h3>
-        <p class="fw-normal text-muted mb-3">
+        <p class="fw-normal fs-4 text-muted mb-3">
             Hier können Sie Informationen zu Kreditoren und Debitoren anzeigen oder bearbeiten. Sie haben die Möglichkeit, neue Einträge zu erstellen oder bestehende zu ändern.
         </p>
     </div>
 
     <div class="section">
         <h3 class="fw-bold">Neue Rechnung erstellen</h3>
-        <p class="fw-normal text-muted mb-3">
+        <p class="fw-normal fs-4 text-muted mb-3">
             In diesem Abschnitt können Sie neue Rechnungen erstellen, wobei Sie auf vorhandene Kreditoren und Debitoren zugreifen können. Alternativ können Sie auch völlig neue Rechnungen erstellen und neue Einträge für Kreditoren und Debitoren hinzufügen. Befolgen Sie die Schritte und am Ende erhalten Sie eine PDF-Rechnung, die Sie herunterladen können.
         </p>
     </div>
 
     <div class="section">
         <h3 class="fw-bold">Benutzerkonto</h3>
-        <p class="fw-normal text-muted mb-3">
+        <p class="fw-normal fs-4 text-muted mb-3">
             In diesem Abschnitt haben Sie die Möglichkeit, mit einem Klick alle vorhandenen Rechnungen und Einträge zu löschen. Sie können auch Ihr Benutzerkonto löschen und sich mit der Logout-Funktion ausloggen.
         </p>
     </div>
-
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-outline-light btn-primary" type="button" @click="jumpToSection('form')">Start</button>
+    <div class="section">
+        <h3 class="fw-bold">Einzahlungschein erstellen.</h3>
+        <a class="fw-normal fs-4 text-muted mb-3" href="https://www.codecrete.net/qrbill/">
+            Benutze sie bitte
+        </a>
+    </div>
+    <div class="d-grid gap-2 col-6 mx-auto mt-3 mb-3">
+        <button class="btn btn-outline-light btn-primary btn-lg" type="button" @click="jumpToSection('form')">Start</button>
     </div>
 </div>
       </div>

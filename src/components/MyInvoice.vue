@@ -266,7 +266,7 @@ const showInvoiceForm = ref(false);
     };
 const deleteRow = async (row) => {
   // Show a confirmation dialog
-  const shouldDelete = confirm('Are you sure you want to delete this row?');
+  const shouldDelete = confirm('Sind Sie sicher das die Rechnung gelöscht wird?');
 
   if (!shouldDelete) {
     return; // If the user cancels the confirmation, do nothing

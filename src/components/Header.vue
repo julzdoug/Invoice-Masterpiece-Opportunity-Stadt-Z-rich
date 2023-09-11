@@ -99,7 +99,7 @@ async function deleteUser(userId) {
     }
 
     // Show a confirmation dialog
-    const shouldDelete = confirm('Are you sure you want to delete this user?');
+    const shouldDelete = confirm('Sind Sie sicher das alle Daten gelöscht werden?');
 
     if (!shouldDelete) {
       return; // If the user cancels the confirmation, do nothing

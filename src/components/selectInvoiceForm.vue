@@ -99,7 +99,7 @@
   </div>
 </div> 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action fw-bold" :aria-current="selectedCustomer === null">Empfänger</li>
+  <li class="list-group-item list-group-item-action fw-bold" :aria-current="selectedCustomer === null">Debitor:</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="customer in customers"

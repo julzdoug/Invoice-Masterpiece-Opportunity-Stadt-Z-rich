@@ -7,8 +7,8 @@
         <h1 class="display-3 fs-1 fw-bold">Rechnungs Generator</h1>
         <h3 class="fw-normal fs-3 text-muted mb-3">Erstelle deine Rechnung</h3>
         <h3 class="fw-normal fs-3 text-muted mb-3">zu einem PDF</h3>
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-outline-light btn-primary" type="button" @click="jumpToSection('form')">Start</button>
+    <div class="d-grid gap-2 col-6 mx-auto mt-3 mb-3">
+        <button class="btn btn-outline-light btn-primary btn-lg" type="button" @click="jumpToSection('form')">Start</button>
     </div>
       </div>
           <div class="col-md-8 order-md-2">

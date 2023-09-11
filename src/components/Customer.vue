@@ -335,7 +335,7 @@ export default {
 
   if (customerNameToDelete) {
     // Display a confirmation dialog
-    const confirmDelete = window.confirm(`Are you sure you want to delete customer ${customerNameToDelete}?`);
+    const confirmDelete = window.confirm(`Sind Sie sicher das sie den Debitor löschen ${customerNameToDelete}?`);
 
     if (confirmDelete) {
       try {
