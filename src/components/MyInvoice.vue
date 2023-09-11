@@ -8,8 +8,8 @@
         <table class="table table-hover text-center fit">
         <thead class="table-light">
           <tr>        
-            <th class="text-dark bg-light">Kunde.</th>
-            <th class="text-dark bg-light">Rechnungsteller</th>
+            <th class="text-dark bg-light">Debitor.</th>
+            <th class="text-dark bg-light">Kreditor</th>
             <th class="text-dark bg-light">Rechnungsnummer</th>
             <th class="text-dark bg-light">Rechnungs Datum</th>
             <th class="text-dark bg-light">Betrag</th>

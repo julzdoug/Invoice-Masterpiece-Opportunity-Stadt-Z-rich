@@ -3,22 +3,22 @@
 
      <section class="content ms-3 me-3">
 <Hero  />
-  <div class="button-section-jumper" >
+  <button class="btn button-section-jumper btn-lg" >
     
-  </div>
+  </button>
 <Discription  />
 <!-- <editInvoice v-if="user" /> -->
-  <div class="button-section-jumper" >
+  <button class="btn button-section-jumper btn-lg">
 
-  </div>
+  </button>
 
-<div id="form" class="fit bg-primary bg-opacity-25">
+<div id="form" class="fit bg-primary bg-opacity-25 ms-3 me-3">
   <InvoiceForm />
 
   <!--   <Login v-if="!user" @login-success="handleLoginSuccess" /> -->
 </div>
   <div class="scroll-back-to-top" @click="scrollToTop"  ref="scrollButton">
-    <button class="btn btn-primary btn-sm"><i class="bi bi-file-arrow-up-fill"></i></button>
+    <button class="btn btn-primary btn-lg"><i class="bi bi-file-arrow-up-fill"></i></button>
   </div>
   </section>
   <Footer />

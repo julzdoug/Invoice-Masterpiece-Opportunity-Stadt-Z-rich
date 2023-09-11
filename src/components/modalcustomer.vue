@@ -5,7 +5,7 @@
       <div class="row"></div>
         <div class="form-group col-md-6 col-sm-12 mb-3">
 <div class="row">
-              <label>Gender:</label>
+              <label>Geschlecht:</label>
               <div class="form-check" v-if="isEditing">
                 <input class="form-check-input" type="radio" id="mrRadio" value="Herr" v-model="customerData.gender" />
                 <label class="form-check-label" for="mrRadio">Herr</label>
@@ -16,7 +16,7 @@
               </div>
               <div class="form-check" v-if="isEditing">
                 <input class="form-check-input" type="radio" id="noneRadio" value="" v-model="customerData.gender" />
-                <label class="form-check-label" for="noneRadio">None</label>
+                <label class="form-check-label" for="noneRadio">Keine Angaben</label>
               </div>
               <div v-else>
                 <div class="form-control-static" v-if="customerData && customerData.name">{{ customerData.gender || 'None' }}</div>
@@ -227,6 +227,7 @@ async function createNewCustomer(customerData) {
     } else {
       // Handle success, e.g., show a success message
       console.log('New customer created successfully!', data);
+      location.reload();
     }
   } catch (error) {
     console.error('Error creating a new customer:', error);

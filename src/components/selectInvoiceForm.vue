@@ -8,14 +8,14 @@
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Empfänger</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Debitor</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body modal-dialog-scrollable">
      <InvoiceForm />
       </div>
       <div class="modal-footer bg-primary bg-opacity-25">
-        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schliessen</button>
         
       </div>
     </div>
@@ -26,10 +26,10 @@
   <div>
     
        
-    <h1 class="fs-5 bg-primary bg-opacity-25">Rechnungsteller wählen:</h1>
+    <h1 class="fs-5 bg-primary bg-opacity-25 fw-bold">Kreditor wählen:</h1>
    <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-light mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Debitor">
-  Neuer Rechnungsteller:
+<button type="button" class="btn btn-outline-light btn-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Debitor">
+  Neuer Kreditor:
 </button>
 
 <!-- Modal -->
@@ -37,21 +37,21 @@
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Rechnungsteller</h1>
+        <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Kreditor</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body modal-dialog-scrollable">
       <modalcompany />
       </div>
       <div class="modal-footer bg-primary bg-opacity-25">
-        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schliessen</button>
         
       </div>
     </div>
   </div>
 </div> 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action" :aria-current="selectedCompany === null">Rechnungsteller:</li>
+  <li class="list-group-item list-group-item-action fw-bold" :aria-current="selectedCompany === null">Kreditor:</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="company in companies"
@@ -76,30 +76,30 @@
   <!-- Step 3: Customer Form -->
 <div v-if="step === 2" class="justify-content-center align-items-center bg-primary bg-opacity-25 ms-3 me-3">
   <div>
-    <h1 class="fs-5 bg-primary bg-opacity-25">Empfänger wählen:</h1>
-<button type="button" class="btn btn-outline-light mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Customer">
-  Neuer Kunde Erstellen
+    <h1 class="fs-5 bg-primary bg-opacity-25">Debitor wählen:</h1>
+<button type="button" class="btn btn-outline-light btn-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#Customer">
+  Neuer Debitor Erstellen
 </button>
       <!-- Modal -->
 <div class="modal fade" id="Customer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content back">
       <div class="modal-header back">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Empfänger</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Debitor</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body modal-dialog-scrollable">
       <modalcustomer />
       </div>
       <div class="modal-footer bg-primary bg-opacity-25">
-        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Schliessen</button>
         
       </div>
     </div>
   </div>
 </div> 
 <ul class="list-group">
-  <li class="list-group-item list-group-item-action" :aria-current="selectedCustomer === null">Empfänger</li>
+  <li class="list-group-item list-group-item-action fw-bold" :aria-current="selectedCustomer === null">Empfänger</li>
   <li
     class="list-group-item list-group-item-action list-group-item-light"
     v-for="customer in customers"
@@ -126,12 +126,12 @@
 <div v-if="step === 3" class="bg-primary bg-opacity-25 ms-3 me-3">
   <div class="row ms-1">
     <div class="col-md-6 col-sm-12 text-secondary">
-            <p class="fw-bold">Empfänger:</p>
+            <p class="fw-bold">Debitor:</p>
 
         <div class="my-1">
           {{ selectedCustomer && selectedCustomer.name }}, {{ selectedCustomer && selectedCustomer.surname }}
         </div>
-                <div class="my-1">Kunden Nummer:<br>
+                <div class="my-1">Debitor Nummer:<br>
           {{ selectedCustomer && selectedCustomer.id }}
         </div>
         <div class="my-1">
@@ -145,12 +145,12 @@
         </div>
       </div>      
       <div class="col-md-6 col-sm-12 text-secondary">
-        <p class="fw-bold">Rechnungsteller:</p>
+        <p class="fw-bold">Kreditor:</p>
 
         <div class="my-1">
           {{ selectedCompany && selectedCompany.company_name }}, {{ selectedCompany && selectedCompany.surname }}
         </div>
-                <div class="my-1">Rechnungsteller Nummer<br>
+                <div class="my-1">Kreditor Nummer<br>
           {{ selectedCompany && selectedCompany.id }}
         </div>
         <div class="my-1">
@@ -190,7 +190,7 @@
 
   <div v-if="step === 4" class="justify-content-center align-items-center">
     <div class="table-responsive table-container">
-      <table class="table table-borderless border-0 border-b-2" v-if="filteredInvoiceRows.length > 0">
+      <table class="table table-hover text-center fit" v-if="filteredInvoiceRows.length > 0">
      
 
         <thead class="bg-primary bg-opacity-25">
