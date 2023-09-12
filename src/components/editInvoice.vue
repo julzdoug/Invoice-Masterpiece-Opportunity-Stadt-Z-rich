@@ -174,7 +174,7 @@
                 <label for="validation3">E-mail:</label>
                 <div class="input-container">
                   <template v-if="isEditing">
-                    <input type="email" class="form-control" placeholder="E-mail" required v-model="companyData.email">
+                    <input type="email" class="form-control" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" placeholder="E-mail" required v-model="companyData.email">
                   </template>
                   <template v-else>
                     <div class="form-control-static" v-if="companyData.email">{{ companyData.email }}</div>
@@ -491,7 +491,7 @@
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3"
               data-bs-toggle="modal">Kreditor</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle"
-              data-bs-toggle="modal">Debito</button>
+              data-bs-toggle="modal">Debitor</button>
           </div>
         </div>
         </div>

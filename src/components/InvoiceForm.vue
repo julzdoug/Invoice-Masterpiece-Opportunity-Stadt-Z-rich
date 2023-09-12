@@ -1,8 +1,10 @@
-<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-body-light">
+<template class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-primary bg-opacity-25">
 
-  <div v-if="step === 1" class="d-flex justify-content-center align-items-center">
-    <div class="row">
-    <h1 class="justify-content-center mt-3">Kreditor:</h1>
+  <div v-if="step === 1" class="ms-5 me-5">
+    <br>
+    <h1 class="justify-content-center mt-3 ms-3 me-3">Kreditor:</h1>
+    <div class="row d-flex justify-content-center align-items-center ms-3 me-3">
+    
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCompanyForm">
       <div class="row">
         <div class="form-group col-md-6 col-sm-12 mb-3">
@@ -100,7 +102,7 @@
         <div class="col-md-6 mb-3 col-sm-12">
           <label for="validation3">E-mail:</label>
           <div class="input-container">
-            <input type="email" class="form-control" placeholder="E-mail" required v-model="companyData.email">
+            <input type="email" class="form-control" placeholder="E-mail" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required v-model="companyData.email">
           </div>
           <div class="invalid-feedback">
             E-mail Bitte eintragen.
@@ -182,15 +184,23 @@
       </div>
     </form>
       <div class="d-grid gap-2 col-6 mx-auto mt-3">
-    <button type="button" class="btn btn-outline-light btn-primary mb-5" @click="submitCompanyForm">Weiter</button>
+          <button
+        type="button"
+        class="btn btn-outline-light btn-primary mb-5"
+        @click="submitCompanyForm"
+        :disabled="!isFormFilled"
+      >
+        Weiter
+      </button>
 
     </div>
   </div>
 </div>
   <!-- Step 3: Customer Form -->
-  <div v-if="step === 2" class="d-flex justify-content-center align-items-center">
-    <div class="row">
-    <h1 class="justify-content-center">Debitor</h1>
+  <div v-if="step === 2" class="ms-5 me-5">
+     <br>
+    <h1 class="justify-content-center mt-3">Debitor:</h1>
+    <div class="row d-flex justify-content-center align-items-center">
     <form class="container mt-5 smaller-form" novalidate @submit.prevent="submitCustomerForm">
             <div class="row">
 <div class="col-md-6 mb-3 col-sm-12">
@@ -310,15 +320,23 @@
           <div class="d-flex justify-content-center mt-3">
     
     <button class="btn btn-outline-light btn-secondary btn-lg me-3 mb-5" @click="previousStep">Zurück</button>
-<button class="btn btn-outline-light btn-primary btn-lg mb-5" @click="submitCustomerForm">Weiter</button>
+          <button
+            class="btn btn-outline-light btn-primary btn-lg mb-5"
+            @click="submitCustomerForm"
+            :disabled="!isFormFilled"
+          >
+            Weiter
+          </button>
     </div>
   </div>
   </div>
 
-<div v-if="step === 3" class="d-flex justify-content-center align-items-center">
-     <div class="row">
+<div v-if="step === 3" class="ms-5 me-5">
+         <br>
+    <h1 class="justify-content-center mt-3 ms-3 me-3">Rechnungsnummer:</h1>
+  <div class="row justify-content-center align-items-center">
   <div class="col-md-8 text-center">
-    <h1 class="fs-5">Rechnungsnummer:</h1>
+    
     <input v-model="invoiceNumber" type="text" class="form-control mt-3" placeholder="Rechnungsnummer">
     <hr class="mt-3">
     <button @click="generateInvoiceNumber" class="btn btn-primary mt-2">Rechnungsnummer Generieren</button>
@@ -332,12 +350,14 @@
 </div>
 </div>
 
-<div v-if="step === 4" class="d-flex justify-content-center align-items-center">
-  <div class="col-md-10">
-    <h1 class="text-center">Rechnungsposition</h1>
+<div v-if="step === 4" class="me-5 ms-5">
+    <br>
+    <h1 class="justify-content-center mt-3 ms-3 me-3">Rechnungsposition</h1>
     <div class="table-responsive table-container">
-      <table class="table table-borderless border-0 border-b-2 col-md-6"
-          v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
+        <div class="col-md-12 d-flex justify-content-center align-items-center">
+            <table class="table table-borderless border-0 border-b-2 col-md-6"
+                v-if="invoiceNumber !== '' || generateInvoiceNumber !== ''" aria-label="">
+
           <thead>
             <tr>
           
@@ -389,15 +409,19 @@
             </tr>
           </tbody>
    </table>
-       <div class="total-container"> <!-- Add a class to the container -->
-      <div class="total text-center">Gesamt Betrag: Total: {{ total }}</div>
-      </div> 
+
     </div>
-    <button class="btn btn-secondary ms-3 mb-5" @click="previousStep">Zurück</button>
-    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="addNewRow">Neue Rechnungsposition</button>
-    <button class="btn btn-primary d-block mx-auto my-3 mb-5" @click="saveChanges">Rechnung erstellen</button>
+    <button class="btn btn-success d-block mx-auto my-3 mb-5" @click="addNewRow">Neue Rechnungsposition</button>
+    <div class="row">
+    <button class="btn btn-secondary ms-3 mb-5 col" @click="previousStep">Zurück</button>
+                <div class="total-container text-left col"> <!-- Add a class to the container -->
+                <div class="total">Gesamt Betrag: Total: {{ total }}</div>
+            </div> 
+            <button class="btn btn-primary d-block mx-auto me-3 mb-5 col" @click="saveChanges">Rechnung erstellen</button>
+            </div>
     
-  </div>
+    
+</div>
 </div>
 
       
@@ -423,7 +447,46 @@ export default {
       return acc + this.calculateRowTotal(row);
     }, 0);
   },
-},
+    isFormFilled() {
+      if (this.step === 1) {
+        // Check if all required fields for the first step are filled
+        return (
+          this.companyData.profession &&
+          this.companyData.company_name &&
+          this.companyData.surname &&
+          this.companyData.name &&
+          this.companyData.street &&
+          this.companyData.street_number &&
+          this.companyData.postal_code &&
+          this.companyData.place &&
+          this.companyData.email &&
+          this.companyData.phone_number &&
+          this.companyData.uid_number &&
+          this.companyData.iban_number &&
+          this.companyData.mwst &&
+          this.companyData.bank &&
+          this.companyData.account
+        );
+      } else if (this.step === 2) {
+        // Check if all required fields for the second step are filled
+        return (
+          this.customerData.name &&
+          this.customerData.surname &&
+          this.customerData.street &&
+          this.customerData.streetnumber &&
+          this.customerData.postcode &&
+          this.customerData.place &&
+          this.customerData.email
+        );
+      } else if (this.step === 3) {
+        // Check if the invoiceNumber field is filled in the third step
+        return !!this.invoiceNumber;
+      } else {
+        // Handle other steps if needed
+        return false; // Or return true if no validation is needed for other steps
+      }
+    },
+  },
 
   data() {
     return {

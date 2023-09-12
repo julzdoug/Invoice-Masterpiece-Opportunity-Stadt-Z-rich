@@ -1,14 +1,13 @@
 <template>
-<section class="position-relative overflow-hidden p-3 p-md-5 m-md-3  bg-primary bg-opacity-50">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-8 order-md-2">
-       
-        <div class="product-device shadow-sm d-md-none"></div>
-        <div class="product-device product-device-2 shadow-sm d-md-none"></div>
-      </div>
-      <div class="col-md-12 order-md-1">
-<div class="container">
+  <section class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-primary bg-opacity-50">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 order-md-2 text-center"> <!-- Centering content in the middle -->
+          <div class="product-device shadow-sm d-md-none"></div>
+          <div class="product-device product-device-2 shadow-sm d-md-none"></div>
+        </div>
+        <div class="col-md-12 order-md-1">
+          <div class="container">
     <h2 class="display-3 fw-bold">Wie funktioniert es?</h2>
     
     <div class="section">
@@ -54,16 +53,17 @@
         <a class="fw-normal fs-4 text-muted mb-3" href="https://www.codecrete.net/qrbill/">
             Benutze sie bitte
         </a>
-    </div>
-    <div class="d-grid gap-2 col-6 mx-auto mt-3 mb-3">
-        <button class="btn btn-outline-light btn-primary btn-lg" type="button" @click="jumpToSection('form')">Start</button>
-    </div>
-</div>
+      </div>
+          <div class="d-grid gap-2 col-6 mx-auto mt-3 mb-3">
+            <button class="btn btn-outline-light btn-primary btn-lg" type="button" @click="jumpToSection('form')">Start</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+    </div>
+  </section>
 </template>
+
 
 
 

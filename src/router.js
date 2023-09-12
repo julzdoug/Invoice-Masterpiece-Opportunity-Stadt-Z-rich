@@ -5,13 +5,15 @@ import editInvoice from '../src/components/editInvoice.vue';
 import Home from '../src/components/Login.vue';
 import Me from '../src/components/MainLayout.vue';
 import Email from '../src/components/EmailConfirmation.vue';
-import Invoice from '../src/components/Invoices.vue';
+import Invoices from '../src/components/Invoices.vue';
 import NewInvoice from '../src/components/NewInvoice.vue';
 import Password from '../src/components/ForgotPassword.vue';
 import Company from '../src/components/Company.vue';
 import Customer from '../src/components/Customer.vue';
 import Delete from '../src/components/account-deleted.vue';
 import Update from '../src/components/passwordupdate.vue';
+
+
 
 const routes = [
 
@@ -46,7 +48,7 @@ const routes = [
     ]
   },
       {
-    path: '/Cusomer',
+    path: '/Customer',
     name: 'Customer',
     props: true,
     meta: { requiresAuth: true },
@@ -66,19 +68,19 @@ const routes = [
     name: 'Invoices',
     props: true,
     meta: { requiresAuth: true },
-    component: Invoice,
+    component: Invoices,
   },
 
   // Route for the NewInvoice component
   {
-    path: '/new-invoice',
+    path: '/NewInvoice',
     name: 'NewInvoice',
     meta: { requiresAuth: true },
     component: NewInvoice,
   },
     {
     name: 'EmailConfirmation',
-    path: '/email-confirmation',
+    path: '/EmailConfirmation',
     component: Email,
   },
       {
