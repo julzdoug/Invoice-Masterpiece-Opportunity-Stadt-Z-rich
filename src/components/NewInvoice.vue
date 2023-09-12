@@ -1,14 +1,12 @@
 <template>
-  <div class="">
+  <div class="page-container back">
     <Header />
-<div class="d-grid gap-2 col-11 mx-auto bg-primary bg-opacity-25 topper">
-      <hr>
+    <section class="content ms-3 me-3 back">
       <selectInvoiceForm />
-  </div>
-    </div>
-  
-    <Footer />
 
+  </section>
+    <Footer />
+</div>
 </template>
 
 <script>
@@ -55,13 +53,31 @@ export default {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.topper {
-    flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
-  overflow-y: auto; /* Add vertical scroll if content overflows */
-  margin-top:15vh;
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the page takes at least the full viewport height */
 }
+
+.content {
+  border-top: 1px solid #ccc; /* You can adjust the border style and color */
+  padding-top: 20vh; 
+}
+
+
+
+
+
+.custom-select {
+  height: 38px;
+  width: 50%;
+  
+}
+
 .back {
   background-color: rgb(192, 212, 249);
 }
+
 
 </style>

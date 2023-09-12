@@ -1,8 +1,8 @@
 <template>
-    <div class="page-container">
+    <div class="page-container back">
   <Header />
   <!--Titel und Aushwal-->
-    <section class="content ms-3 me-3">
+    <section class="content ms-3 me-3 back">
       <!--Kunden Daten-->
       <div class="table-container table-responsive">
         <table class="table table-hover text-center fit">
@@ -58,7 +58,7 @@
         />
     </div>
   </section>
-<Footer />
+<Footer class="content" />
 </div>
 </template>
 
@@ -344,23 +344,11 @@ const deleteRow = async (row) => {
 }
 
 .content {
-  flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
-  overflow-y: auto; /* Add vertical scroll if content overflows */
-  margin-top:15vh;
+  border-top: 1px solid #ccc; /* You can adjust the border style and color */
+  padding-top: 20vh; 
 }
 
-/* Style your Header and Footer components as needed */
-Header {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-}
 
-Footer {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-}
 
 
 

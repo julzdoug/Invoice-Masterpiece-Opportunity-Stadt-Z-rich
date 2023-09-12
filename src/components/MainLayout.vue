@@ -6,6 +6,13 @@
   <button class="btn button-section-jumper btn-lg" >
     
   </button>
+
+<Image  />
+<!-- <editInvoice v-if="user" /> -->
+  <button class="btn button-section-jumper btn-lg">
+
+  </button>
+  
 <Discription  />
 <!-- <editInvoice v-if="user" /> -->
   <button class="btn button-section-jumper btn-lg">
@@ -21,7 +28,7 @@
     <button class="btn btn-primary btn-lg"><i class="bi bi-file-arrow-up-fill"></i></button>
   </div>
   </section>
-  <Footer />
+  <Footer class="content" />
 </template>
 
 <script>
@@ -31,6 +38,7 @@ import Hero from "./heroSection.vue";
 import Discription from "./discription.vue";
 import Footer from "./footer.vue";
 import InvoiceForm from './InvoiceForm.vue';
+import Image from "./imageHero.vue";
 
 export default {
   components: {
@@ -39,6 +47,7 @@ export default {
     Discription,
     Footer,
     InvoiceForm,
+    Image,
   },
   methods: {
     scrollToTop() {
@@ -111,9 +120,8 @@ export default {
   cursor: pointer;
 }
 .content {
-  flex-grow: 1; /* Allow the content section to grow and take remaining vertical space */
-  overflow-y: auto; /* Add vertical scroll if content overflows */
-  margin-top:15vh;
+  border-top: 1px solid #ccc; /* You can adjust the border style and color */
+  padding-top: 20px; 
 }
 
 </style>

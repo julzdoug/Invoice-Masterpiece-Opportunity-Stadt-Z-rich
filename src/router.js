@@ -13,6 +13,8 @@ import Customer from '../src/components/Customer.vue';
 import Delete from '../src/components/account-deleted.vue';
 import Update from '../src/components/passwordupdate.vue';
 
+
+
 const routes = [
 
   {
