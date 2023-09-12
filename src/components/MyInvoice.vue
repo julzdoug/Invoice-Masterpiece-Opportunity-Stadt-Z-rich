@@ -345,7 +345,7 @@ const deleteRow = async (row) => {
 
 .content {
   border-top: 1px solid #ccc; /* You can adjust the border style and color */
-  padding-top: 20vh; 
+  padding-top: 10vh; 
 }
 
 
@@ -370,5 +370,22 @@ const deleteRow = async (row) => {
   max-width: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  /* Adjust font size for smaller screens */
+  .table-container {
+    
+    font-size: 14px; /* Adjust the font size as needed */
+  }
+
+  /* Add any other text-related adjustments here */
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 480px) {
+  /* Further adjustments for smaller screens */
+  .table-container {
+    font-size: 12px; /* Adjust the font size as needed */
+  }
+}
 </style>
 
