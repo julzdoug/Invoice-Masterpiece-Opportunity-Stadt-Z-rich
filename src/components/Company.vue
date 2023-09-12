@@ -322,7 +322,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 import Header from './Header.vue';
 import Footer from './footer.vue';
 
- const router = useRouter();
+ 
 export default {
   
   components: {
@@ -337,6 +337,7 @@ export default {
     },
   },
   setup() {
+    const router = useRouter();
     const selectedTable = ref('company');
     const selectedEntry = ref(null);
     const entries = ref({

@@ -121,7 +121,7 @@ export default {
 }
 .content {
   border-top: 1px solid #ccc; /* You can adjust the border style and color */
-  padding-top: 20px; 
+  padding-top: 20vh; 
 }
 
 </style>

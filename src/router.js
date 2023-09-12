@@ -12,7 +12,7 @@ import Company from '../src/components/Company.vue';
 import Customer from '../src/components/Customer.vue';
 import Delete from '../src/components/account-deleted.vue';
 import Update from '../src/components/passwordupdate.vue';
-
+import Selected from '../src/components/selectInvoiceForm.vue';
 
 
 const routes = [
@@ -70,7 +70,12 @@ const routes = [
     meta: { requiresAuth: true },
     component: Invoices,
   },
-
+ {
+    path: '/Selected',
+    name: 'Selected',
+    meta: { requiresAuth: true },
+    component: Selected,
+  },
   // Route for the NewInvoice component
   {
     path: '/NewInvoice',

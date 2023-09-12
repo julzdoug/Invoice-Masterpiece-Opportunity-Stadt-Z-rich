@@ -570,7 +570,7 @@ InvoiceForm,
       fetchInvoiceData();
       await fetchCompanies();
           $('#exampleModal').on('hidden.bs.modal', () => {
-      location.reload(); // Reload the page when the modal is closed
+      router.push({ name: 'NewInvoice' });// Reload the page when the modal is closed
     });
     });
 
