@@ -402,8 +402,9 @@ async function saveChanges() {
       if (error) {
         throw new Error(error.message);
       }
-      await router.push({ name: 'NewInvoice' });
+      
       console.log('Company data updated successfully!');
+   await router.push({ name: 'NewInvoice' });
     } else {
       // Handle the case when the selected table or entry ID is not available
       throw new Error('Invalid table or entry ID');
@@ -427,7 +428,7 @@ async function saveChanges() {
     }
 
     console.log('New company created:', data);
-
+await router.push({ name: 'NewInvoice' });
     // You can choose to handle the success or further actions here
 
   } catch (error) {

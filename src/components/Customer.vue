@@ -352,8 +352,9 @@ const router = useRouter();
           // Remove the deleted customer from the form
           customerId.value = null;
           console.log('Customer deleted successfully'); // Debugging
-          await router.push({ name: 'NewInvoice' }); // Optionally, you can reload the customer list after deleting the customer
+          // Optionally, you can reload the customer list after deleting the customer
           await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
+         await router.push({ name: 'NewInvoice' });
         }
       } catch (error) {
         console.error('Failed to delete customer:', error);
