@@ -248,7 +248,7 @@ const router = useRouter();
           if (error) {
             throw new Error(error.message);
           }
-          await router.push({ name: 'NewInvoice' });
+          await router.push({ name: 'Customer' });
           // Handle success or show an appropriate message to the user
           console.log('Customer data updated successfully!');
         } else {
@@ -274,7 +274,7 @@ const router = useRouter();
         } else {
           // Handle success, e.g., show a success message
           console.log('New customer created successfully!', data);
-          await router.push({ name: 'NewInvoice' });
+          await router.push({ name: 'Customer' });
         }
       } catch (error) {
         console.error('Error creating a new customer:', error);
@@ -354,7 +354,7 @@ const router = useRouter();
           console.log('Customer deleted successfully'); // Debugging
           // Optionally, you can reload the customer list after deleting the customer
           await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
-         await router.push({ name: 'NewInvoice' });
+         await router.push({ name: 'Customer' });
         }
       } catch (error) {
         console.error('Failed to delete customer:', error);

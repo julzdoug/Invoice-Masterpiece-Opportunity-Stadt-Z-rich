@@ -436,7 +436,7 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-           await router.push({ name: 'NewInvoice' });
+           await router.push({ name: 'Company' });
           console.log('Company data updated successfully!');
         } else {
           // Handle the case when the selected table or entry ID is not available
@@ -461,7 +461,7 @@ export default {
         }
 
         console.log('New company created:', data);
- await router.push({ name: 'NewInvoice' });
+ await router.push({ name: 'Company' });
         // You can choose to handle the success or further actions here
 
       } catch (error) {
@@ -522,7 +522,7 @@ export default {
         if (error) {
           throw new Error(error.message);
         }
-        await router.push({ name: 'NewInvoice' });
+        await router.push({ name: 'Company' });
         console.log('Company data deleted successfully!');
       } else {
         console.log('Delete action canceled.');
