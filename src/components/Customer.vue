@@ -197,7 +197,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 import Header from './Header.vue';
 import Footer from './footer.vue';
-
+import { useRouter } from 'vue-router';
 export default {
   components: {
     Header,
@@ -214,7 +214,7 @@ export default {
 
 
   setup() {
-
+const router = useRouter();
     const selectedTable = ref('customer');
     const entries = ref({
       customer: [], // Initialize with an empty array
@@ -248,7 +248,7 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-          location.reload();
+          await router.push({ name: 'NewInvoice' });
           // Handle success or show an appropriate message to the user
           console.log('Customer data updated successfully!');
         } else {
@@ -274,7 +274,7 @@ export default {
         } else {
           // Handle success, e.g., show a success message
           console.log('New customer created successfully!', data);
-          location.reload();
+          await router.push({ name: 'NewInvoice' });
         }
       } catch (error) {
         console.error('Error creating a new customer:', error);
@@ -352,7 +352,7 @@ export default {
           // Remove the deleted customer from the form
           customerId.value = null;
           console.log('Customer deleted successfully'); // Debugging
-          location.reload(); // Optionally, you can reload the customer list after deleting the customer
+          await router.push({ name: 'NewInvoice' }); // Optionally, you can reload the customer list after deleting the customer
           await loadCustomerList(); // You may need to define loadCustomerList() if it's not in your current code.
         }
       } catch (error) {
