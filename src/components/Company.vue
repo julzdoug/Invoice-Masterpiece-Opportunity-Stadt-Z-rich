@@ -315,15 +315,16 @@
 <script>
 import { ref, onMounted, watch } from 'vue';
 import { createClient } from '@supabase/supabase-js';
-
+import { useRouter } from 'vue-router';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 import Header from './Header.vue';
 import Footer from './footer.vue';
 
-
+ const router = useRouter();
 export default {
+  
   components: {
     Header,
     Footer,
@@ -434,7 +435,7 @@ export default {
           if (error) {
             throw new Error(error.message);
           }
-          location.reload();
+           await router.push({ name: 'NewInvoice' });
           console.log('Company data updated successfully!');
         } else {
           // Handle the case when the selected table or entry ID is not available
@@ -459,7 +460,7 @@ export default {
         }
 
         console.log('New company created:', data);
- location.reload();
+ await router.push({ name: 'NewInvoice' });
         // You can choose to handle the success or further actions here
 
       } catch (error) {
@@ -520,7 +521,7 @@ export default {
         if (error) {
           throw new Error(error.message);
         }
-        location.reload();
+        await router.push({ name: 'NewInvoice' });
         console.log('Company data deleted successfully!');
       } else {
         console.log('Delete action canceled.');

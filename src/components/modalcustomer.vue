@@ -154,7 +154,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+import { useRouter } from 'vue-router';
 
 export default {
         computed: {
@@ -167,12 +167,14 @@ export default {
 
 
   setup() {
+        const router = useRouter();
 
     const selectedTable = ref('customer');
         const entries = ref({
       customer: [], // Initialize with an empty array
     });
     const selectedEntry = ref(null);
+    
 
     const customerData = ref({
       name: '',
@@ -201,7 +203,7 @@ async function saveChanges() {
       if (error) {
         throw new Error(error.message);
       }
-      location.reload();
+      await router.push({ name: 'NewInvoice' });
       // Handle success or show an appropriate message to the user
       console.log('Customer data updated successfully!');
     } else {
@@ -227,7 +229,7 @@ async function createNewCustomer(customerData) {
     } else {
       // Handle success, e.g., show a success message
       console.log('New customer created successfully!', data);
-      location.reload();
+      await router.push({ name: 'NewInvoice' });
     }
   } catch (error) {
     console.error('Error creating a new customer:', error);
@@ -298,8 +300,8 @@ function clearFormData() {
           } else {
             // Remove the deleted customer from the form
             customerId.value = null;
-             location.reload();// Optionally, you can reload the customer list after deleting the customer
-            await loadCustomerList();
+            
+             await router.push({ name: 'NewInvoice' });
           }
         } catch (error) {
           console.error('Failed to delete customer:', error);
