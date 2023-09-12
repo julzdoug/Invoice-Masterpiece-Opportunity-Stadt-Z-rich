@@ -491,7 +491,7 @@
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle3"
               data-bs-toggle="modal">Kreditor</button>
             <button class="btn btn-outline-primary m-2" data-bs-target="#exampleModalToggle"
-              data-bs-toggle="modal">Debito</button>
+              data-bs-toggle="modal">Debitor</button>
           </div>
         </div>
         </div>
